@@ -7,7 +7,6 @@ void ft_export(char **str, t_vars *env,  t_vars *declare)
     char *tmp;
     char *content;
     char **line;
-   //str = ft_split(*str, ' ');
    if(str[1] == NULL)
    {
         while(declare != NULL)
@@ -15,13 +14,13 @@ void ft_export(char **str, t_vars *env,  t_vars *declare)
             printf("%s\t", "declare -x");
             printf("%s\n", declare->data);
             declare = declare->next;
-            
         }
    }
    else if(str[1][0] == '=')
    {
        printf("minshell: export: `%s': not a valid identifier;", str[1]);     
    }
+   else if(ft_strncmp())
    else
    {
         while(str[i])
@@ -310,7 +309,6 @@ void execute(t_data *var,t_vars *env,  t_vars *declare)
             lenPipe++;
         i++;
     }
-    int len  = i ;
     fd = malloc(sizeof(int*)*lenPipe);
     i = 0;
     while(i < lenPipe)

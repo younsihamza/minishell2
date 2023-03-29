@@ -65,9 +65,7 @@ t_vars *get_declare(char **env)
   char *tmp;
   char *std1;
   char *std2;
-  char **buffer;
   char *content;
-int j = 0;
 if(!env )
   return (NULL);
 
@@ -88,13 +86,14 @@ if(!env )
         add_envback(&vars, ft_envnew(content));
         i++;
   }
+  
   return (vars);
 }
 
 void ft_shell(t_vars *env, t_vars *declare)
 {
   char *text;
-    char path[100];
+
     t_tree *root;
     t_node *head;
   while(1)
@@ -110,18 +109,14 @@ void ft_shell(t_vars *env, t_vars *declare)
     }
 }
 
-int main(int ac ,char **argv ,char **env)
+int main(int ac, char **argv,char **env)
     {
     //rl_catch_signals = 0;
     t_vars *list = get_env(env);
     t_vars *declare = get_declare(env);
-    while(declare!= NULL)
-    {
-        printf("%s\n",declare->data);
-        declare = declare->next;
-    }
+    argv = NULL;
   //  signal(SIGINT, &handle_sigint); // ctrl + c
-  //  signal(SIGQUIT, &handle_sigint); // ctrl+|
+  // //  signal(SIGQUIT, &handle_sigint); // ctrl+|
     if(ac != 1)
         return (1);
     ft_shell(list, declare);

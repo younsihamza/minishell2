@@ -79,7 +79,6 @@ void  ft_inorder(t_tree *root,t_vars *env)
         tokn = ft_calloc(sizeof(char) , 2);
         // if(ptr == NULL)
         //     write(2,"error\n",6);
-        int i = 0;
         while(ptr != NULL)
         {
             tmp = tokn;
@@ -130,10 +129,7 @@ void  ft_inorder(t_tree *root,t_vars *env)
 int check_error_parser(t_tree **q,int len)
 {
     int  i;
-    int j ;
-    int k;
-    char *p = " |&><$\"";
-
+    
     i = 0;
     while(i < len)
     {

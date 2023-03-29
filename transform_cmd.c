@@ -24,7 +24,7 @@ void transform_cmd(t_node **rot,t_vars *env,  t_vars *declare)
     int j;
     char **splitVar =NULL;
     t_data d;
-    char ***heredocTable;
+
     j = 0;
     len = 0;
     i = 0;
@@ -50,7 +50,7 @@ void transform_cmd(t_node **rot,t_vars *env,  t_vars *declare)
     char **command = NULL;
     char **tmp2d;
     int r = 0;
-    char *tmp;
+    
     j = 0;
     while(rot[i])
     {
