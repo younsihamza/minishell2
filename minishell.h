@@ -71,5 +71,9 @@ t_vars	*ft_lstlastenv(t_vars *lst);
 t_vars	*ft_envnew(void *content);
 size_t	ft_strlen(const char *str);
 char	*ft_strdup(const char *s);
+t_vars  *ft_unset(char **args, t_vars **vars);
 void free2d(char **table);
+t_vars  *remove_elemet(char *str, t_vars **vars);
+void ft_modify(char *str,char *str2, t_vars **declare);
+int ft_strlenCher(char *str,int a);
 #endif // !

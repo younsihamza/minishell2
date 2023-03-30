@@ -1,3 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/30 13:48:27 by ichouare          #+#    #+#             */
+/*   Updated: 2023/03/30 14:36:14 by ichouare         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+
+
 #include "minishell.h"
 
 t_vars	*ft_envnew(void *content)
@@ -39,12 +53,11 @@ void	add_envback(t_vars **lst, t_vars *new)
 t_vars *get_env(char **env)
 {
   int i = 0;
-  t_vars *vars;
-  if(!env)
-    return NULL
-;  while(env[i])
+  t_vars *vars = NULL;
+
+while(env[i])
   {
-    add_envback(&vars, ft_envnew(ft_strdup(env[i])));
+    add_envback(&vars, ft_envnew(strdup(env[i])));
     i++;
   }
   return vars;
@@ -61,18 +74,16 @@ int ft_strlenCher(char *str,int a)
 t_vars *get_declare(char **env)
 {
   int i = 0;
-  t_vars *vars;
+  t_vars *vars = NULL;
   char *tmp;
   char *std1;
   char *std2;
   char *content;
-if(!env )
-  return (NULL);
 
   while(env[i])
   {
         std1 = ft_substr(env[i],0,ft_strlenCher(env[i],'=')+1);
-        std2 = ft_substr(env[i],ft_strlenCher(env[i],'=')+1,ft_strlen(env[i]));
+        std2 = ft_substr(env[i],ft_strlenCher(env[i],'=')+1,ft_strlenCher(env[i],'\0'));
         content = ft_strjoin(std1, "\"");
         tmp= content;
         content = ft_strjoin(content, std2);

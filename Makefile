@@ -6,7 +6,7 @@
 #    By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/29 17:16:48 by ichouare          #+#    #+#              #
-#    Updated: 2023/03/29 17:42:59 by ichouare         ###   ########.fr        #
+#    Updated: 2023/03/30 13:48:03 by ichouare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ FLAGS = -I/$(USER)/ichouare/homebrew/opt/readline/include
 FLAGD = -L/Users/$(USER)/homebrew/opt/readline/lib
 
 
-SRCS =  main.c tree.c transform_cmd.c tools.c lexeer.c heredoc.c ft_strdup.c ft_split.c ft_putstr.c  execute.c create_list.c \
+SRCS =  main.c tree.c transform_cmd.c tools.c lexeer.c heredoc.c ft_strdup.c ft_split.c ft_putstr.c  execute.c create_list.c ft_unset.c \
 
 
 OBJS = $(SRCS:.c=.o)
