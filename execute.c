@@ -37,71 +37,23 @@ t_vars *ft_remove(char *str, t_vars *list)
 void ft_export(char **str, t_vars *env,  t_vars *declare)
 {
     int i = 1;
-    char *tmp;
-    char *content;
-    char **line;
-   if(str[1] == NULL)
+    if(!str[i])
    {
         while(declare != NULL)
         {
             printf("%s\t", "declare -x");
             printf("%s\n", declare->data);
             declare = declare->next;
+            
         }
    }
-   else if(str[1][0] == '=')
-   {
-       printf("minshell: export: `%s': not a valid identifier;", str[1]);     
-   }
-   else
-   {    
-        while(str[i])
-        {
-            if(ft_strchr(str[i], '=') == 1)
-            {
-                add_envback(&env, ft_envnew(str[i]));
-                if(str[i][ft_strlen(str[i]) - 1] == '=')
-                {
-                    // declare = ft_remove(str[i], declare);
-                    remove_elemet(str[1], &declare);
-                    add_envback(&declare, ft_envnew(ft_strjoin(str[i], "\"\""))); 
-                    while(declare != NULL)
-                    {
-                         printf("%s\n", declare->data);
-                        declare = declare->next;
-                    }
-                }
-                else
-                {
-
-                    line = ft_split(str[i], '=');
-                    tmp = content;
-                    content = ft_strjoin(ft_substr(str[i], 0, ft_strlenCher(str[i], '=') + 1), "=");
-                    //free(tmp);
-                    tmp = content;
-                    content = ft_strjoin(content, "\"");
-                    //free(tmp);
-                    tmp = content;
-                    if(line[1][0] =='\'' && line[1][ft_strlen(line[1] - 2)] == '\'')
-                        content = ft_strjoin(content, ft_substr(line[1], 1, ft_strlen(line[1] - 2)));
-                    else
-                         content = ft_strjoin(content, ft_substr(str[i], ft_strlenCher(str[i], '=') + 1, ft_strlenCher(str[i], '\0')));
-                    //free(tmp);
-                    tmp = content;
-                    content = ft_strjoin(content, "\"");
-                    //free(tmp);   
-                    ft_modify(ft_substr(str[i], 0, ft_strlenCher(str[i], '=')),ft_substr(str[i],ft_strlenCher(str[i], '=') + 1, ft_strlen(str[i])), &declare); 
-                      //add_envback(&declare, ft_envnew(content)); 
-                }
-            }
-            else
-            {
-                
-               add_envback(&declare, ft_envnew(str[i])); 
-            }
-            i++;
-        }
-   }
+  while(str[i])
+  {
+    ft_modify(str[i], &declare);
+    if(ft_strlenCher(str[i], '=') != -1)
+        ft_modify_env(str[i], &env);
+    i++;
+  }
    
 }
 
@@ -192,8 +144,8 @@ void buildInChild(char **cmd,t_vars *env,t_vars *declare)
     else if(ft_strcmp(cmd[0],"unset") == 0)
     {
                 ft_unset(cmd, &env);
-    exit(0);
 }
+    exit(0);
 }
 void cmd1(char **cmd, t_vars *env,t_vars *declare)
 {
@@ -207,7 +159,7 @@ void cmd1(char **cmd, t_vars *env,t_vars *declare)
     if(ft_strcmp(cmd[0],"echo") == 0 || ft_strcmp(cmd[0],"pwd") == 0 || ft_strcmp(cmd[0],"export") == 0 )
     {
         // write(2,"hamza\n",6);
-        buildInChild(cmd,declare,env);
+        buildInChild(cmd,env,declare);
     }
     envs = ft_env(env);
     execve(cmd[0],cmd,envs);

@@ -74,6 +74,8 @@ char	*ft_strdup(const char *s);
 t_vars  *ft_unset(char **args, t_vars **vars);
 void free2d(char **table);
 t_vars  *remove_elemet(char *str, t_vars **vars);
-void ft_modify(char *str,char *str2, t_vars **declare);
+void ft_modify(char *str, t_vars **declare);
+void ft_modify_env(char *str, t_vars **env);
 int ft_strlenCher(char *str,int a);
+
 #endif // !

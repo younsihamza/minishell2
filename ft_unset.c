@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 13:14:03 by ichouare          #+#    #+#             */
-/*   Updated: 2023/03/30 18:28:19 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/04/01 12:11:20 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,19 +70,89 @@ t_vars  *remove_elemet(char *str, t_vars **vars)
 } 
 
 
-void ft_modify(char *str,char *str2, t_vars **declare)
+void ft_modify(char *str, t_vars **declare)
 {
     t_vars *cur = NULL;
+    char *tmp = NULL;
+    char *buffer1 = NULL;
+    char *buffer2 = NULL;
     cur = *declare;
-    char *tmp;
+    if((ft_strlen(str) == 1 && str[0] == '=') || str[0] == '=')
+    { 
+        printf("bash: export: `%s': not a valid identifier\n", str);
+        return;
+    }
+    if(ft_strlenCher(str,'=') != -1)
+    {
+        buffer1 = ft_substr(str, 0, ft_strlenCher(str, '=') + 1);
+        buffer2 = ft_substr(str, ft_strlenCher(str, '=') + 1, ft_strlen(str));
+        tmp = buffer2;
+        buffer2 = ft_strjoin("\"", buffer2);
+        free(tmp);
+        tmp = buffer2;
+        buffer2 = ft_strjoin(buffer2, "\"");
+        free(tmp);
+        tmp = buffer1;
+        buffer1 = ft_strjoin(buffer1, buffer2);
+        free(tmp);  
+    }
+    else
+    {
+        buffer1 = str;
+    }
+
+    int j = 0;
     while(cur != NULL)
     {
-       if(ft_strncmp(cur->data,str, ft_strlen(str)) == 0)
+       if(ft_strncmp(cur->data,str, ft_strlen(ft_substr(cur->data, 0, ft_strlenCher(cur->data, '=')))) == 0)
        {
+            j= 1;
             tmp = cur->data;
-            cur->data = ft_strjoin(ft_substr(cur->data, 0, ft_strlenCher(cur->data, '=') + 1), str2);
+            if(ft_strlenCher(str, '=') == -1)
+                return;
+            cur->data = ft_strjoin(ft_substr(cur->data, 0, ft_strlenCher(cur->data, '=') + 1), buffer2);
             free(tmp);
+            return ;
        }
     cur = cur->next;
     }
+    if(j == 0)
+       add_envback(declare, ft_envnew(buffer1)); 
+}
+
+
+
+void ft_modify_env(char *str, t_vars **env)
+{
+    char *buffer1; 
+    char *buffer2;
+    char *tmp;
+    int j = 0;
+    t_vars  *cur = NULL;
+    cur = *env;
+    if((ft_strlen(str) == 1 && str[0] == '=') || str[0] == '=')
+        return ;
+    buffer1 = ft_substr(str, 0, ft_strlenCher(str, '=') + 1);
+    buffer2 = ft_substr(str, ft_strlenCher(str, '=') + 1, ft_strlen(str));
+    while(cur != NULL)
+    {
+       if(ft_strncmp(cur->data,str, ft_strlen(ft_substr(cur->data, 0, ft_strlenCher(cur->data, '=')))) == 0)
+       {
+            j = 1;
+            tmp = cur->data;
+            if(ft_strlenCher(str, '=') == -1)
+                return;
+            cur->data = ft_strjoin(ft_substr(cur->data, 0, ft_strlenCher(cur->data, '=') + 1), buffer2);
+            free(tmp);
+            return ;
+       } 
+       cur = cur->next;
+    }
+    if(j == 0)
+    {
+        tmp = buffer1;
+        buffer1 = ft_strjoin(buffer1, buffer2);
+        add_envback(env, ft_envnew(buffer1)); 
+    }
+
 }

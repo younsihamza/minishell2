@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 13:48:27 by ichouare          #+#    #+#             */
-/*   Updated: 2023/03/30 14:36:14 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/04/01 11:58:17 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,13 @@ int ft_strlenCher(char *str,int a)
   int i  = 0 ;
   if(!str)
     return 0;
-    while(str[i] != a && str[i])
-        i++;
-    return(i);
+    while(str[i])
+       {
+          if(str[i] ==(char) a)
+            return i;
+          i++;
+       }
+    return(-1);
 }
 t_vars *get_declare(char **env)
 {
@@ -126,6 +130,11 @@ int main(int ac, char **argv,char **env)
     t_vars *list = get_env(env);
     t_vars *declare = get_declare(env);
     argv = NULL;
+//     while(list != NULL)
+// {
+//     printf("%s\n",list->data);
+//     list = list->next;
+// }
   //  signal(SIGINT, &handle_sigint); // ctrl + c
   // //  signal(SIGQUIT, &handle_sigint); // ctrl+|
     if(ac != 1)
