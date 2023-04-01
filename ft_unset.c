@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 13:14:03 by ichouare          #+#    #+#             */
-/*   Updated: 2023/04/01 13:28:45 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/04/01 14:12:31 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,25 @@
 #include "minishell.h"
 
 
+int is_alpha(char *str)
+{
+    int i = 0;
+    while (str[i])
+    {
+        if((str[i] >= 'a' && str[i] <= 'z') || (str[i] >= 'A' && str[i] <= 'Z'))
+            i++;
+        else 
+            return (-1);
+    }
+    return (i);
+}
+
 t_vars  *ft_unset(char **args, t_vars **vars)
 {
     t_vars *cur = NULL;
     t_vars *prev = NULL;
     t_vars *list = NULL;
     int i = 0;
-    cur = *vars;
-    list = cur;
-    prev = cur;
     if(args[1] == NULL || vars  == NULL)
     {
         return NULL;
@@ -30,10 +40,14 @@ t_vars  *ft_unset(char **args, t_vars **vars)
     i = 1;
     while(args[i])
     {
+        cur = *vars;
+        list = cur;
+        prev = cur;
       while(cur != NULL)
         {
-            if(ft_strlenCher(args[i], '=') != -1)
+            if(is_alpha(args[i]) == -1)
             {
+                puts("here");
                 printf("unset: `%s': not a valid identifier\n", args[i]);
                 break;
             }
