@@ -6,7 +6,7 @@
 #    By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/29 17:16:48 by ichouare          #+#    #+#              #
-#    Updated: 2023/03/30 13:48:03 by ichouare         ###   ########.fr        #
+#    Updated: 2023/04/01 12:45:01 by ichouare         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,12 +18,12 @@ FLAG = -Wall -Wextra  -Werror
 
 HEADER = ./minishell.h
 
-FLAGS = -I/$(USER)/ichouare/homebrew/opt/readline/include
+FLAGS = -I/Users/$(USER)/homebrew/opt/readline/include
 
-FLAGD = -L/Users/$(USER)/homebrew/opt/readline/lib
+# FLAGD = -L/Users/$(USER)/homebrew/opt/readline/lib
 
 
-SRCS =  main.c tree.c transform_cmd.c tools.c lexeer.c heredoc.c ft_strdup.c ft_split.c ft_putstr.c  execute.c create_list.c ft_unset.c \
+SRCS =  main.c tree.c transform_cmd.c tools.c lexeer.c heredoc.c ft_strdup.c ft_split.c ft_putstr.c  execute.c create_list.c ft_unset.c  handle_signal.c\
 
 
 OBJS = $(SRCS:.c=.o)
@@ -33,11 +33,11 @@ all: $(NAME)
 
 
 $(NAME): $(OBJS) 
-	$(CC) $(FLAG) -lreadline $(FLAGS) $(FLAGD) $^ -o $@
+	$(CC) $(FLAG)  $(FLAGS) $(FLAGD) $^ -o $@  -lreadline  -L/Users/$(USER)/homebrew/opt/readline/lib
  
 	
 %.o : %.c  $(HEADER)
-	$(CC) $(FLAG)  $(FLAGS) -c -o $@ $<
+	$(CC) $(FLAG)   $(FLAGS) $(FLAGD) -c -o $@ $<
 
 clean:
 	rm -f $(OBJS)

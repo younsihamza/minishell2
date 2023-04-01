@@ -11,6 +11,7 @@
 #include <signal.h>
 #include <string.h>
 #include <sys/stat.h>
+#include <termios.h>
 
 typedef struct vars
 {
@@ -77,5 +78,7 @@ t_vars  *remove_elemet(char *str, t_vars **vars);
 void ft_modify(char *str, t_vars **declare);
 void ft_modify_env(char *str, t_vars **env);
 int ft_strlenCher(char *str,int a);
+void handle_sigint(int sig);
+int signal_gen(int i);
 
 #endif // !

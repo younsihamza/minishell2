@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 13:48:27 by ichouare          #+#    #+#             */
-/*   Updated: 2023/04/01 11:58:17 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/04/01 12:40:13 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ void ft_shell(t_vars *env, t_vars *declare)
     t_node *head;
   while(1)
     {
-      //signal_gen(2);
+      signal_gen(2);
       text = readline("minishell -> $> ");
       if(!text)
         break;
@@ -126,17 +126,13 @@ void ft_shell(t_vars *env, t_vars *declare)
 
 int main(int ac, char **argv,char **env)
     {
-    //rl_catch_signals = 0;
+    rl_catch_signals = 0;
     t_vars *list = get_env(env);
     t_vars *declare = get_declare(env);
     argv = NULL;
-//     while(list != NULL)
-// {
-//     printf("%s\n",list->data);
-//     list = list->next;
-// }
-  //  signal(SIGINT, &handle_sigint); // ctrl + c
-  // //  signal(SIGQUIT, &handle_sigint); // ctrl+|
+
+    signal(SIGINT, &handle_sigint); // ctrl + c
+   signal(SIGQUIT, &handle_sigint); // ctrl+|
     if(ac != 1)
         return (1);
     ft_shell(list, declare);

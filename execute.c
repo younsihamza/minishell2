@@ -143,7 +143,9 @@ void buildInChild(char **cmd,t_vars *env,t_vars *declare)
                 ft_export(cmd,env, declare);
     else if(ft_strcmp(cmd[0],"unset") == 0)
     {
+        puts("here");
                 ft_unset(cmd, &env);
+                ft_unset(cmd, &declare);
 }
     exit(0);
 }
@@ -286,6 +288,7 @@ void buildInParent(t_data *var,int i,t_vars *env,  t_vars *declare)
     else if(ft_strcmp(var->cmd[i][0],"unset") == 0)
         {
             ft_unset(var->cmd[i], &env);
+            ft_unset(var->cmd[i], &declare);
         }
 }
 

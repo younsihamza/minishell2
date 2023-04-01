@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 13:14:03 by ichouare          #+#    #+#             */
-/*   Updated: 2023/04/01 12:11:20 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/04/01 13:28:45 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_vars  *ft_unset(char **args, t_vars **vars)
     t_vars *cur = NULL;
     t_vars *prev = NULL;
     t_vars *list = NULL;
-    
+    int i = 0;
     cur = *vars;
     list = cur;
     prev = cur;
@@ -27,8 +27,16 @@ t_vars  *ft_unset(char **args, t_vars **vars)
     {
         return NULL;
     }
-        while(cur != NULL)
+    i = 1;
+    while(args[i])
+    {
+      while(cur != NULL)
         {
+            if(ft_strlenCher(args[i], '=') != -1)
+            {
+                printf("unset: `%s': not a valid identifier\n", args[i]);
+                break;
+            }
            if(ft_strncmp(cur->data,args[1], ft_strlen(args[1])) == 0)
            {
                prev->next = cur->next;
@@ -38,7 +46,10 @@ t_vars  *ft_unset(char **args, t_vars **vars)
                prev = cur;
            }
                cur = cur->next;
-        }
+        } 
+        i++; 
+    }
+        
         return list;
 } 
 t_vars  *remove_elemet(char *str, t_vars **vars)
