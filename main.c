@@ -1,17 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/30 13:48:27 by ichouare          #+#    #+#             */
-/*   Updated: 2023/04/01 12:40:13 by ichouare         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-
-
 #include "minishell.h"
 
 t_vars	*ft_envnew(void *content)
@@ -54,10 +40,9 @@ t_vars *get_env(char **env)
 {
   int i = 0;
   t_vars *vars = NULL;
-
-while(env[i])
+;  while(env[i])
   {
-    add_envback(&vars, ft_envnew(strdup(env[i])));
+    add_envback(&vars, ft_envnew(ft_strdup(env[i])));
     i++;
   }
   return vars;
@@ -67,13 +52,9 @@ int ft_strlenCher(char *str,int a)
   int i  = 0 ;
   if(!str)
     return 0;
-    while(str[i])
-       {
-          if(str[i] ==(char) a)
-            return i;
-          i++;
-       }
-    return(-1);
+    while(str[i] != a && str[i])
+        i++;
+    return(i);
 }
 t_vars *get_declare(char **env)
 {
@@ -87,7 +68,7 @@ t_vars *get_declare(char **env)
   while(env[i])
   {
         std1 = ft_substr(env[i],0,ft_strlenCher(env[i],'=')+1);
-        std2 = ft_substr(env[i],ft_strlenCher(env[i],'=')+1,ft_strlenCher(env[i],'\0'));
+        std2 = ft_substr(env[i],ft_strlenCher(env[i],'=')+1,ft_strlen(env[i]));
         content = ft_strjoin(std1, "\"");
         tmp= content;
         content = ft_strjoin(content, std2);
@@ -97,43 +78,51 @@ t_vars *get_declare(char **env)
         free(tmp);
         free(std2);
         free(std1);
-
         add_envback(&vars, ft_envnew(content));
         i++;
   }
-  
   return (vars);
 }
 
 void ft_shell(t_vars *env, t_vars *declare)
 {
   char *text;
-
     t_tree *root;
     t_node *head;
+    
+
   while(1)
     {
-      signal_gen(2);
+      //signal_gen(2);
       text = readline("minishell -> $> ");
       if(!text)
         break;
-    if(text)
+    if(*text)
         add_history(text);
     head = token(text);
     root = bulid_tree(head, env , declare);
     }
 }
+void test()
+{
+  system("leaks a.out");
+}
 
-int main(int ac, char **argv,char **env)
+int main(int ac ,char **argv ,char **env)
     {
-    rl_catch_signals = 0;
-    t_vars *list = get_env(env);
-    t_vars *declare = get_declare(env);
-    argv = NULL;
 
-    signal(SIGINT, &handle_sigint); // ctrl + c
-   signal(SIGQUIT, &handle_sigint); // ctrl+|
+
+      //atexit(test);
+  rl_catch_signals = 0;
+  t_vars *list;
+  t_vars *declare;
+  argv = NULL;
+  list = get_env(env);
+  declare = get_declare(env);
+
+   signal(SIGINT, &handle_sigint); // ctrl + c
+  signal(SIGQUIT, &handle_sigint); // ctrl+|
     if(ac != 1)
         return (1);
-    ft_shell(list, declare);
+   ft_shell(list, declare);
  }

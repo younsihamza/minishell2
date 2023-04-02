@@ -6,11 +6,12 @@
 
 int signal_gen(int i)
 {
+
   static int j;
-  if( i == 1)
+  if(i == 1)
     j = 1;
-  else if(i !=  1)
-    j = i;
+  else if((i + j) % 2 == 0)
+        j = 2;
   return j;
 }
 
@@ -21,15 +22,16 @@ void handle_sigint(int sig)
   term.c_ispeed = 0;
   if(sig == SIGINT && signal_gen(1) == 1)
   {
-    printf("\n");
-	rl_on_new_line();
+	printf("\n");
+    rl_on_new_line();
     rl_replace_line("" , 0);
 	rl_redisplay();
   }
-  else if(sig == SIGINT && signal_gen(2) != 1)
+   if(sig == SIGINT && signal_gen(2) == 2)
   {
+    puts("here");
     tcsetattr(STDIN_FILENO,TCSANOW,&term);
-    //printf("\n");
+    printf("\n");
     exit(0);
   } 
   

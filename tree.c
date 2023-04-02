@@ -1,17 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   tree.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/30 13:48:17 by ichouare          #+#    #+#             */
-/*   Updated: 2023/04/01 11:58:51 by ichouare         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-
-
 #include "minishell.h"
 
 t_node *simpleToken(char *text)
@@ -67,7 +53,7 @@ void  ft_inorder(t_tree *root,t_vars *env)
         free(root->tokn->data);
         if(tmp != NULL)
         {
-            root->tokn->data = tmp;
+            root->tokn->data = ft_strdup(tmp);
         }
         else 
             root->tokn->data =ft_calloc(sizeof(char) , 2);
@@ -84,22 +70,22 @@ void  ft_inorder(t_tree *root,t_vars *env)
                tmp = get_env_arr(&str->data[1],env);
                free(str->data);
                if(tmp != NULL)
-                    str->data =tmp;
+                    str->data =ft_strdup(tmp);
                 else 
                    str->data =ft_calloc(sizeof(char) , 2);
            }
             str = str->next;
         }
         tokn = ft_calloc(sizeof(char) , 2);
-        // if(ptr == NULL)
-        //     write(2,"error\n",6);
+
         while(ptr != NULL)
         {
-            tmp = tokn;
             if(ptr->data != NULL)
             {
+                tmp = tokn;
                 tokn = ft_strjoin(tokn, ptr->data);
                 free(tmp);
+                free(ptr->data);
             }
             str = ptr;
             ptr = ptr->next;
@@ -142,8 +128,8 @@ void  ft_inorder(t_tree *root,t_vars *env)
 }
 int check_error_parser(t_tree **q,int len)
 {
-    int  i;
-    
+    int  i; 
+
     i = 0;
     while(i < len)
     {
@@ -219,16 +205,37 @@ t_tree *bulid_tree(t_node *head, t_vars *env,  t_vars *declare)
             queue[rer++] = queue[curent]->left;
         curent++;
     }
+    
     if(check_error_parser(queue,len) != 0)
+    {
+        free(queue);
+        free_tree(root);
+        while(head != NULL)
+    {
+        ptr = head;
+        free(ptr->data);
+        head = head->next;
+        free(ptr);
+    }
         return(NULL);
+    }
     free(queue);
     int a = 0;
     t_node **rot = ft_calloc(sizeof(t_node*) , len + 1);
+    t_node **list;
     ft_inorder(root,env);
     makeStack(root,rot ,&a);
-    transform_cmd(edit_rot(rot,len),env,declare);
+    list = edit_rot(rot,len);
+    transform_cmd(list,env,declare);
     free_tree(root);
+    free(list);
+    while(head != NULL)
+    {
+        ptr = head;
+        free(ptr->data);
+        head = head->next;
+        free(ptr);
+    }
     free(rot);
-    // free(rot);
     return(NULL);
 }

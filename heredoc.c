@@ -37,6 +37,8 @@ char **heredoc(char *stop)
             free(tmp);
         }
     }
+    if(p)
+        free(p);
     return(value);
 }
 void free2d(char **table)

@@ -1,18 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_unset.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/30 13:14:03 by ichouare          #+#    #+#             */
-/*   Updated: 2023/04/01 14:12:31 by ichouare         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-
 #include "minishell.h"
-
 
 int is_alpha(char *str)
 {
@@ -27,73 +13,42 @@ int is_alpha(char *str)
     return (i);
 }
 
-t_vars  *ft_unset(char **args, t_vars **vars)
+void ft_unset(char **args, t_vars *vars)
 {
-    t_vars *cur = NULL;
-    t_vars *prev = NULL;
-    t_vars *list = NULL;
+    t_vars *cur ;
+    t_vars *prev ;
+    t_vars *list ;
     int i = 0;
     if(args[1] == NULL || vars  == NULL)
     {
-        return NULL;
+        return ;
     }
     i = 1;
     while(args[i])
     {
-        cur = *vars;
+        cur = vars;
         list = cur;
         prev = cur;
       while(cur != NULL)
         {
             if(is_alpha(args[i]) == -1)
             {
-                puts("here");
                 printf("unset: `%s': not a valid identifier\n", args[i]);
                 break;
             }
            if(ft_strncmp(cur->data,args[1], ft_strlen(args[1])) == 0)
            {
-               prev->next = cur->next;
+                list = cur;
+                prev->next = cur->next;
+                free(list);
            }
            else
-           {
                prev = cur;
-           }
-               cur = cur->next;
+            cur = cur->next;
         } 
         i++; 
     }
-        
-        return list;
 } 
-t_vars  *remove_elemet(char *str, t_vars **vars)
-{
-    t_vars *cur = NULL;
-    t_vars *prev = NULL;
-    t_vars *list = NULL;
-    
-    cur = *vars;
-    list = cur;
-    prev = cur;
-    if(str == NULL || vars  == NULL)
-    {
-        return NULL;
-    }
-        while(cur != NULL)
-        {
-           if(ft_strncmp(cur->data,str, ft_strlen(str)) == 0)
-           {
-               prev->next = cur->next;
-           }
-           else
-           {
-               prev = cur;
-           }
-               cur = cur->next;
-        }
-        return list;
-} 
-
 
 void ft_modify(char *str, t_vars **declare)
 {
@@ -107,7 +62,7 @@ void ft_modify(char *str, t_vars **declare)
         printf("bash: export: `%s': not a valid identifier\n", str);
         return;
     }
-    if(ft_strlenCher(str,'=') != -1)
+    if(ft_strchr(str,'=') != 0)
     {
         buffer1 = ft_substr(str, 0, ft_strlenCher(str, '=') + 1);
         buffer2 = ft_substr(str, ft_strlenCher(str, '=') + 1, ft_strlen(str));
@@ -119,65 +74,49 @@ void ft_modify(char *str, t_vars **declare)
         free(tmp);
         tmp = buffer1;
         buffer1 = ft_strjoin(buffer1, buffer2);
+        free(buffer2);
         free(tmp);  
     }
     else
     {
-        buffer1 = str;
+        buffer1 = ft_strdup(str);
     }
 
-    int j = 0;
     while(cur != NULL)
     {
-       if(ft_strncmp(cur->data,str, ft_strlen(ft_substr(cur->data, 0, ft_strlenCher(cur->data, '=')))) == 0)
+       if(ft_strncmp(cur->data,str, ft_strlenCher(cur->data, '=')) == 0)
        {
-            j= 1;
-            tmp = cur->data;
-            if(ft_strlenCher(str, '=') == -1)
+            if(ft_strchr(str, '=') == 0)
+            {
+                free(buffer1);
                 return;
-            cur->data = ft_strjoin(ft_substr(cur->data, 0, ft_strlenCher(cur->data, '=') + 1), buffer2);
-            free(tmp);
-            return ;
+            }
+            free(cur->data);
+            cur->data = buffer1;
+            return;
        }
     cur = cur->next;
     }
-    if(j == 0)
-       add_envback(declare, ft_envnew(buffer1)); 
+       add_envback(declare, ft_envnew(buffer1));
 }
 
-
-
-void ft_modify_env(char *str, t_vars **env)
+void ft_modify_env(char *str, t_vars *env)
 {
-    char *buffer1; 
-    char *buffer2;
-    char *tmp;
-    int j = 0;
     t_vars  *cur = NULL;
-    cur = *env;
+    cur = env;
     if((ft_strlen(str) == 1 && str[0] == '=') || str[0] == '=')
         return ;
-    buffer1 = ft_substr(str, 0, ft_strlenCher(str, '=') + 1);
-    buffer2 = ft_substr(str, ft_strlenCher(str, '=') + 1, ft_strlen(str));
     while(cur != NULL)
     {
-       if(ft_strncmp(cur->data,str, ft_strlen(ft_substr(cur->data, 0, ft_strlenCher(cur->data, '=')))) == 0)
+       if(ft_strncmp(cur->data,str, ft_strlenCher(str,'=')) == 0)
        {
-            j = 1;
-            tmp = cur->data;
-            if(ft_strlenCher(str, '=') == -1)
-                return;
-            cur->data = ft_strjoin(ft_substr(cur->data, 0, ft_strlenCher(cur->data, '=') + 1), buffer2);
-            free(tmp);
+            
+            free(cur->data);
+            cur->data = ft_strdup(str);
             return ;
-       } 
+       }
        cur = cur->next;
     }
-    if(j == 0)
-    {
-        tmp = buffer1;
-        buffer1 = ft_strjoin(buffer1, buffer2);
-        add_envback(env, ft_envnew(buffer1)); 
-    }
+        add_envback(&env, ft_envnew(strdup(str))); 
 
 }

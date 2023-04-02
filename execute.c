@@ -32,8 +32,6 @@ t_vars *ft_remove(char *str, t_vars *list)
     return head;
 }
 
-
-
 void ft_export(char **str, t_vars *env,  t_vars *declare)
 {
     int i = 1;
@@ -50,12 +48,13 @@ void ft_export(char **str, t_vars *env,  t_vars *declare)
   while(str[i])
   {
     ft_modify(str[i], &declare);
-    if(ft_strlenCher(str[i], '=') != -1)
-        ft_modify_env(str[i], &env);
+    if(ft_strchr(str[i], '=') != 0)
+        ft_modify_env(str[i], env);
     i++;
-  }
-   
+  } 
 }
+
+
 
 void echo(char **cmd)
 {
@@ -85,7 +84,7 @@ char **ft_env(t_vars *vars)
         i++;
         vars = vars->next;
     }
-    ourenv = ft_calloc(sizeof(char *), i);
+    ourenv = ft_calloc(sizeof(char *), i +1);
     i = 0;
 
     while(tmp != NULL)
@@ -124,11 +123,17 @@ char *delimet(char *l)
         }
     }
 
-
+void cmd_env(t_vars *env)
+{
+    while(env != NULL)
+    {
+        printf("%s\n",env->data);
+        env = env->next;
+    }
+}
 void buildInChild(char **cmd,t_vars *env,t_vars *declare)
 {
     char *path;
-    
     if(ft_strcmp("echo",cmd[0]) == 0)
         echo(cmd);
     else if(ft_strcmp("pwd",cmd[0]) == 0)
@@ -140,15 +145,12 @@ void buildInChild(char **cmd,t_vars *env,t_vars *declare)
                 printf("%s", "error");
         }
     else if(ft_strcmp(cmd[0],"export") == 0)
-                ft_export(cmd,env, declare);
-    else if(ft_strcmp(cmd[0],"unset") == 0)
-    {
-        puts("here");
-                ft_unset(cmd, &env);
-                ft_unset(cmd, &declare);
-}
+                ft_export(cmd,env,declare);
+    else if(ft_strcmp(cmd[0],"env") == 0)
+                cmd_env(env);
     exit(0);
 }
+
 void cmd1(char **cmd, t_vars *env,t_vars *declare)
 {
     char *path;
@@ -158,11 +160,8 @@ void cmd1(char **cmd, t_vars *env,t_vars *declare)
     char *joinCmd;
     int i  = 0;
 
-    if(ft_strcmp(cmd[0],"echo") == 0 || ft_strcmp(cmd[0],"pwd") == 0 || ft_strcmp(cmd[0],"export") == 0 )
-    {
-        // write(2,"hamza\n",6);
+    if(ft_strcmp(cmd[0],"echo") == 0 || ft_strcmp(cmd[0],"pwd") == 0 || ft_strcmp(cmd[0],"export") == 0 || ft_strcmp(cmd[0],"env") == 0)
         buildInChild(cmd,env,declare);
-    }
     envs = ft_env(env);
     execve(cmd[0],cmd,envs);
     path = get_env_arr("PATH",env);
@@ -180,9 +179,11 @@ void cmd1(char **cmd, t_vars *env,t_vars *declare)
         }
         free2d(split_path);
     }
+    i = 0;
     write(2,"IH : command not found\n",24);
     free2d(cmd);
-        
+    free(envs);
+    free(split_path);
 }
 
 void dups(char **deriction,char **heredoctable)
@@ -265,7 +266,6 @@ void dups(char **deriction,char **heredoctable)
 
 void buildInParent(t_data *var,int i,t_vars *env,  t_vars *declare)
 {
-
     if(ft_strcmp(var->cmd[i][0],"cd") == 0)
         {
             if(var->op[i] != NULL)
@@ -280,16 +280,17 @@ void buildInParent(t_data *var,int i,t_vars *env,  t_vars *declare)
             if(var->op[0] == NULL)
                 exit(0);
         }
+    else if(ft_strcmp(var->cmd[i][0],"unset") == 0)
+    {
+        ft_unset(var->cmd[i],env);
+        ft_unset(var->cmd[i],declare);
+
+    }
     else if(ft_strcmp(var->cmd[i][0],"export") == 0)
     {
             if(var->op[0] == NULL)
                 ft_export(var->cmd[i],env,declare);
     }
-    else if(ft_strcmp(var->cmd[i][0],"unset") == 0)
-        {
-            ft_unset(var->cmd[i], &env);
-            ft_unset(var->cmd[i], &declare);
-        }
 }
 
 void execute(t_data *var,t_vars *env,  t_vars *declare)
@@ -307,6 +308,7 @@ void execute(t_data *var,t_vars *env,  t_vars *declare)
             lenPipe++;
         i++;
     }
+
     fd = malloc(sizeof(int*)*lenPipe);
     i = 0;
     while(i < lenPipe)
@@ -315,10 +317,10 @@ void execute(t_data *var,t_vars *env,  t_vars *declare)
         pipe(fd[i]);
         i++;
     }
+
     i = 0;
     while(var->cmd[i])
     {
-        
         if(ft_strcmp(var->cmd[i][0],"cd") == 0 || ft_strcmp(var->cmd[i][0],"exit") == 0 ||(ft_strcmp(var->cmd[i][0],"export") == 0 &&  var->cmd[i][1] != NULL)|| ft_strcmp(var->cmd[i][0],"unset") == 0 )
             buildInParent(var,i,env,declare);
         else 
@@ -349,5 +351,8 @@ void execute(t_data *var,t_vars *env,  t_vars *declare)
     }
     while((wait(0)) != -1)
         ft_close(fd, lenPipe);
-
+    i = 0;
+    while(i < lenPipe)
+        free(fd[i++]);
+    free(fd);
 }

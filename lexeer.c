@@ -97,7 +97,6 @@ t_node *token(char *text)
                 space = 1;
                 i++;
             }
-
     }
     ptr = head;
     i = 1;
@@ -107,5 +106,6 @@ t_node *token(char *text)
         i++;
         ptr = ptr->next;
     }
+    free(text);
     return(head);
 }

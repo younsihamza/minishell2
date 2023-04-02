@@ -50,7 +50,7 @@ void transform_cmd(t_node **rot,t_vars *env,  t_vars *declare)
     char **command = NULL;
     char **tmp2d;
     int r = 0;
-    
+
     j = 0;
     while(rot[i])
     {
@@ -78,7 +78,7 @@ void transform_cmd(t_node **rot,t_vars *env,  t_vars *declare)
                     }else
                     {
                         tmp2d=command;
-                        command = ft_join2d(command , rot[i]->data);
+                        command = ft_join2d(command ,ft_strdup(rot[i]->data));
                         free(tmp2d);
                     }
                 }
@@ -122,4 +122,35 @@ void transform_cmd(t_node **rot,t_vars *env,  t_vars *declare)
     d.heredoc = checkHerecode(d.deriction,len + 2);
     ft_tolower(d.cmd);
     execute(&d,env,declare);
+    i = 0;
+    while(i <= len )
+    {
+        if(d.heredoc[i])
+        {
+            free2d(d.heredoc[i]);
+            free(d.heredoc[i]);
+        }
+        i++;
+    }
+    free(d.heredoc);
+    free(d.op);
+    i = 0;
+    while(d.cmd[i])
+    {
+            free2d(d.cmd[i]);
+            free(d.cmd[i]);
+        i++;
+    }
+    free(d.cmd);
+   i = 0;
+    while(i <= len)
+    {
+        if(d.deriction[i] != NULL)
+        {
+            free2d(d.deriction[i]);
+            free(d.deriction[i]);
+        }
+        i++;
+    }
+    free(d.deriction);
 }
