@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+         #
+#    By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/29 17:16:48 by ichouare          #+#    #+#              #
-#    Updated: 2023/04/01 12:45:01 by ichouare         ###   ########.fr        #
+#    Updated: 2023/04/03 14:54:42 by hyounsi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ FLAG = -Wall -Wextra  -Werror
 
 HEADER = ./minishell.h
 
-FLAGS = -I/Users/$(USER)/homebrew/opt/readline/include
+FLAGS = -I/Users/$(USER)/Desktop/homebrew/opt/readline/include
 
 # FLAGD = -L/Users/$(USER)/homebrew/opt/readline/lib
 
@@ -33,7 +33,7 @@ all: $(NAME)
 
 
 $(NAME): $(OBJS) 
-	$(CC) $(FLAG)  $(FLAGS) $(FLAGD) $^ -o $@  -lreadline  -L/Users/$(USER)/homebrew/opt/readline/lib
+	$(CC) $(FLAG)  $(FLAGS) $(FLAGD) $^ -o $@  -lreadline  -L/Users/$(USER)/Desktop/homebrew/opt/readline/lib
  
 	
 %.o : %.c  $(HEADER)

@@ -36,14 +36,15 @@ void ft_unset(char **args, t_vars *vars)
                 printf("unset: `%s': not a valid identifier\n", args[i]);
                 break;
             }
-           if(ft_strncmp(cur->data,args[1], ft_strlen(args[1])) == 0)
+           if(ft_strncmp(cur->data,args[i], ft_strlenCher(cur->data,'=')) == 0)
            {
                 list = cur;
                 prev->next = cur->next;
+                free(list->data);
                 free(list);
            }
            else
-               prev = cur;
+            prev = cur;
             cur = cur->next;
         } 
         i++; 

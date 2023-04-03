@@ -117,6 +117,8 @@ int main(int ac ,char **argv ,char **env)
   a = 0;
   t_vars *list;
   t_vars *declare;
+  if(!env)
+    return(write(2,"no env\n",7));
   argv = NULL;
   list = get_env(env);
   declare = get_declare(env);
