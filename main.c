@@ -93,20 +93,20 @@ void ft_shell(t_vars *env, t_vars *declare)
 
   while(1)
     {
-      //signal_gen(2);
+      signal_gen(1);
       text = readline("minishell -> $> ");
       if(!text)
         break;
     if(*text)
+    {
         add_history(text);
+    }
+    a = 1;
     head = token(text);
     root = bulid_tree(head, env , declare);
     }
 }
-void test()
-{
-  system("leaks a.out");
-}
+
 
 int main(int ac ,char **argv ,char **env)
     {
@@ -114,13 +114,14 @@ int main(int ac ,char **argv ,char **env)
 
       //atexit(test);
   rl_catch_signals = 0;
+  a = 0;
   t_vars *list;
   t_vars *declare;
   argv = NULL;
   list = get_env(env);
   declare = get_declare(env);
 
-   signal(SIGINT, &handle_sigint); // ctrl + c
+  signal(SIGINT, &handle_sigint); // ctrl + c
   signal(SIGQUIT, &handle_sigint); // ctrl+|
     if(ac != 1)
         return (1);

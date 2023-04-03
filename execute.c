@@ -170,6 +170,10 @@ void cmd1(char **cmd, t_vars *env,t_vars *declare)
     {
         while(split_path[i])
         {
+            //sigaction(SIGINT,0, NULL);
+            //signal_gen(1);
+            
+            //signal(SIGQUIT, SIG_IGN);
             tmp = ft_strjoin(split_path[i],"/");
             joinCmd =ft_strjoin(tmp,cmd[0]);
             free(tmp);
@@ -325,9 +329,11 @@ void execute(t_data *var,t_vars *env,  t_vars *declare)
             buildInParent(var,i,env,declare);
         else 
         {
+            a = 2;
             id =fork();
             if(id == 0)
             {
+                signal(SIGINT, SIG_DFL);
                 if(var->op[i] != NULL)
                     if(ft_strncmp(var->op[i]->type,"OP_PIPE",7) == 0)
                         dup2(fd[pipeIncrement][1],1);
@@ -350,7 +356,8 @@ void execute(t_data *var,t_vars *env,  t_vars *declare)
         i++;
     }
     while((wait(0)) != -1)
-        ft_close(fd, lenPipe);
+    a = 0;
+    ft_close(fd, lenPipe);
     i = 0;
     while(i < lenPipe)
         free(fd[i++]);

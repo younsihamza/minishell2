@@ -13,6 +13,7 @@
 #include <sys/stat.h>
 #include <termios.h>
 
+
 typedef struct vars
 {
     char *data;
@@ -42,6 +43,7 @@ typedef struct data{
      char ***deriction;
      char ***heredoc;
 }t_data;
+int a;
 
 char	**ft_split(char const *s, char c);
 char	*ft_strjoin(char const *s1, char const *s2);
@@ -81,4 +83,5 @@ void ft_unset(char **args, t_vars *vars);
 t_vars  *remove_elemet(char *str, t_vars **vars);
 void ft_modify(char *str, t_vars **declare);
 void ft_modify_env(char *str, t_vars *env);
+int signal_gen(int i);
 #endif // !
