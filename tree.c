@@ -78,7 +78,6 @@ void  ft_inorder(t_tree *root,t_vars *env)
         }
         tokn = ft_calloc(sizeof(char) , 2);
 
-        int i = 0;
         while(ptr != NULL)
         {
             if(ptr->data != NULL)
@@ -130,8 +129,6 @@ void  ft_inorder(t_tree *root,t_vars *env)
 int check_error_parser(t_tree **q,int len)
 {
     int  i;
-    int j ;
-    int k;
 
     i = 0;
     while(i < len)
@@ -168,7 +165,7 @@ void free_tree(t_tree *root)
     free_tree(root->left);
     free(root);
 }
-t_tree *bulid_tree(t_node *head, t_vars *env,  t_vars *declare)
+t_tree *bulid_tree(t_node *head, t_vars *env,  t_vars *declare,char *pathHome)
 {
     t_node *ptr = head;
     t_tree *root;
@@ -198,6 +195,8 @@ t_tree *bulid_tree(t_node *head, t_vars *env,  t_vars *declare)
     rer = 0;
     curent = 0;      
     queue = malloc(sizeof(t_tree*)*len);
+    if(!queue)
+        exit(0);
     queue[rer] = root;
     rer++;
     while(curent != rer)
@@ -229,7 +228,7 @@ t_tree *bulid_tree(t_node *head, t_vars *env,  t_vars *declare)
     ft_inorder(root,env);
     makeStack(root,rot ,&a);
     list = edit_rot(rot,len);
-    transform_cmd(list,env,declare);
+    transform_cmd(list,env,declare,pathHome);
     free_tree(root);
     free(list);
     while(head != NULL)

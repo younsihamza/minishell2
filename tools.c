@@ -1,5 +1,6 @@
 #include "minishell.h"
 
+
 int ft_strcmp(char *str1 , char *str2)
 {
 	int i = 0;
@@ -15,7 +16,7 @@ void	*ft_calloc(size_t nitems, size_t size)
 	i = 0;
 	p = malloc(size * nitems);
 	if (!p)
-		return (NULL);
+		exit (0);
 	while (i < nitems * size)
 	{
 		*(char *)(p + i) = '\0';
@@ -67,7 +68,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		return (str);
 	str = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
 	if (!str)
-		return (NULL);
+		exit (0);
 	strimplement(str, s1, s2);
 	return (str);
 }
@@ -132,6 +133,8 @@ int ft_strchr(char *str ,char a)
 t_tree *create_node_tree(t_node *tokn)
 {
     t_tree *new_node = malloc(sizeof(t_tree));
+	if(!new_node)
+		exit(0);
     new_node->tokn = tokn;
     new_node->left = NULL;
     new_node->right = NULL;
@@ -202,4 +205,23 @@ char *get_env_arr(char *find, t_vars *env)
         ptr = ptr->next;
     }
     return NULL; 
+}
+
+void	ft_tolower(char ***cmd)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (cmd[i])
+	{
+		j = 0;
+		while (cmd[i][0][j])
+		{
+			if (cmd[i][0][j] >= 'A' && cmd[i][0][j] <= 'Z')
+				cmd[i][0][j] += 32;
+			j++;
+		}
+		i++;
+	}
 }

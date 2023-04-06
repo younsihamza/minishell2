@@ -31,7 +31,7 @@ t_node	*ft_lstnew(void *content, char *type, int space)
 
 	p = malloc(sizeof(t_node));
 	if (!p)
-		return (NULL);
+		exit (0);
 	p -> data = (char *)content;
     p -> type = type;
 	p -> space  = space;

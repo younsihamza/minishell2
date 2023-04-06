@@ -1,12 +1,14 @@
 #include "minishell.h"
 
+
+
 t_vars	*ft_envnew(void *content)
 {
 	t_vars	*p;
 
 	p = malloc(sizeof(t_vars));
 	if (!p)
-		return (NULL);
+		exit (0);
 	p->data = (char *)content;
     p->next = NULL;
 	return (p);
@@ -64,7 +66,6 @@ t_vars *get_declare(char **env)
   char *std1;
   char *std2;
   char *content;
-int j = 0;
   while(env[i])
   {
         std1 = ft_substr(env[i],0,ft_strlenCher(env[i],'=')+1);
@@ -84,10 +85,9 @@ int j = 0;
   return (vars);
 }
 
-void ft_shell(t_vars *env, t_vars *declare)
+void ft_shell(t_vars *env, t_vars *declare,char *pathHome)
 {
-  char *text;
-    char path[100];
+    char *text;
     t_tree *root;
     t_node *head;
     
@@ -101,7 +101,7 @@ void ft_shell(t_vars *env, t_vars *declare)
     if(*text)
         add_history(text);
     head = token(text);
-    root = bulid_tree(head, env , declare);
+    root = bulid_tree(head, env , declare,pathHome);
     }
 }
 void test()
@@ -109,20 +109,24 @@ void test()
   system("leaks a.out");
 }
 
+
+
 int main(int ac ,char **argv ,char **env)
     {
 
-
       //atexit(test);
-    //rl_catch_signals = 0;
+  rrr = 0;
+  rl_catch_signals = 0;
+  signal(SIGINT, &handle_sigint); // ctrl + c
+  signal(SIGQUIT, &handle_sigint); // ctrl+|
   t_vars *list;
+  char *pathHome;
   t_vars *declare;
   list = get_env(env);
   declare = get_declare(env);
-
-  // //  signal(SIGINT, &handle_sigint); // ctrl + c
-  // //  signal(SIGQUIT, &handle_sigint); // ctrl+|
+  pathHome = get_env_arr("ZDOTDIR",list);
+  argv = NULL;
     if(ac != 1)
         return (1);
-   ft_shell(list, declare);
+   ft_shell(list, declare,pathHome);
  }
