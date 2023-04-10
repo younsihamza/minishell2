@@ -1,28 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   handle_signal.c                                    :+:      :+:    :+:   */
+/*   utils_2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/10 14:25:37 by ichouare          #+#    #+#             */
-/*   Updated: 2023/04/10 14:28:42 by ichouare         ###   ########.fr       */
+/*   Created: 2023/04/10 15:08:59 by ichouare          #+#    #+#             */
+/*   Updated: 2023/04/10 17:57:29 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	handle_sigint(int sig)
+int	is_alpha(char *str)
 {
-	if (sig == SIGINT && rrr == 0)
+	int	i;
+
+	i = 0;
+	while (str[i])
 	{
-		printf("\n");
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
+		if ((str[i] >= 'a' && str[i] <= 'z')
+			|| (str[i] >= 'A' && str[i] <= 'Z'))
+			i++;
+		else
+			return (-1);
 	}
-	else if (sig == SIGINT && rrr == 1)
-		write (1, "\n", 1);
-	else if (sig == SIGQUIT && rrr == 1)
-		write (1, "Quit\n", 5);
+	return (i);
 }

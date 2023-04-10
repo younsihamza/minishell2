@@ -1,365 +1,130 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execute.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/04/06 15:49:39 by hyounsi           #+#    #+#             */
+/*   Updated: 2023/04/06 15:49:40 by hyounsi          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-
-t_vars *ft_remove(char *str, t_vars *list)
+void	dups(char **deriction, char **heredoctable)
 {
-    t_vars *prev = NULL;
-    t_vars *cur = NULL;
-    t_vars *head = NULL;
+	t_help_var	v;
 
-    head = list;
-    prev = head;
-    cur = head;
-    if(ft_strncmp(str, prev->data, ft_strlen(str)) == 0)
-    {
-        head = head->next;
-        free(cur);
-        return head;
-
-    }
-    cur = head->next;
-    while(cur != NULL)
-    {
-        if(ft_strncmp(str, cur->data, ft_strlen(str)) == 0)
-        {
-            prev->next = cur->next;
-            free(cur);
-            return head;
-        }
-        prev = prev->next;
-        cur = cur->next;
-    }
-    return head;
+	v.heredoc = NULL;
+	v.infile = NULL;
+	v.outappend = NULL;
+	v.outfile = NULL;
+	v.i = 0;
+	while (deriction[v.i])
+	{
+		find_file(&v, deriction);
+		v.i++;
+	}
+	v.i = 0;
+	in_file(&v, heredoctable);
+	out_file(&v);
 }
 
-void ft_export(char **str, t_vars *env,  t_vars *declare)
+void	build_in_parent(t_data *var, int i, t_vars *env, t_vars *declare)
 {
-    int i = 1;
-    if(!str[i])
-   {
-        while(declare != NULL)
-        {
-            printf("%s\t", "declare -x");
-            printf("%s\n", declare->data);
-            declare = declare->next;
-            
-        }
-   }
-  while(str[i])
-  {
-    ft_modify(str[i], &declare);
-    if(ft_strchr(str[i], '=') != 0)
-        ft_modify_env(str[i], env);
-    i++;
-  } 
+	if (ft_strcmp(var->cmd[i][0], "cd") == 0)
+	{
+		if (var->op[i] == NULL)
+			cd(var->cmd[i][1], var);
+	}
+	else if (ft_strcmp(var->cmd[i][0], "exit") == 0)
+	{
+		if (var->op[0] == NULL)
+			exit(write(2, "exit\n", 5));
+	}
+	else if (ft_strcmp(var->cmd[i][0], "unset") == 0)
+	{
+		ft_unset(var->cmd[i], env);
+		ft_unset(var->cmd[i], declare);
+	}
+	else if (ft_strcmp(var->cmd[i][0], "export") == 0)
+		if (var->op[0] == NULL)
+			ft_export(var->cmd[i], env, declare);
 }
 
-
-
-void echo(char **cmd)
+void	pipe_tool(t_help_var *v, t_data *var)
 {
-    int i = 1;
-    int newline = 0;
-    if(cmd[i] != NULL)
-        if(ft_strcmp("-n",cmd[i]) == 0)
-                newline = i++;
-    while(cmd[i])
-    {
-        printf("%s",cmd[i]);
-        i++;
-        if(cmd[i] != NULL)
-            printf(" ");
-    }
-    if(newline == 0)
-        printf("\n");
-    
-}
-char **ft_env(t_vars *vars)
-{
-    int i = 0;
-    t_vars *tmp=vars;
-    char **ourenv = NULL;
-    while(vars != NULL)
-    {
-        i++;
-        vars = vars->next;
-    }
-    ourenv = ft_calloc(sizeof(char *), i +1);
-    i = 0;
-
-    while(tmp != NULL)
-    {
-        ourenv[i] = tmp->data;
-        i++;
-        tmp = tmp->next;
-    }
-    return(ourenv);   
-};
-
-void cd (char *p)
-{
-    int a;
-    a = chdir(p);
-    if(a == -1)
-        printf("(%s) No such file or directory\n",p);
+	while (var->op[v->i])
+	{
+		if (ft_strncmp(var->op[v->i]->type, "OP_PIPE", 7) == 0)
+			v->lenpipe++;
+		v->i++;
+	}
+	v->fds = malloc(sizeof(int *) * v->lenpipe);
+	if (!v->fds)
+		exit(0);
+	v->i = 0;
+	while (v->i < v->lenpipe)
+	{
+		v->fds[v->i] = malloc(sizeof(int) * 2);
+		if (!v->fds[v->i])
+			exit(0);
+		pipe(v->fds[v->i]);
+		v->i++;
+	}
+	v->i = 0;
 }
 
-char *delimet(char *l)
+void	child_parte(t_data *var, t_vars *env, t_vars *declare, t_help_var *v)
 {
-    int i = 0;
-    while(ft_strchr(" <>",l[i]) != 0)
-        i++;
-    return(l +i);
+	rrr = 1;
+	v->id = fork();
+	if (v->id == 0)
+	{
+		signal(SIGINT, SIG_DFL);
+		if (var->op[v->i] != NULL)
+			if (ft_strncmp(var->op[v->i]->type, "OP_PIPE", 7) == 0)
+				dup2(v->fds[v->pipeincrement][1], 1);
+		if (var->deriction[v->i] != NULL)
+			dups(var->deriction[v->i], var->heredoc[v->i]);
+		if (v->i - 1 >= 0 && v->pipeincrement > 0)
+			if (ft_strncmp(var->op[v->i - 1]->type, "OP_PIPE", 7) == 0)
+				dup2(v->fds[v->pipeincrement - 1][0], 0);
+		ft_close(v->fds, v->lenpipe);
+		cmd1(var->cmd[v->i], env, declare);
+		exit(0);
+	}
+	if (var->op[v->i] != NULL)
+		if (ft_strncmp(var->op[v->i]->type, "OP_PIPE", 7) == 0)
+			v->pipeincrement++;
 }
 
- void ft_close(int **fd, int len)
-    {
-        int i = 0;
-        while(i < len)
-        {
-            close(fd[i][0]);
-            close(fd[i][1]);
-            i++;
-        }
-    }
-
-void cmd_env(t_vars *env)
+void	execute(t_data *var, t_vars *env, t_vars *declare)
 {
-    while(env != NULL)
-    {
-        printf("%s\n",env->data);
-        env = env->next;
-    }
-}
-void buildInChild(char **cmd,t_vars *env,t_vars *declare)
-{
-    char *path;
-    if(ft_strcmp("echo",cmd[0]) == 0)
-        echo(cmd);
-    else if(ft_strcmp("pwd",cmd[0]) == 0)
-        {
-            path = ft_calloc(sizeof(char), 1024);
-            if(getcwd(path, 50) != NULL) 
-                printf("%s\n", path);
-            else
-                printf("%s", "error");
-        }
-    else if(ft_strcmp(cmd[0],"export") == 0)
-                ft_export(cmd,env,declare);
-    else if(ft_strcmp(cmd[0],"env") == 0)
-                cmd_env(env);
-    exit(0);
-}
+	t_help_var	v;
 
-void cmd1(char **cmd, t_vars *env,t_vars *declare)
-{
-    char *path;
-    char **split_path;
-    char **envs;
-    char *tmp;
-    char *joinCmd;
-    int i  = 0;
-
-    if(ft_strcmp(cmd[0],"echo") == 0 || ft_strcmp(cmd[0],"pwd") == 0 || ft_strcmp(cmd[0],"export") == 0 || ft_strcmp(cmd[0],"env") == 0)
-        buildInChild(cmd,env,declare);
-    envs = ft_env(env);
-    execve(cmd[0],cmd,envs);
-    path = get_env_arr("PATH",env);
-    split_path =ft_split(path,':');
-    if(split_path != NULL)
-    {
-        while(split_path[i])
-        {
-            //sigaction(SIGINT,0, NULL);
-            //signal_gen(1);
-            
-            //signal(SIGQUIT, SIG_IGN);
-            tmp = ft_strjoin(split_path[i],"/");
-            joinCmd =ft_strjoin(tmp,cmd[0]);
-            free(tmp);
-            execve(joinCmd,cmd,envs);
-            free(joinCmd);
-            i++;
-        }
-        free2d(split_path);
-    }
-    i = 0;
-    write(2,"IH : command not found\n",24);
-    free2d(cmd);
-    free(envs);
-    free(split_path);
-}
-
-void dups(char **deriction,char **heredoctable)
-{
-   //check_in_out(deriction);
-   int i = 0;
-   int fd;
-   int fd1;
-   int fd2;
-   char *inFile = NULL;
-   char *outFile = NULL;
-   char *outAppend = NULL;
-   char *heredoc =NULL;
-   while(deriction[i])
-   {
-
-        if(ft_search(deriction[i],'<'))
-        {
-            if(ft_search(deriction[i],'<') == 2)
-                heredoc = delimet(deriction[i]);
-            else
-            {
-                inFile = delimet(deriction[i]);
-                heredoc = NULL;
-                fd = open(inFile,O_RDONLY);
-                if(fd == -1)
-                    exit(write(2,"No such file or directory\n",27));
-                close(fd);
-            }
-                    
-                
-        }
-        else if(ft_search(deriction[i],'>'))
-        {
-            if(ft_search(deriction[i],'>') == 2)
-            {
-                outAppend = delimet(deriction[i]);
-            }
-            else
-            {
-                outFile = delimet(deriction[i]);
-                 close(open(outFile,O_CREAT|O_TRUNC,0644));
-                outAppend = NULL;
-            } 
-        }
-        i++;
-   }
-    i = 0;
-   if(heredoc != NULL)
-   {
-        fd1 = open("/tmp/heredoc",O_WRONLY|O_CREAT|O_TRUNC,0700);
-        while(heredoctable[i])
-            ft_putstr(heredoctable[i++],fd1);
-        close(fd1);
-        fd1 = open("/tmp/heredoc",O_RDONLY);
-        dup2(fd1,0);
-
-   }
-   else if(inFile != NULL)
-   {
-        fd1 = open(inFile,O_RDONLY,0644);
-        if(fd1 == -1)
-            exit(write(2,"No such file or directory",27));
-        dup2(fd1,0);
-        
-   }
-   if(outAppend != NULL)
-   {
-        fd2 = open(outAppend,O_WRONLY| O_CREAT|O_APPEND,0644);
-        dup2(fd2,1);
-   }
-   else if(outFile != NULL)
-   {
-        fd2 = open(outFile,O_CREAT|O_WRONLY|O_TRUNC,777);
-        if(fd2 == -1)
-            write(2,"filed\n",6);
-        dup2(fd2,1);
-   }
-}
-
-void buildInParent(t_data *var,int i,t_vars *env,  t_vars *declare)
-{
-    if(ft_strcmp(var->cmd[i][0],"cd") == 0)
-        {
-            if(var->op[i] != NULL)
-            {
-                if(ft_strncmp(var->op[i]->type,"OP_PIPE",7) != 0)
-                        cd(var->cmd[i][1]);
-            }else
-                cd(var->cmd[i][1]);
-        }
-    else if(ft_strcmp(var->cmd[i][0],"exit") == 0)
-        {
-            if(var->op[0] == NULL)
-                exit(0);
-        }
-    else if(ft_strcmp(var->cmd[i][0],"unset") == 0)
-    {
-        ft_unset(var->cmd[i],env);
-        ft_unset(var->cmd[i],declare);
-
-    }
-    else if(ft_strcmp(var->cmd[i][0],"export") == 0)
-    {
-            if(var->op[0] == NULL)
-                ft_export(var->cmd[i],env,declare);
-    }
-}
-
-void execute(t_data *var,t_vars *env,  t_vars *declare)
-{
-    int i ;
-    int id ;
-    int **fd;
-    int lenPipe;
-    int pipeIncrement = 0;
-    lenPipe = 0;
-    i = 0;
-    while(var->op[i])
-    {
-        if(ft_strncmp(var->op[i]->type,"OP_PIPE",7) == 0)
-            lenPipe++;
-        i++;
-    }
-
-    fd = malloc(sizeof(int*)*lenPipe);
-    i = 0;
-    while(i < lenPipe)
-    {
-        fd[i] = malloc(sizeof(int)* 2);
-        pipe(fd[i]);
-        i++;
-    }
-
-    i = 0;
-    while(var->cmd[i])
-    {
-        if(ft_strcmp(var->cmd[i][0],"cd") == 0 || ft_strcmp(var->cmd[i][0],"exit") == 0 ||(ft_strcmp(var->cmd[i][0],"export") == 0 &&  var->cmd[i][1] != NULL)|| ft_strcmp(var->cmd[i][0],"unset") == 0 )
-            buildInParent(var,i,env,declare);
-        else 
-        {
-            a = 2;
-            id =fork();
-            if(id == 0)
-            {
-                signal(SIGINT, SIG_DFL);
-                if(var->op[i] != NULL)
-                    if(ft_strncmp(var->op[i]->type,"OP_PIPE",7) == 0)
-                        dup2(fd[pipeIncrement][1],1);
-                    
-                if(var->deriction[i] != NULL)
-                    dups(var->deriction[i],var->heredoc[i]);
-
-                if(i - 1 >= 0 && pipeIncrement > 0)
-                    if(ft_strncmp(var->op[i - 1]->type,"OP_PIPE",7) == 0)
-                            dup2(fd[pipeIncrement - 1][0],0);
-
-                ft_close(fd, lenPipe);
-                cmd1(var->cmd[i],env,declare);
-                exit(0);
-            }
-                if(var->op[i] != NULL)
-                    if(ft_strncmp(var->op[i]->type,"OP_PIPE",7) == 0)
-                        pipeIncrement++;
-        }
-        i++;
-    }
-    while((wait(0)) != -1)
-    a = 0;
-    ft_close(fd, lenPipe);
-    i = 0;
-    while(i < lenPipe)
-        free(fd[i++]);
-    free(fd);
+	v.pipeincrement = 0;
+	v.lenpipe = 0;
+	v.i = 0;
+	pipe_tool(&v, var);
+	while (var->cmd[v.i])
+	{
+		if (ft_strcmp(var->cmd[v.i][0], "cd") == 0
+			|| ft_strcmp(var->cmd[v.i][0], "exit") == 0
+			|| (ft_strcmp(var->cmd[v.i][0], "export") == 0
+			&& var->cmd[v.i][1] != NULL)
+			|| ft_strcmp(var->cmd[v.i][0], "unset") == 0)
+			build_in_parent(var, v.i, env, declare);
+		else
+			child_parte(var, env, declare, &v);
+		v.i++;
+	}
+	while ((wait(0)) != -1)
+		ft_close(v.fds, v.lenpipe);
+	rrr = 0;
+	v.i = 0;
+	while (v.i < v.lenpipe)
+		free(v.fds[v.i++]);
+	free(v.fds);
 }

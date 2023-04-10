@@ -1,131 +1,90 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/04/10 13:27:20 by ichouare          #+#    #+#             */
+/*   Updated: 2023/04/10 14:20:21 by ichouare         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-t_vars	*ft_envnew(void *content)
+int	ft_strlencher(char *str, int a)
 {
-	t_vars	*p;
+	int	i;
 
-	p = malloc(sizeof(t_vars));
-	if (!p)
-		return (NULL);
-	p->data = (char *)content;
-    p->next = NULL;
-	return (p);
+	i = 0;
+	if (!str)
+		return (0);
+	while (str[i] != a && str[i])
+		i++;
+	return (i);
 }
-t_vars	*ft_lstlastenv(t_vars *lst)
-{
-	t_vars	*p;
 
-	p = lst ;
-	if (p == NULL)
-		return (NULL);
-	while (p->next != NULL)
+t_vars	*get_declare(char **env)
+{
+	int			i;
+	t_vars		*vars;
+	t_declare	declare;
+
+	i = 0;
+	vars = NULL;
+	while (env[i])
 	{
-		p = p->next;
+		declare.std1 = ft_substr(env[i], 0, ft_strlencher(env[i], '=') + 1);
+		declare.std2 = ft_substr(env[i], ft_strlencher(env[i], '=') + 1,
+				ft_strlen(env[i]));
+		declare.content = ft_strjoin(declare.std1, "\"");
+		declare.tmp = declare.content;
+		declare.content = ft_strjoin(declare.content, declare.std2);
+		free(declare.tmp);
+		declare.tmp = declare.content;
+		declare.content = ft_strjoin(declare.content, "\"");
+		free(declare.tmp);
+		free(declare.std2);
+		free(declare.std1);
+		add_envback(&vars, ft_envnew(declare.content));
+		i++;
 	}
-	return (p);
+	return (vars);
 }
-void	add_envback(t_vars **lst, t_vars *new)
-{
-	t_vars	*p;
 
-	p = ft_lstlastenv(*lst);
-	if (p == NULL)
+void	ft_shell(t_vars *env, t_vars *declare, char *pathHome)
+{
+	char	*text;
+	t_tree	*root;
+	t_node	*head;
+
+	while (1)
 	{
-		*lst = new;
-		return ;
+		text = readline ("minishell -> $> ");
+		if (!text)
+			break ;
+		if (*text)
+			add_history(text);
+		head = token(text);
+		root = bulid_tree(head, env, declare, pathHome);
 	}
-		p->next = new;
 }
-t_vars *get_env(char **env)
+
+int	main(int ac, char **argv, char **env)
 {
-  int i = 0;
-  t_vars *vars = NULL;
-;  while(env[i])
-  {
-    add_envback(&vars, ft_envnew(ft_strdup(env[i])));
-    i++;
-  }
-  return vars;
+	t_vars	*list;
+	char	*pathhome;
+	t_vars	*declare;
+
+	rrr = 0;
+	rl_catch_signals = 0;
+	signal (SIGINT, &handle_sigint);
+	signal (SIGQUIT, &handle_sigint);
+	list = get_env(env);
+	declare = get_declare(env);
+	pathhome = get_env_arr("ZDOTDIR", list);
+	argv = NULL;
+	if (ac != 1)
+		return (1);
+	ft_shell(list, declare, pathhome);
 }
-int ft_strlenCher(char *str,int a)
-{
-  int i  = 0 ;
-  if(!str)
-    return 0;
-    while(str[i] != a && str[i])
-        i++;
-    return(i);
-}
-t_vars *get_declare(char **env)
-{
-  int i = 0;
-  t_vars *vars = NULL;
-  char *tmp;
-  char *std1;
-  char *std2;
-  char *content;
-
-  while(env[i])
-  {
-        std1 = ft_substr(env[i],0,ft_strlenCher(env[i],'=')+1);
-        std2 = ft_substr(env[i],ft_strlenCher(env[i],'=')+1,ft_strlen(env[i]));
-        content = ft_strjoin(std1, "\"");
-        tmp= content;
-        content = ft_strjoin(content, std2);
-        free(tmp);
-        tmp= content;
-        content = ft_strjoin(content, "\"");
-        free(tmp);
-        free(std2);
-        free(std1);
-        add_envback(&vars, ft_envnew(content));
-        i++;
-  }
-  return (vars);
-}
-
-void ft_shell(t_vars *env, t_vars *declare)
-{
-  char *text;
-    t_tree *root;
-    t_node *head;
-    
-
-  while(1)
-    {
-      signal_gen(1);
-      text = readline("minishell -> $> ");
-      if(!text)
-        break;
-    if(*text)
-    {
-        add_history(text);
-    }
-    a = 1;
-    head = token(text);
-    root = bulid_tree(head, env , declare);
-    }
-}
-
-
-int main(int ac ,char **argv ,char **env)
-    {
-
-
-      //atexit(test);
-  rl_catch_signals = 0;
-  a = 0;
-  t_vars *list;
-  t_vars *declare;
-  if(!env)
-    return(write(2,"no env\n",7));
-  argv = NULL;
-  list = get_env(env);
-  declare = get_declare(env);
-
-  signal(SIGINT, &handle_sigint); // ctrl + c
-  signal(SIGQUIT, &handle_sigint); // ctrl+|
-    if(ac != 1)
-        return (1);
-   ft_shell(list, declare);
- }

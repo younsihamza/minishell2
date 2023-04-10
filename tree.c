@@ -96,7 +96,8 @@ void  ft_inorder(t_tree *root,t_vars *env)
      }
     ft_inorder(root->left,env);
  }
- t_node ** edit_rot(t_node **rot,int len)
+
+t_node ** edit_rot(t_node **rot,int len)
 {
     int i =0;
     int j = 0;
@@ -116,9 +117,10 @@ void  ft_inorder(t_tree *root,t_vars *env)
                         hold = rot[i]->data;
                         rot[i]->data = ft_strjoin(rot[i]->data,rot[j]->data);
                         free(hold);
-                    }else
+                    }
+					else
                         break;
-                        j++;
+                    j++;
                 }
         }
         list[cort++] = rot[i];
@@ -126,46 +128,48 @@ void  ft_inorder(t_tree *root,t_vars *env)
     }
     return (list);
 }
-int check_error_parser(t_tree **q,int len)
-{
-    int  i; 
 
-    i = 0;
-    while(i < len)
-    {
-        if(ft_strncmp(q[i]->tokn->type ,"OP_PIPE",8) == 0 )
-            if(q[i]->right == NULL ||  q[i]->left == NULL)
-                return(write(2,"ERROR parser\n",13));
-        if(ft_strncmp(q[i]->tokn->type ,"OP_FILE",8) == 0)
-        {
-           if(q[i]->left == NULL)
-                return(write(2,"ERROR parser\n",13));
-        }
-        i++;
-    }
-    return(0);
-}
-void makeStack(t_tree *root,t_node **rot,int *i)
+int	check_error_parser(t_tree **q,int len)
 {
-    if(root == NULL)
-        return;
-    makeStack(root->right,rot,i);
-//    printf("type == %s\n",root->tokn->type);
-//    printf("type == %d\n",root->tokn->space);
+	int	i;
+
+	i = 0;
+	while (i < len)
+	{
+		if (ft_strncmp(q[i]->tokn->type, "OP_PIPE", 8) == 0)
+			if (q[i]->right == NULL || q[i]->left == NULL)
+				return (write(2, "ERROR parser\n", 13));
+		if (ft_strncmp(q[i]->tokn->type, "OP_FILE", 8) == 0)
+		{
+			if (q[i]->left == NULL)
+				return (write(2, "ERROR parser\n", 13));
+		}
+		i++;
+	}
+	return (0);
+}
+
+void	makestack(t_tree *root, t_node **rot, int *i)
+{
+    if (root == NULL)
+        return ;
+    makestack(root->right, rot, i);
     rot[*i] = root->tokn;
     *i+= 1;
-    makeStack(root->left,rot,i);
-//    printf("data == %s\n",root->tokn->data);
+    makestack(root->left, rot, i);
 }
-void free_tree(t_tree *root)
+
+void	free_tree(t_tree *root)
 {
-    if(root == NULL)
+    if (root == NULL)
         return;
     free_tree(root->right);
     free_tree(root->left);
-    free(root);
+    free (root);
 }
-t_tree *bulid_tree(t_node *head, t_vars *env,  t_vars *declare)
+
+
+t_tree *bulid_tree(t_node *head, t_vars *env,  t_vars *declare,char *pathHome)
 {
     t_node *ptr = head;
     t_tree *root;
@@ -195,6 +199,8 @@ t_tree *bulid_tree(t_node *head, t_vars *env,  t_vars *declare)
     rer = 0;
     curent = 0;      
     queue = malloc(sizeof(t_tree*)*len);
+    if(!queue)
+        exit(0);
     queue[rer] = root;
     rer++;
     while(curent != rer)
@@ -224,9 +230,9 @@ t_tree *bulid_tree(t_node *head, t_vars *env,  t_vars *declare)
     t_node **rot = ft_calloc(sizeof(t_node*) , len + 1);
     t_node **list;
     ft_inorder(root,env);
-    makeStack(root,rot ,&a);
+    makestack(root,rot ,&a);
     list = edit_rot(rot,len);
-    transform_cmd(list,env,declare);
+    transform_cmd(list,env,declare,pathHome);
     free_tree(root);
     free(list);
     while(head != NULL)

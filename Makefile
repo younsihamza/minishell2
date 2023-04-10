@@ -1,14 +1,3 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/03/29 17:16:48 by ichouare          #+#    #+#              #
-#    Updated: 2023/04/03 14:54:42 by hyounsi          ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
 
 NAME = minishell
 
@@ -18,12 +7,13 @@ FLAG = -Wall -Wextra  -Werror
 
 HEADER = ./minishell.h
 
-FLAGS = -I/Users/$(USER)/Desktop/homebrew/opt/readline/include
+FLAGS = -I/Users/$(USER)/homebrew/opt/readline/include
 
 # FLAGD = -L/Users/$(USER)/homebrew/opt/readline/lib
 
 
-SRCS =  main.c tree.c transform_cmd.c tools.c lexeer.c heredoc.c ft_strdup.c ft_split.c ft_putstr.c  execute.c create_list.c ft_unset.c  handle_signal.c\
+SRCS =  main.c tree.c transform_cmd.c tools.c lexeer.c transforn_help.c heredoc.c ft_strdup.c ft_split.c ft_putstr.c  execute.c create_list.c ft_unset.c \
+  		handle_signal.c buildin.c execute_1.c execute_2.c utils_1.c utils_2.c tools_1.c tools_2.c 
 
 
 OBJS = $(SRCS:.c=.o)
@@ -33,7 +23,7 @@ all: $(NAME)
 
 
 $(NAME): $(OBJS) 
-	$(CC) $(FLAG)  $(FLAGS) $(FLAGD) $^ -o $@  -lreadline  -L/Users/$(USER)/Desktop/homebrew/opt/readline/lib
+	$(CC) $(FLAG)  $(FLAGS) $(FLAGD) $^ -o $@  -lreadline  -L/Users/$(USER)/homebrew/opt/readline/lib
  
 	
 %.o : %.c  $(HEADER)
