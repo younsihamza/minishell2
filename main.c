@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 13:27:20 by ichouare          #+#    #+#             */
-/*   Updated: 2023/04/10 14:20:21 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/04/11 16:41:16 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	main(int ac, char **argv, char **env)
 	char	*pathhome;
 	t_vars	*declare;
 
-	rrr = 0;
+	g_s = 0;
 	rl_catch_signals = 0;
 	signal (SIGINT, &handle_sigint);
 	signal (SIGQUIT, &handle_sigint);

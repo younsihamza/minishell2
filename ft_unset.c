@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 14:29:28 by ichouare          #+#    #+#             */
-/*   Updated: 2023/04/10 15:54:40 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/04/11 17:20:55 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,28 +59,23 @@ void	ft_add_new(t_vars **declare, char *str, char *buffer1)
 	add_envback(declare, ft_envnew(buffer1));
 }
 
-void	ft_unset(char **args, t_vars *vars)
+void ft_remove(char **args, int *i, t_vars *vars)
 {
 	t_vars	*cur;
 	t_vars	*prev;
 	t_vars	*list;
-	int		i;
 
-	if (args[1] == NULL || vars == NULL)
-		return ;
-	i = 1;
-	//ft_remove(args, i);
-	while (args[i])
+	while (args[*i])
 	{
 		cur = vars;
 		list = cur;
 		prev = cur;
 		while (cur != NULL)
 		{
-			if (is_alpha(args[i]) == -1)
+			if (is_alpha(args[*i]) == -1)
 			{
-				printf("unset: `%s': not a valid identifier\n", args[i]);
-				break ;
+				printf("unset: `%s': not a valid identifier\n", args[*i]);
+				break;
 			}
 			if (ft_strncmp(cur->data, args[1],
 					ft_strlencher(cur->data, '=')) == 0)
@@ -94,8 +89,17 @@ void	ft_unset(char **args, t_vars *vars)
 				prev = cur;
 			cur = cur->next;
 		}
-		i++;
+		*i += 1;
 	}
+}
+void	ft_unset(char **args, t_vars *vars)
+{
+	int		i;
+
+	if (args[1] == NULL || vars == NULL)
+		return ;
+	i = 1;
+	ft_remove(args, &i, vars);
 }
 
 void	ft_modify(char *str, t_vars **declare)

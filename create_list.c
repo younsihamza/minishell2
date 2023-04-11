@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   create_list.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/04/11 16:55:59 by ichouare          #+#    #+#             */
+/*   Updated: 2023/04/11 16:56:57 by ichouare         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 t_node	*ft_lstlast(t_node *lst)
@@ -13,6 +25,7 @@ t_node	*ft_lstlast(t_node *lst)
 	}
 	return (p);
 }
+
 void	add_back(t_node **lst, t_node *new)
 {
 	t_node	*p;
@@ -25,6 +38,7 @@ void	add_back(t_node **lst, t_node *new)
 	}
 		p -> next = new;
 }
+
 t_node	*ft_lstnew(void *content, char *type, int space)
 {
 	t_node	*p;
@@ -33,8 +47,8 @@ t_node	*ft_lstnew(void *content, char *type, int space)
 	if (!p)
 		exit (0);
 	p -> data = (char *)content;
-    p -> type = type;
-	p -> space  = space;
+	p -> type = type;
+	p -> space = space;
 	p -> next = NULL;
 	return (p);
 }

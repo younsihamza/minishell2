@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 15:49:39 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/04/06 15:49:40 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/04/11 16:45:16 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	pipe_tool(t_help_var *v, t_data *var)
 
 void	child_parte(t_data *var, t_vars *env, t_vars *declare, t_help_var *v)
 {
-	rrr = 1;
+	g_s = 1;
 	v->id = fork();
 	if (v->id == 0)
 	{
@@ -122,7 +122,7 @@ void	execute(t_data *var, t_vars *env, t_vars *declare)
 	}
 	while ((wait(0)) != -1)
 		ft_close(v.fds, v.lenpipe);
-	rrr = 0;
+	g_s = 0;
 	v.i = 0;
 	while (v.i < v.lenpipe)
 		free(v.fds[v.i++]);
