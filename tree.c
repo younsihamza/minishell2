@@ -6,71 +6,59 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 14:58:27 by ichouare          #+#    #+#             */
-/*   Updated: 2023/04/11 17:04:30 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/04/12 14:50:40 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_expand(t_tree *root, t_vars *env)
+int	join_node(t_node **root, int *i, char *hold)
 {
-	t_node	*str;
-	t_node	*ptr;
-	char	*tmp;
-	char	*tokn;
+	int		j;
 
-	str = NULL;
-	ptr = NULL;
-	tmp = NULL;
-	if (strcmp(root->tokn->type, "OP_VR") == 0)
-		expand_one(&root->tokn->data, tmp, env);
-	else if (strcmp(root->tokn->type, "DOUBLE") == 0)
+	j = *i + 1;
+	while (root[j] != NULL)
 	{
-		ptr = expand_two(&root->tokn->data, &str, env);
-		tokn = ft_calloc(sizeof(char), 2);
-		while (ptr != NULL)
+		if (ft_strncmp(root[j]->type, "OP_PIPE", 7) != 0
+			&& root[j]->space == 0
+			&& ft_strncmp(root[j]->type, "OP_FILE", 7) != 0)
 		{
-			if (ptr->data != NULL)
-				join_data(&ptr->data, tmp, &tokn);
-			str = ptr;
-			ptr = ptr->next;
-			free(str);
+			hold = root[*i]->data;
+			root[*i]->data = ft_strjoin(root[*i]->data, root[j]->data);
+			free(hold);
 		}
-		free(root->tokn->data);
-		root->tokn->data = tokn;
+		else
+			break ;
+		j++;
 	}
+	return (j);
 }
-t_node **edit_rot(t_node **root, int len)
-{
-    int i = 0;
-    int j = 0;
-    char *hold = NULL;
-    int cort = 0;
-    t_node **list = ft_calloc(sizeof(t_node*),len + 1);
 
-    while(root[i] != NULL)
-    {
-        j = i + 1;
-        if(ft_strncmp(root[i]->type,"OP_PIPE",7) != 0 &&ft_strncmp(root[i]->type,"OP_FILE",7) != 0)
-        {
-            while(root[j] != NULL)
-                {
-                    if(ft_strncmp(root[j]->type,"OP_PIPE",7) != 0 && root[j]->space == 0 
-					&& ft_strncmp(root[j]->type,"OP_FILE",7) != 0 )
-                    {
-                        hold = root[i]->data;
-                        root[i]->data = ft_strjoin(root[i]->data,root[j]->data);
-                        free(hold);
-                    }
-					else
-                        break;
-                    j++;
-                }
-        }
-        list[cort++] = root[i];
-        i = j;
-    }
-    return (list);
+t_node	**edit_rot(t_node **root, int len)
+{
+	int		i;
+	int		j;
+	char	*hold;
+	int		cort;
+	t_node	**list;
+
+	i = 0;
+	j = 0;
+	hold = NULL;
+	cort = 0;
+	list = ft_calloc(sizeof (t_node *), len + 1);
+	while (root[i] != NULL)
+	{
+		j = i + 1;
+		if (ft_strncmp(root[i]->type, "OP_PIPE", 7) != 0
+			&& ft_strncmp(root[i]->type, "OP_FILE", 7) != 0)
+		{
+			j = join_node(root, &i, hold);
+		}
+		list[cort++] = root[i];
+		i = j;
+	}
+	return (list);
 }
 
 t_tree	*ft_insert(t_node **head)
@@ -79,10 +67,10 @@ t_tree	*ft_insert(t_node **head)
 	t_tree	*root;
 
 	ptr = *head;
-	root= NULL;
+	root = NULL;
 	while (ptr != NULL)
 	{
-		if (ft_strncmp(ptr->type, "OP_PIPE", 7) == 0 )
+		if (ft_strncmp(ptr->type, "OP_PIPE", 7) == 0)
 			root = insert(root, ptr);
 		ptr = ptr->next;
 	}
@@ -95,23 +83,23 @@ t_tree	*ft_insert(t_node **head)
 	return (root);
 }
 
-void	ft_func(t_tree *root, int len, t_vars *env, t_vars *declare, char *pathHome)
+void	ft_func(t_tree *root, int len, t_env *envir, char *pathHome)
 {
 	t_node	**rot;
 	int		a;
 	t_node	**list;
 
 	a = 0;
-	rot = ft_calloc(sizeof(t_node*), len + 1);
-	ft_inorder(root, env);
+	rot = ft_calloc(sizeof(t_node *), len + 1);
+	ft_inorder(root, envir->envv);
 	makestack(root, rot, &a);
 	list = edit_rot(rot, len);
-	transform_cmd(list, env, declare, pathHome);
+	transform_cmd(list, envir->envv, envir->declare, pathHome);
 	free(rot);
 	free(list);
 }
 
-t_tree	*bulid_tree(t_node *head, t_vars *env, t_vars *declare, char *pathHome)
+t_tree	*bulid_tree(t_node *head, t_env *envir, char *pathHome)
 {
 	t_node	*ptr;
 	t_tree	*root;
@@ -133,7 +121,7 @@ t_tree	*bulid_tree(t_node *head, t_vars *env, t_vars *declare, char *pathHome)
 		return (NULL);
 	}
 	free(queue);
-	ft_func(root, len, env, declare, pathHome);
+	ft_func(root, len, envir, pathHome);
 	free_tree(root);
 	free_head(head);
 	return (NULL);

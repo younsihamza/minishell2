@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 17:39:19 by ichouare          #+#    #+#             */
-/*   Updated: 2023/04/10 17:48:52 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/04/12 15:09:49 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ char	*get_env_arr(char *find, t_vars *env)
 	ptr = env;
 	while (ptr != NULL)
 	{
-		if (ft_strncmp(ptr->data, find, ft_strlen(find)) == 0)
+		if (ft_strncmp(ptr->data, find, ft_strlencher(ptr->data, '=')) == 0)
 			return (ptr->data + ft_strlen(find) + 1);
 		ptr = ptr->next;
 	}

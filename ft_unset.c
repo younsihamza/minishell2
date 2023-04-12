@@ -6,92 +6,37 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 14:29:28 by ichouare          #+#    #+#             */
-/*   Updated: 2023/04/11 17:20:55 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/04/12 15:26:17 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*ft_content(char *str)
-{
-	char	*tmp;
-	char	*buffer1;
-	char	*buffer2;
-
-	tmp = NULL;
-	buffer1 = NULL;
-	buffer2 = NULL;
-	buffer1 = ft_substr(str, 0, ft_strlencher(str, '=') + 1);
-	buffer2 = ft_substr(str, ft_strlencher(str, '=') + 1, ft_strlen(str));
-	tmp = buffer2;
-	buffer2 = ft_strjoin("\"", buffer2);
-	free(tmp);
-	tmp = buffer2;
-	buffer2 = ft_strjoin(buffer2, "\"");
-	free(tmp);
-	tmp = buffer1;
-	buffer1 = ft_strjoin(buffer1, buffer2);
-	free(buffer2);
-	free(tmp);
-	return (buffer1);
-}
-
-void	ft_add_new(t_vars **declare, char *str, char *buffer1)
-{
-	t_vars	*cur;
-
-	cur = *declare;
-	while (cur != NULL)
-	{
-		if (ft_strncmp(cur->data, str, ft_strlencher(cur->data, '=')) == 0)
-		{
-			if (ft_strchr(str, '=') == 0)
-			{
-				free(buffer1);
-				return ;
-			}
-			free(cur->data);
-			cur->data = buffer1;
-			return ;
-		}
-	cur = cur->next;
-	}
-	add_envback(declare, ft_envnew(buffer1));
-}
-
-void ft_remove(char **args, int *i, t_vars *vars)
+void	ft_remove(char **args, int *i, t_vars *vars)
 {
 	t_vars	*cur;
 	t_vars	*prev;
 	t_vars	*list;
 
-	while (args[*i])
+	cur = vars;
+	list = cur;
+	prev = cur;
+	while (cur != NULL)
 	{
-		cur = vars;
-		list = cur;
-		prev = cur;
-		while (cur != NULL)
+		if (ft_strncmp(cur->data, args[*i],
+				ft_strlencher(cur->data, '=')) == 0)
 		{
-			if (is_alpha(args[*i]) == -1)
-			{
-				printf("unset: `%s': not a valid identifier\n", args[*i]);
-				break;
-			}
-			if (ft_strncmp(cur->data, args[1],
-					ft_strlencher(cur->data, '=')) == 0)
-			{
-				list = cur;
-				prev->next = cur->next;
-				free(list->data);
-				free(list);
-			}
-			else
-				prev = cur;
-			cur = cur->next;
+			list = cur;
+			prev->next = cur->next;
+			free(list->data);
+			free(list);
 		}
-		*i += 1;
+		else
+			prev = cur;
+		cur = cur->next;
 	}
 }
+
 void	ft_unset(char **args, t_vars *vars)
 {
 	int		i;
@@ -99,7 +44,29 @@ void	ft_unset(char **args, t_vars *vars)
 	if (args[1] == NULL || vars == NULL)
 		return ;
 	i = 1;
-	ft_remove(args, &i, vars);
+	while (args[i])
+	{
+		if (is_alpha(args[i]) == -1)
+			printf("unset: `%s': not a valid identifier\n", args[i]);
+		else
+			ft_remove(args, &i, vars);
+		i++;
+	}
+}
+
+void	ft_unset_declare(char **args, t_vars *vars)
+{
+	int		i;
+
+	if (args[1] == NULL || vars == NULL)
+		return ;
+	i = 1;
+	while (args[i])
+	{
+		if (is_alpha(args[i]) != -1)
+			ft_remove(args, &i, vars);
+		i++;
+	}
 }
 
 void	ft_modify(char *str, t_vars **declare)

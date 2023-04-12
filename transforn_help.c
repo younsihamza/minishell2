@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   transforn_help.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 22:25:31 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/04/06 22:26:57 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/04/12 14:27:55 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	cmd_help(t_help_var *v, t_node **rot)
 {
+	v->r = 0;
 	if (ft_strcmp(rot[v->i]->type, "OP_VR") == 0)
 	{
 		v->splitvar = ft_split(rot[v->i]->data, ' ');

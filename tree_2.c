@@ -6,13 +6,13 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 16:48:16 by ichouare          #+#    #+#             */
-/*   Updated: 2023/04/11 16:50:55 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/04/12 14:47:52 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_tree **make_queue(int len, t_tree *root)
+t_tree	**make_queue(int len, t_tree *root)
 {
 	int		rear;
 	int		front;
@@ -20,7 +20,7 @@ t_tree **make_queue(int len, t_tree *root)
 
 	rear = 0;
 	front = 0;
-	queue = malloc(sizeof(t_tree*) * len);
+	queue = malloc(sizeof(t_tree *) * len);
 	if (!queue)
 		exit(0);
 	queue[rear] = root;
@@ -38,7 +38,7 @@ t_tree **make_queue(int len, t_tree *root)
 
 void	free_head(t_node *head)
 {
-	t_node *ptr;
+	t_node	*ptr;
 
 	ptr = NULL;
 	while (head != NULL)

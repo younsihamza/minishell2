@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 16:46:22 by ichouare          #+#    #+#             */
-/*   Updated: 2023/04/11 16:47:43 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/04/12 14:43:03 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ void	token_sone(t_lexer *lex, char *text, t_node **list)
 	if (text[lex->i] == '$')
 	{
 		lex->j = lex->i + 1;
-		while (ft_strchr("$", text[lex->j]) == 0 && text[lex->j])
+		while (ft_strchr(" $", text[lex->j]) == 0 && text[lex->j])
 				lex->j++;
-		if (lex->j != lex->i +1)
+		if (lex->j != lex->i + 1)
 			add_back(list, ft_lstnew(ft_substr(text,
 						lex->i, lex->j - lex->i), "OP_VR", lex->spaces));
 		else
@@ -36,6 +36,8 @@ t_node	*simpletoken(char *text)
 	t_node	*list;
 
 	list = NULL;
+	lex.i = 0;
+	lex.j = 0;
 	while (text[lex.i])
 	{
 		token_sone(&lex, text, &list);

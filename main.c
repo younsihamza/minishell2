@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 13:27:20 by ichouare          #+#    #+#             */
-/*   Updated: 2023/04/11 16:41:16 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/04/12 12:36:03 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ t_vars	*get_declare(char **env)
 	return (vars);
 }
 
-void	ft_shell(t_vars *env, t_vars *declare, char *pathHome)
+void	ft_shell(t_env *envir, char *pathHome)
 {
 	char	*text;
 	t_tree	*root;
@@ -66,25 +66,24 @@ void	ft_shell(t_vars *env, t_vars *declare, char *pathHome)
 		if (*text)
 			add_history(text);
 		head = token(text);
-		root = bulid_tree(head, env, declare, pathHome);
+		root = bulid_tree(head, envir, pathHome);
 	}
 }
 
 int	main(int ac, char **argv, char **env)
 {
-	t_vars	*list;
 	char	*pathhome;
-	t_vars	*declare;
+	t_env	envir;
 
 	g_s = 0;
 	rl_catch_signals = 0;
 	signal (SIGINT, &handle_sigint);
 	signal (SIGQUIT, &handle_sigint);
-	list = get_env(env);
-	declare = get_declare(env);
-	pathhome = get_env_arr("ZDOTDIR", list);
+	envir.envv = get_env(env);
+	envir.declare = get_declare(env);
+	pathhome = get_env_arr("ZDOTDIR", envir.envv);
 	argv = NULL;
 	if (ac != 1)
 		return (1);
-	ft_shell(list, declare, pathhome);
+	ft_shell(&envir, pathhome);
 }

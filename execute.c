@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 15:49:39 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/04/11 16:45:16 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/04/12 15:19:36 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	build_in_parent(t_data *var, int i, t_vars *env, t_vars *declare)
 	else if (ft_strcmp(var->cmd[i][0], "unset") == 0)
 	{
 		ft_unset(var->cmd[i], env);
-		ft_unset(var->cmd[i], declare);
+		ft_unset_declare(var->cmd[i], declare);
 	}
 	else if (ft_strcmp(var->cmd[i][0], "export") == 0)
 		if (var->op[0] == NULL)

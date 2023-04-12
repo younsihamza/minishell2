@@ -13,7 +13,7 @@ FLAGS = -I/Users/$(USER)/homebrew/opt/readline/include
 
 
 SRCS =  main.c tree.c transform_cmd.c tools.c lexeer.c transforn_help.c heredoc.c ft_strdup.c ft_split.c ft_putstr.c  execute.c create_list.c ft_unset.c \
-  		handle_signal.c buildin.c execute_1.c execute_2.c utils_1.c utils_2.c tools_1.c tools_2.c  lexeer_1.c  tree_1.c tree_2.c tree_3.c\
+  		handle_signal.c buildin.c execute_1.c execute_2.c utils_1.c utils_2.c tools_1.c tools_2.c  lexeer_1.c  tree_1.c tree_2.c tree_3.c ft_unset_1.c\
  
 
 OBJS = $(SRCS:.c=.o)
