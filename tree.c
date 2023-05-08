@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tree.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 14:58:27 by ichouare          #+#    #+#             */
-/*   Updated: 2023/04/12 14:50:40 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/08 13:11:15 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,8 @@ void	ft_func(t_tree *root, int len, t_env *envir, char *pathHome)
 
 	a = 0;
 	rot = ft_calloc(sizeof(t_node *), len + 1);
-	ft_inorder(root, envir->envv);
 	makestack(root, rot, &a);
+	ft_inorder(rot, envir->envv);
 	list = edit_rot(rot, len);
 	transform_cmd(list, envir->envv, envir->declare, pathHome);
 	free(rot);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 16:05:38 by ichouare          #+#    #+#             */
-/*   Updated: 2023/04/12 15:31:21 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/08 13:22:04 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ int		ft_strchr(char *str, char a);
 t_tree	*create_node_tree(t_node *tokn);
 t_tree	*insert(t_tree *root, t_node *ptr);
 int		len_list(t_node *head);
+
 void	*ft_calloc(size_t nitems, size_t size);
 int		check_error_parser(t_tree **q, int len);
 t_node	*token(char *text);
@@ -170,10 +171,11 @@ t_node	*simpletoken(char *text);
 void	expand_one(char **data, char *tmp, t_vars *env);
 t_node	*expand_two(char **data, t_node **str, t_vars *env);
 void	join_data(char **data, char *tmp, char **tokn);
-void	ft_inorder(t_tree *root, t_vars *env);
+void	ft_inorder(t_node **rot, t_vars *env);
 void	ft_func(t_tree *root, int len, t_env *envir, char *pathHome);
-void	ft_expand(t_tree *root, t_vars *env);
-void	ft_expand(t_tree *root, t_vars *env);
+void	ft_expand(t_node *rot, t_vars *env);
 void	ft_add_new(t_vars **declare, char *str, char *buffer1);
 char	*ft_content(char *str);
+void	free_head(t_node *head);
+int		check_error(int i, char *text, t_node **head);
 #endif // !

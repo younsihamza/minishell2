@@ -6,8 +6,8 @@
       "type": "lldb",
       "request": "launch",
       "args": [],
-      "cwd": "/Users/hyounsi/Desktop/first",
-      "program": "/Users/hyounsi/Desktop/first/build/Debug/outDebug"
+      "cwd": "/Users/hyounsi/Desktop/minishell-or",
+      "program": "/Users/hyounsi/Desktop/minishell-or/build/Debug/outDebug"
     }
   ]
 }
