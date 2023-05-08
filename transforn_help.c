@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   transforn_help.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 22:25:31 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/04/12 14:27:55 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/08 18:13:19 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,18 +49,15 @@ void	convert_cmd(t_data *d, t_help_var *v, t_node **rot)
 				if (ft_strcmp(rot[v->i]->type, "OP_FILE") != 0)
 					cmd_help(v, rot);
 				else
-				v->i++;
+					v->i++;
 			}
 			else
 				break ;
 			v->i++;
 		}
-		if (v->command != NULL)
-		{
-			d->cmd[v->j] = v->command;
-			v->command = NULL;
-			v->j++;
-		}
+				d->cmd[v->j] = v->command;
+				v->command = NULL;
+				v->j++;
 		if (rot[v->i] != NULL)
 			v->i++;
 	}

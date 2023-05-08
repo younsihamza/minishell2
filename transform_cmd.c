@@ -6,7 +6,7 @@
 /*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 15:59:57 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/04/06 22:40:13 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/08 18:13:01 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,14 @@ void	transform_cmd(t_node **rot, t_vars *env,
 	convert_deriction(&v, rot, &d);
 	d.heredoc = checkherecode(d.deriction, v.len + 2);
 	d.pathhome = pathhome;
+	v.i = 0;
+	while (v.i <= v.len)
+	{
+		if (d.deriction[v.i] != NULL)
+			dups(d.deriction[v.i], d.heredoc[v.i], 0);
+		v.i++;
+	}
+	v.i = 0;
 	ft_tolower(d.cmd);
 	execute(&d, env, declare);
 	kill_leaks(&v, &d);

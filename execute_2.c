@@ -6,7 +6,7 @@
 /*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 15:49:28 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/04/06 15:49:29 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/08 18:53:09 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	in_file(t_help_var *v, char **heredoctable)
 	}
 }
 
-void	out_file(t_help_var *v)
+int	out_file(t_help_var *v)
 {
 	if (v->outappend != NULL)
 	{
@@ -74,5 +74,18 @@ void	out_file(t_help_var *v)
 		if (v->fd2 == -1)
 			write(2, "filed\n", 6);
 		dup2(v->fd2, 1);
+		close(v->fd2);
 	}
+	return (v->fd2);
+}
+
+void	help_me(t_help_var *v)
+{
+	while ((wait(0)) != -1)
+		ft_close(v->fds, v->lenpipe);
+	g_s = 0;
+	v->i = 0;
+	while (v->i < v->lenpipe)
+		free(v->fds[v->i++]);
+	free(v->fds);
 }

@@ -6,7 +6,7 @@
 /*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 16:05:38 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/08 13:22:04 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/08 18:52:58 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,6 @@ int		ft_strchr(char *str, char a);
 t_tree	*create_node_tree(t_node *tokn);
 t_tree	*insert(t_tree *root, t_node *ptr);
 int		len_list(t_node *head);
-
 void	*ft_calloc(size_t nitems, size_t size);
 int		check_error_parser(t_tree **q, int len);
 t_node	*token(char *text);
@@ -155,7 +154,7 @@ void	ft_unset_declare(char **args, t_vars *vars);
 t_vars	*remove_elemet(char *str, t_vars **vars);
 void	ft_modify(char *str, t_vars **declare);
 void	ft_modify_env(char *str, t_vars *env);
-void	out_file(t_help_var *v);
+int		out_file(t_help_var *v);
 void	ft_tolower(char ***cmd);
 void	cmd_help(t_help_var *v, t_node **rot);
 void	convert_cmd(t_data *d, t_help_var *v, t_node **rot);
@@ -178,4 +177,6 @@ void	ft_add_new(t_vars **declare, char *str, char *buffer1);
 char	*ft_content(char *str);
 void	free_head(t_node *head);
 int		check_error(int i, char *text, t_node **head);
+void	dups(char **deriction, char **heredoctable, int test);
+void	help_me(t_help_var *v);
 #endif // !

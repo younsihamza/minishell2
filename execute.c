@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 15:49:39 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/04/12 15:19:36 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/08 18:52:33 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	dups(char **deriction, char **heredoctable)
+void	dups(char **deriction, char **heredoctable, int test)
 {
 	t_help_var	v;
 
@@ -26,9 +26,12 @@ void	dups(char **deriction, char **heredoctable)
 		find_file(&v, deriction);
 		v.i++;
 	}
-	v.i = 0;
-	in_file(&v, heredoctable);
-	out_file(&v);
+	if (test == 1)
+	{
+		v.i = 0;
+		out_file(&v);
+		in_file(&v, heredoctable);
+	}
 }
 
 void	build_in_parent(t_data *var, int i, t_vars *env, t_vars *declare)
@@ -87,7 +90,7 @@ void	child_parte(t_data *var, t_vars *env, t_vars *declare, t_help_var *v)
 			if (ft_strncmp(var->op[v->i]->type, "OP_PIPE", 7) == 0)
 				dup2(v->fds[v->pipeincrement][1], 1);
 		if (var->deriction[v->i] != NULL)
-			dups(var->deriction[v->i], var->heredoc[v->i]);
+			dups(var->deriction[v->i], var->heredoc[v->i], 1);
 		if (v->i - 1 >= 0 && v->pipeincrement > 0)
 			if (ft_strncmp(var->op[v->i - 1]->type, "OP_PIPE", 7) == 0)
 				dup2(v->fds[v->pipeincrement - 1][0], 0);
@@ -108,23 +111,20 @@ void	execute(t_data *var, t_vars *env, t_vars *declare)
 	v.lenpipe = 0;
 	v.i = 0;
 	pipe_tool(&v, var);
-	while (var->cmd[v.i])
+	while (v.i <= v.lenpipe)
 	{
-		if (ft_strcmp(var->cmd[v.i][0], "cd") == 0
-			|| ft_strcmp(var->cmd[v.i][0], "exit") == 0
-			|| (ft_strcmp(var->cmd[v.i][0], "export") == 0
-			&& var->cmd[v.i][1] != NULL)
-			|| ft_strcmp(var->cmd[v.i][0], "unset") == 0)
-			build_in_parent(var, v.i, env, declare);
-		else
-			child_parte(var, env, declare, &v);
+		if (var->cmd[v.i] != NULL)
+		{
+			if (ft_strcmp(var->cmd[v.i][0], "cd") == 0
+				|| ft_strcmp(var->cmd[v.i][0], "exit") == 0
+				|| (ft_strcmp(var->cmd[v.i][0], "export") == 0
+				&& var->cmd[v.i][1] != NULL)
+				|| ft_strcmp(var->cmd[v.i][0], "unset") == 0)
+				build_in_parent(var, v.i, env, declare);
+			else
+				child_parte(var, env, declare, &v);
+		}
 		v.i++;
 	}
-	while ((wait(0)) != -1)
-		ft_close(v.fds, v.lenpipe);
-	g_s = 0;
-	v.i = 0;
-	while (v.i < v.lenpipe)
-		free(v.fds[v.i++]);
-	free(v.fds);
+	help_me(&v);
 }
