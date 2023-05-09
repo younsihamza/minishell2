@@ -6,7 +6,7 @@
 /*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 14:58:27 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/08 13:11:15 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/09 18:52:30 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,18 @@ int	join_node(t_node **root, int *i, char *hold)
 		{
 			hold = root[*i]->data;
 			root[*i]->data = ft_strjoin(root[*i]->data, root[j]->data);
+			if(ft_strcmp(root[j]->type, "DOUBLE") == 0 || ft_strcmp(root[*i]->type, "DOUBLE") == 0 )
+				root[*i]->status = 1;
 			free(hold);
 		}
 		else
+		{
+			if(ft_strcmp(root[*i]->type, "DOUBLE") == 0)
+				root[*i]->status = 1;
+			else
+				root[*i]->status = 0;
 			break ;
+		}
 		j++;
 	}
 	return (j);

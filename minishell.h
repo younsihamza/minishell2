@@ -6,7 +6,7 @@
 /*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 16:05:38 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/08 18:52:58 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/09 18:30:50 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ typedef struct node
 	char		*data;
 	int			i;
 	int			space;
+	int			status;
 	char		*type;
 	struct node	*next;
 }	t_node;
