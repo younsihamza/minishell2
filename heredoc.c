@@ -6,7 +6,7 @@
 /*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 22:29:05 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/04/06 22:50:21 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/10 15:50:33 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	ft_search(char *word, char to_find)
 	return (len);
 }
 
-char	**heredoc(char *stop)
+char	**heredoc(char *stop,int status, t_vars *env)
 {
 	char	**value;
 	char	**tmp;
@@ -49,14 +49,21 @@ char	**heredoc(char *stop)
 	while (1)
 	{
 		p = readline("herecod>");
-		if (ft_strcmp(stop, p) == 0)
-			break ;
-		else
+		if(p)
 		{
-			tmp = value;
-			value = ft_join2d(value, p);
-			free(tmp);
-		}
+			if (ft_strcmp(stop, p) == 0 )
+				break ;
+			else
+			{
+				tmp = value;
+				if(status == 1)
+					value = ft_join2d(value, p);
+				else
+					value = ft_join2d(value, herdoc_expand(p,env));
+				free(tmp);
+			}	
+		}else
+			break;
 	}
 	if (p)
 		free(p);
@@ -72,7 +79,7 @@ void	free2d(char **table)
 		free(table[i++]);
 }
 
-char	***checkherecode(char ***deriction, int len)
+char	***checkherecode(char ***deriction, int len,int *status, t_vars *env)
 {
 	char	***heredoctable;
 	int		i;
@@ -91,11 +98,12 @@ char	***checkherecode(char ***deriction, int len)
 			{
 				if (heredoctable[i] != NULL)
 					free2d(heredoctable[i]);
-				heredoctable[i] = heredoc(limet(deriction[i][j]));
+				heredoctable[i] = heredoc(limet(deriction[i][j]),status[i],env);
 			}
 			j++;
 		}
 		i++;
 	}
+	free(status);
 	return (heredoctable);
 }

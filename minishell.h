@@ -6,7 +6,7 @@
 /*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 16:05:38 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/09 18:30:50 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/10 15:45:55 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ typedef struct data{
 	char		***cmd;
 	char		***deriction;
 	char		***heredoc;
+	int			*status;
 	char		*pathhome;
 }	t_data;
 
@@ -88,6 +89,7 @@ typedef struct help_var
 	char	**command;
 	char	**tmp2d;
 	int		r;
+	int		*file_descripter;
 }t_help_var;
 
 typedef struct declare
@@ -102,6 +104,8 @@ typedef struct env
 	t_vars	*envv;
 	t_vars	*declare;
 }	t_env;
+
+char	***checkherecode(char ***deriction, int len, int *status, t_vars *env);
 char	**ft_split(char const *s, char c);
 char	*ft_strjoin(char const *s1, char const *s2);
 t_node	*ft_lstlast(t_node *lst);
@@ -123,7 +127,6 @@ int		ft_strlen2d(char **s1);
 void	transform_cmd(t_node **rot, t_vars *env,
 			t_vars *declare, char *pathhome);
 int		ft_search(char *word, char to_find);
-char	***checkherecode(char ***deriction, int len);
 char	*get_env_arr(char *find, t_vars *env);
 void	execute(t_data *var, t_vars *env, t_vars *declare);
 void	ft_putstr(char *str, int fd);
@@ -180,4 +183,5 @@ void	free_head(t_node *head);
 int		check_error(int i, char *text, t_node **head);
 void	dups(char **deriction, char **heredoctable, int test);
 void	help_me(t_help_var *v);
+char	*herdoc_expand(char *data, t_vars *env);
 #endif // !
