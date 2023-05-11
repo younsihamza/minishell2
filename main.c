@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 13:27:20 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/11 15:04:49 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/11 20:45:59 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,10 @@ void	ft_shell(t_env *envir, char *pathHome)
 	{
 		text = readline ("minishell -> $> ");
 		if (!text)
-			break ;
+		{
+			write(1,"\n",1);
+			break;
+		}
 		if (*text)
 			add_history(text);
 		head = token(text);

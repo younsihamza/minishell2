@@ -6,7 +6,7 @@
 /*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 15:59:57 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/10 19:11:26 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/11 20:20:34 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ void	kill_leaks(t_help_var *v, t_data *d)
 }
 
 void	transform_cmd(t_node **rot, t_vars *env,
-		t_vars *declare, char *pathhome)
+		t_vars **declare, char *pathhome)
 {
 	t_help_var	v;
 	t_data		d;

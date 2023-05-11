@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 15:49:39 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/11 15:14:50 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/11 20:27:52 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	dups(char **deriction, char **heredoctable, int test)
 	}
 }
 
-void	build_in_parent(t_data *var, int i, t_vars *env, t_vars *declare)
+void	build_in_parent(t_data *var, int i, t_vars *env, t_vars **declare)
 {
 	if (ft_strcmp(var->cmd[i][0], "cd") == 0)
 	{
@@ -79,10 +79,12 @@ void	pipe_tool(t_help_var *v, t_data *var)
 	v->i = 0;
 }
 
-void	child_parte(t_data *var, t_vars *env, t_vars *declare, t_help_var *v)
+void	child_parte(t_data *var, t_vars *env, t_vars **declare, t_help_var *v)
 {
 	g_s[0] = 1;
 	v->id = fork();
+	if (v->id < 0)
+		return;
 	if (v->id == 0)
 	{
 		signal(SIGINT, SIG_DFL);
@@ -103,7 +105,7 @@ void	child_parte(t_data *var, t_vars *env, t_vars *declare, t_help_var *v)
 			v->pipeincrement++;
 }
 
-void	execute(t_data *var, t_vars *env, t_vars *declare)
+void	execute(t_data *var, t_vars *env, t_vars **declare)
 {
 	t_help_var	v;
 
@@ -111,6 +113,7 @@ void	execute(t_data *var, t_vars *env, t_vars *declare)
 	v.lenpipe = 0;
 	v.i = 0;
 	pipe_tool(&v, var);
+
 	while (v.i <= v.lenpipe)
 	{
 		if (var->cmd[v.i] != NULL)
@@ -120,7 +123,9 @@ void	execute(t_data *var, t_vars *env, t_vars *declare)
 				|| (ft_strcmp(var->cmd[v.i][0], "export") == 0
 				&& var->cmd[v.i][1] != NULL)
 				|| ft_strcmp(var->cmd[v.i][0], "unset") == 0)
+				{
 				build_in_parent(var, v.i, env, declare);
+				}
 			else
 				child_parte(var, env, declare, &v);
 		}

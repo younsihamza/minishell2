@@ -6,7 +6,7 @@
 /*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 15:49:18 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/08 14:49:13 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/11 20:24:04 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	ft_close(int **fd, int len)
 	}
 }
 
-void	build_in_child(char **cmd, t_vars *env, t_vars *declare)
+void	build_in_child(char **cmd, t_vars *env, t_vars **declare)
 {
 	char	*path;
 
@@ -67,7 +67,7 @@ void	help_free(t_help_var *v, char **cmd)
 	free(v->split_path);
 }
 
-void	cmd1(char **cmd, t_vars *env, t_vars *declare)
+void	cmd1(char **cmd, t_vars *env, t_vars **declare)
 {
 	t_help_var	v;
 

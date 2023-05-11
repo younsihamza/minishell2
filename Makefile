@@ -1,4 +1,4 @@
-
+#!/bin/sh
 NAME = minishell
 
 CC = cc 
@@ -7,7 +7,7 @@ FLAG = -Wall -Wextra  -Werror
 
 HEADER = ./minishell.h
 
-FLAGS = -I/Users/$(USER)/goinfre/homebrew/opt/readline/include
+FLAGS = -I/Users/$(USER)/Desktop/homebrew/opt/readline/include
 
 # FLAGD = -L/Users/$(USER)/homebrew/opt/readline/lib
 
@@ -23,7 +23,7 @@ all: $(NAME)
 
 
 $(NAME): $(OBJS) 
-	$(CC) $(FLAG)  $(FLAGS) $(FLAGD) $^ -o $@  -lreadline  -L/Users/$(USER)/goinfre/homebrew/opt/readline/lib
+	$(CC) $(FLAG)  $(FLAGS) $(FLAGD) $^ -o $@  -lreadline  -L/Users/$(USER)/Desktop/homebrew/opt/readline/lib
  
 	
 %.o : %.c  $(HEADER)

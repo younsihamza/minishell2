@@ -6,8 +6,8 @@
       "type": "lldb",
       "request": "launch",
       "args": [],
-      "cwd": "/Users/hyounsi/Desktop/younsiana",
-      "program": "/Users/hyounsi/Desktop/younsiana/build/Debug/outDebug"
+      "cwd": "/Users/hyounsi/Desktop/yoyo",
+      "program": "/Users/hyounsi/Desktop/yoyo/build/Debug/outDebug"
     }
   ]
 }

@@ -3,22 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 14:29:28 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/11 15:13:34 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/11 20:45:12 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_remove(char **args, int *i, t_vars *vars)
+void	ft_remove(char **args, int *i, t_vars **vars)
 {
 	t_vars	*cur;
 	t_vars	*prev;
 	t_vars	*list;
+	//int j = 0;
 
-	cur = vars;
+	cur = (*vars);
 	list = cur;
 	prev = cur;
 	while (cur != NULL)
@@ -29,7 +30,9 @@ void	ft_remove(char **args, int *i, t_vars *vars)
 			list = cur;
 			prev->next = cur->next;
 			free(list->data);
+			list->data = NULL;
 			free(list);
+			list = NULL;
 		}
 		else
 			prev = cur;
@@ -49,12 +52,12 @@ void	ft_unset(char **args, t_vars *vars)
 		if (is_alpha(args[i]) == -1)
 			g_s[1] = printf("unset: `%s': not a valid identifier\n", args[i]);
 		else
-			ft_remove(args, &i, vars);
+			ft_remove(args, &i, &vars);
 		i++;
 	}
 }
 
-void	ft_unset_declare(char **args, t_vars *vars)
+void	ft_unset_declare(char **args, t_vars **vars)
 {
 	int		i;
 

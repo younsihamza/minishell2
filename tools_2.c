@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tools_2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 17:47:34 by ichouare          #+#    #+#             */
-/*   Updated: 2023/04/10 17:54:27 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/11 19:00:53 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ char	**ft_join2d(char **env, char *var)
 	if (env == NULL)
 	{
 		p = ft_calloc(sizeof(char *), 2);
-		p[0] = var;
+		*p = var;
 		return (p);
 	}
 	p = ft_calloc(sizeof(char *), ft_strlen2d(env) + 2);
