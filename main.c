@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 13:27:20 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/10 19:16:18 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/11 15:04:49 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,8 @@ int	main(int ac, char **argv, char **env)
 	char	*pathhome;
 	t_env	envir;
 
-	g_s = 0;
+	g_s[0] = 0;
+	g_s[1] = 0;
 	rl_catch_signals = 0;
 	signal (SIGINT, &handle_sigint);
 	signal (SIGQUIT, &handle_sigint);

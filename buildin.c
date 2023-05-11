@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   buildin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 22:27:54 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/04/06 22:28:08 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/11 15:08:38 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	cd(char *p, t_data *d)
 	}
 	a = chdir(p);
 	if (a == -1)
-		printf("(%s) No such file or directory\n", p);
+		g_s[1] = printf("(%s) No such file or directory\n", p);
 }
 
 void	cmd_env(t_vars *env)

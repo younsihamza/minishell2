@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 15:49:39 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/10 19:16:02 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/11 15:14:50 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	pipe_tool(t_help_var *v, t_data *var)
 
 void	child_parte(t_data *var, t_vars *env, t_vars *declare, t_help_var *v)
 {
-	g_s = 1;
+	g_s[0] = 1;
 	v->id = fork();
 	if (v->id == 0)
 	{
@@ -96,7 +96,7 @@ void	child_parte(t_data *var, t_vars *env, t_vars *declare, t_help_var *v)
 				dup2(v->fds[v->pipeincrement - 1][0], 0);
 		ft_close(v->fds, v->lenpipe);
 		cmd1(var->cmd[v->i], env, declare);
-		exit(0);
+		exit(1);
 	}
 	if (var->op[v->i] != NULL)
 		if (ft_strncmp(var->op[v->i]->type, "OP_PIPE", 7) == 0)

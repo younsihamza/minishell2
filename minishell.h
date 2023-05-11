@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 16:05:38 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/10 15:45:55 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/11 14:58:37 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # include <signal.h>
 # include <sys/stat.h>
 
-int	g_s;
+int	g_s[2];
 typedef struct lexer
 {
 	int	i;
@@ -184,4 +184,5 @@ int		check_error(int i, char *text, t_node **head);
 void	dups(char **deriction, char **heredoctable, int test);
 void	help_me(t_help_var *v);
 char	*herdoc_expand(char *data, t_vars *env);
+char	*ft_itoa(int n);
 #endif // !

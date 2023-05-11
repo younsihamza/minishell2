@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 14:29:28 by ichouare          #+#    #+#             */
-/*   Updated: 2023/04/12 15:26:17 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/11 15:13:34 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	ft_unset(char **args, t_vars *vars)
 	while (args[i])
 	{
 		if (is_alpha(args[i]) == -1)
-			printf("unset: `%s': not a valid identifier\n", args[i]);
+			g_s[1] = printf("unset: `%s': not a valid identifier\n", args[i]);
 		else
 			ft_remove(args, &i, vars);
 		i++;
@@ -76,7 +76,7 @@ void	ft_modify(char *str, t_vars **declare)
 	buffer1 = NULL;
 	if ((ft_strlen(str) == 1 && str[0] == '=') || str[0] == '=')
 	{
-		printf("bash: export: `%s': not a valid identifier\n", str);
+		g_s[1] = printf("bash: export: `%s': not a valid identifier\n", str);
 		return ;
 	}
 	if (ft_strchr(str, '=') != 0)

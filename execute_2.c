@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 15:49:28 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/10 19:16:09 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/11 15:15:02 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,9 +81,11 @@ int	out_file(t_help_var *v)
 
 void	help_me(t_help_var *v)
 {
-	while ((wait(0)) != -1)
+	while ((waitpid(0, &g_s[1], 0)) != -1)
 		ft_close(v->fds, v->lenpipe);
-	g_s = 0;
+	if(g_s[1] != 0)
+		g_s[1] = 1;
+	g_s[0] = 0;
 	v->i = 0;
 	while (v->i < v->lenpipe)
 		free(v->fds[v->i++]);

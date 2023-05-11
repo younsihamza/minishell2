@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tree_1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 16:46:22 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/10 12:20:52 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/11 15:02:51 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	token_sone(t_lexer *lex, char *text, t_node **list)
 {
+	
 	if (text[lex->i] == '$')
 	{
 		lex->j = lex->i + 1;
@@ -60,7 +61,10 @@ t_node	*simpletoken(char *text)
 
 void	expand_one(char **data, char *tmp, t_vars *env)
 {
-	tmp = get_env_arr(*data + 1, env);
+	if(data[0][1] == '?')
+		tmp = ft_strjoin(ft_itoa(g_s[1]), data[0] + 2);
+	else
+		tmp = get_env_arr(*data + 1, env);
 	free(*data);
 	if (tmp != NULL)
 		*data = ft_strdup(tmp);
