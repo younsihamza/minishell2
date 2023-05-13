@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 16:05:38 by ichouare          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/05/13 17:52:28 by hyounsi          ###   ########.fr       */
+=======
+/*   Updated: 2023/05/13 12:02:37 by ichouare         ###   ########.fr       */
+>>>>>>> d72b434c1be88131493498da183cf6412bf69442
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +155,11 @@ void	add_envback(t_vars **lst, t_vars *new);
 t_vars	*get_env(char **env);
 void	build_in_child(char **cmd, t_vars **env, t_vars **declare);
 void	cmd1(char **cmd, t_vars **env, t_vars **declare);
+<<<<<<< HEAD
 void	find_file(t_help_var *v, char **deriction,int test);
+=======
+void	find_file(t_help_var *v, char **deriction);
+>>>>>>> d72b434c1be88131493498da183cf6412bf69442
 void	in_file(t_help_var *v, char **heredoctable);
 void	ft_unset(char **args, t_vars **vars);
 void	ft_unset_declare(char **args, t_vars **vars);
