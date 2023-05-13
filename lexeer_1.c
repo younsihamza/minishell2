@@ -6,7 +6,7 @@
 /*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 13:14:33 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/03 12:50:22 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/13 15:19:56 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	check_error(int i, char *text, t_node **head)
 {
 	if (text[i] == '\0')
 	{
-		write(2, "error syntax \n", 15);
+		g_s[1]= write(2, "error syntax \n", 15);
 		free_head(*head);
 		free(text);
 		return (1);

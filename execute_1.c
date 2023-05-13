@@ -6,7 +6,7 @@
 /*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 15:49:18 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/11 20:24:04 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/13 12:07:13 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	ft_close(int **fd, int len)
 	}
 }
 
-void	build_in_child(char **cmd, t_vars *env, t_vars **declare)
+void	build_in_child(char **cmd, t_vars **env, t_vars **declare)
 {
 	char	*path;
 
@@ -55,7 +55,7 @@ void	build_in_child(char **cmd, t_vars *env, t_vars **declare)
 	else if (ft_strcmp(cmd[0], "export") == 0)
 		ft_export(cmd, env, declare);
 	else if (ft_strcmp(cmd[0], "env") == 0)
-		cmd_env(env);
+		cmd_env(*env);
 	exit(0);
 }
 
@@ -67,7 +67,7 @@ void	help_free(t_help_var *v, char **cmd)
 	free(v->split_path);
 }
 
-void	cmd1(char **cmd, t_vars *env, t_vars **declare)
+void	cmd1(char **cmd, t_vars **env, t_vars **declare)
 {
 	t_help_var	v;
 
@@ -75,9 +75,9 @@ void	cmd1(char **cmd, t_vars *env, t_vars **declare)
 	if (ft_strcmp(cmd[0], "echo") == 0 || ft_strcmp(cmd[0], "pwd") == 0
 		|| ft_strcmp(cmd[0], "export") == 0 || ft_strcmp(cmd[0], "env") == 0)
 		build_in_child(cmd, env, declare);
-	v.envs = ft_env(env);
+	v.envs = ft_env(*env);
 	execve(cmd[0], cmd, v.envs);
-	v.path = get_env_arr("PATH", env);
+	v.path = get_env_arr("PATH", *env);
 	v.split_path = ft_split(v.path, ':');
 	if (v.split_path != NULL)
 	{

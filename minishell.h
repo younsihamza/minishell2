@@ -6,7 +6,7 @@
 /*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 16:05:38 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/11 20:28:46 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/13 17:52:28 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ typedef struct env
 	t_vars	*declare;
 }	t_env;
 
-char	***checkherecode(char ***deriction, int len, int *status, t_vars *env);
+char	***checkherecode(char ***deriction, int len, int *status, t_vars **env);
 char	**ft_split(char const *s, char c);
 char	*ft_strjoin(char const *s1, char const *s2);
 t_node	*ft_lstlast(t_node *lst);
@@ -124,11 +124,11 @@ t_node	*token(char *text);
 char	**ft_join2d(char **env, char *var);
 int		ft_strcmp(char *str1, char *str2);
 int		ft_strlen2d(char **s1);
-void	transform_cmd(t_node **rot, t_vars *env,
+void	transform_cmd(t_node **rot, t_vars **env,
 			t_vars **declare, char *pathhome);
 int		ft_search(char *word, char to_find);
 char	*get_env_arr(char *find, t_vars *env);
-void	execute(t_data *var, t_vars *env, t_vars **declare);
+void	execute(t_data *var, t_vars **env, t_vars **declare);
 void	ft_putstr(char *str, int fd);
 void	add_envback(t_vars **lst, t_vars *new);
 t_vars	*ft_lstlastenv(t_vars *lst);
@@ -138,7 +138,7 @@ char	*ft_strdup(const char *s);
 int		ft_strlencher(char *str, int a);
 void	free2d(char **table);
 void	handle_sigint(int sig);
-void	ft_export(char **str, t_vars *env, t_vars **declare);
+void	ft_export(char **str, t_vars **env, t_vars **declare);
 void	echo(char **cmd);
 void	cd(char *p, t_data *d);
 void	cmd_env(t_vars *env);
@@ -149,15 +149,15 @@ t_vars	*ft_envnew(void *content);
 t_vars	*ft_lstlastenv(t_vars *lst);
 void	add_envback(t_vars **lst, t_vars *new);
 t_vars	*get_env(char **env);
-void	build_in_child(char **cmd, t_vars *env, t_vars **declare);
-void	cmd1(char **cmd, t_vars *env, t_vars **declare);
-void	find_file(t_help_var *v, char **deriction);
+void	build_in_child(char **cmd, t_vars **env, t_vars **declare);
+void	cmd1(char **cmd, t_vars **env, t_vars **declare);
+void	find_file(t_help_var *v, char **deriction,int test);
 void	in_file(t_help_var *v, char **heredoctable);
-void	ft_unset(char **args, t_vars *vars);
+void	ft_unset(char **args, t_vars **vars);
 void	ft_unset_declare(char **args, t_vars **vars);
 t_vars	*remove_elemet(char *str, t_vars **vars);
 void	ft_modify(char *str, t_vars **declare);
-void	ft_modify_env(char *str, t_vars *env);
+void	ft_modify_env(char *str, t_vars **env);
 int		out_file(t_help_var *v);
 void	ft_tolower(char ***cmd);
 void	cmd_help(t_help_var *v, t_node **rot);
@@ -185,4 +185,5 @@ void	dups(char **deriction, char **heredoctable, int test);
 void	help_me(t_help_var *v);
 char	*herdoc_expand(char *data, t_vars *env);
 char	*ft_itoa(int n);
+int		ft_atoi(const char *str);
 #endif // !

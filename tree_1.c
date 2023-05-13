@@ -6,7 +6,7 @@
 /*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 16:46:22 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/11 17:49:31 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/13 14:37:50 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	token_sone(t_lexer *lex, char *text, t_node **list)
 	if (text[lex->i] == '$')
 	{
 		lex->j = lex->i + 1;
-		while (ft_strchr(" $", text[lex->j]) == 0 && text[lex->j])
+		while (ft_strchr(" =/$", text[lex->j]) == 0 && text[lex->j])
 				lex->j++;
 		if (lex->j != lex->i + 1)
 			add_back(list, ft_lstnew(ft_substr(text,

@@ -6,41 +6,61 @@
 /*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 14:29:28 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/11 20:45:12 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/13 16:50:23 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+ void addback_r( t_vars** list , t_vars* new)
+ {
+     t_vars* hold;
+     hold = *list;
+     if(*list == NULL)
+     {
+        *list = new;
+        return;
+     }
+        while(hold->next != NULL)
+            hold = hold->next;
+        hold->next = new;
+        
+ }
 void	ft_remove(char **args, int *i, t_vars **vars)
 {
 	t_vars	*cur;
-	t_vars	*prev;
-	t_vars	*list;
-	//int j = 0;
+	t_vars	*newlist;
+	t_vars *hold;
+	t_vars *tmp;
 
 	cur = (*vars);
-	list = cur;
-	prev = cur;
+	hold = NULL;
+	newlist = NULL;
 	while (cur != NULL)
 	{
 		if (ft_strncmp(cur->data, args[*i],
-				ft_strlencher(cur->data, '=')) == 0)
+				ft_strlencher(cur->data, '=')) != 0)
 		{
-			list = cur;
-			prev->next = cur->next;
-			free(list->data);
-			list->data = NULL;
-			free(list);
-			list = NULL;
+			hold = cur;
+			cur = cur->next;
+			hold->next = NULL;
+			addback_r(&newlist,hold);
 		}
 		else
-			prev = cur;
-		cur = cur->next;
+		{
+			tmp = cur;
+			cur = cur->next;
+			if(tmp != NULL)
+				{
+					free(tmp->data);
+					free(tmp);
+				}
+		}	
 	}
+	*vars = newlist;
 }
 
-void	ft_unset(char **args, t_vars *vars)
+void	ft_unset(char **args, t_vars **vars)
 {
 	int		i;
 
@@ -50,9 +70,12 @@ void	ft_unset(char **args, t_vars *vars)
 	while (args[i])
 	{
 		if (is_alpha(args[i]) == -1)
-			g_s[1] = printf("unset: `%s': not a valid identifier\n", args[i]);
+		{
+			g_s[1] = 1; 
+			printf("unset: `%s': not a valid identifier\n", args[i]);
+		}
 		else
-			ft_remove(args, &i, &vars);
+			ft_remove(args, &i, vars);
 		i++;
 	}
 }
@@ -77,7 +100,7 @@ void	ft_modify(char *str, t_vars **declare)
 	char	*buffer1;
 
 	buffer1 = NULL;
-	if ((ft_strlen(str) == 1 && str[0] == '=') || str[0] == '=')
+	if ((ft_strlen(str) == 1 && str[0] == '=') || str[0] == '=' || ft_strlen(str) == 0)
 	{
 		g_s[1] = printf("bash: export: `%s': not a valid identifier\n", str);
 		return ;
@@ -89,11 +112,11 @@ void	ft_modify(char *str, t_vars **declare)
 	ft_add_new(declare, str, buffer1);
 }
 
-void	ft_modify_env(char *str, t_vars *env)
+void	ft_modify_env(char *str, t_vars **env)
 {
 	t_vars	*cur;
 
-	cur = env;
+	cur = *env;
 	if ((ft_strlen(str) == 1 && str[0] == '=') || str[0] == '=')
 		return ;
 	while (cur != NULL)
@@ -106,5 +129,5 @@ void	ft_modify_env(char *str, t_vars *env)
 		}
 		cur = cur->next;
 	}
-	add_envback(&env, ft_envnew(ft_strdup (str)));
+	add_envback(env, ft_envnew(ft_strdup (str)));
 }

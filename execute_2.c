@@ -6,13 +6,13 @@
 /*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 15:49:28 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/11 15:56:14 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/13 17:05:17 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	find_file(t_help_var *v, char **deriction)
+void	find_file(t_help_var *v, char **deriction,int test)
 {
 	if (ft_search(deriction[v->i], '<'))
 	{
@@ -24,7 +24,12 @@ void	find_file(t_help_var *v, char **deriction)
 			v->heredoc = NULL;
 			v->fd = open(v->infile, O_RDONLY);
 			if (v->fd == -1)
-				exit(write(2, "No such file or directory\n", 27));
+			{
+				if(test == 0)
+					write(2, "No such file or directory\n", 27);
+				else
+					exit(126);
+			}
 			close(v->fd);
 		}
 	}
@@ -83,8 +88,15 @@ void	help_me(t_help_var *v)
 {
 	while ((waitpid(0, &g_s[1], 0)) != -1)
 		ft_close(v->fds, v->lenpipe);
-	if(g_s[1] != 0)
-		g_s[1] = 1;
+	// if(g_s[1] != 0)
+	//g_s[1] = WIFEXITED(g_s[1]);
+	//if (WIFEXITED(g_s[1]))
+       if (WIFEXITED(g_s[1]))
+        g_s[1] =WEXITSTATUS(g_s[1]);
+      else if (WIFSIGNALED(g_s[1]))
+               g_s[1] = WTERMSIG(g_s[1]);
+      else if (WIFSTOPPED(g_s[1]))
+        g_s[1] = WSTOPSIG(g_s[1]);
 	g_s[0] = 0;
 	v->i = 0;
 	while (v->i < v->lenpipe)

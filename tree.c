@@ -6,7 +6,7 @@
 /*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 14:58:27 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/11 20:22:06 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/13 12:41:28 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,18 +25,15 @@ int	join_node(t_node **root, int *i, char *hold)
 		{
 			hold = root[*i]->data;
 			root[*i]->data = ft_strjoin(root[*i]->data, root[j]->data);
-			if(ft_strcmp(root[j]->type, "DOUBLE") == 0 || ft_strcmp(root[*i]->type, "DOUBLE") == 0 || ft_strcmp(root[j]->type, "SINGLE") == 0 || ft_strcmp(root[*i]->type, "SINGLE") == 0 )
+			if (ft_strcmp(root[j]->type, "DOUBLE") == 0
+				|| ft_strcmp(root[*i]->type, "DOUBLE") == 0
+				|| ft_strcmp(root[j]->type, "SINGLE") == 0
+				|| ft_strcmp(root[*i]->type, "SINGLE") == 0)
 				root[*i]->status = 1;
 			free(hold);
 		}
 		else
-		{
-			if(ft_strcmp(root[*i]->type, "DOUBLE") == 0 || ft_strcmp(root[*i]->type, "SINGLE") == 0 )
-				root[*i]->status = 1;
-			else
-				root[*i]->status = 0;
 			break ;
-		}
 		j++;
 	}
 	return (j);
@@ -58,11 +55,12 @@ t_node	**edit_rot(t_node **root, int len)
 	while (root[i] != NULL)
 	{
 		j = i + 1;
+		if (ft_strcmp(root[i]->type, "DOUBLE") == 0
+			|| ft_strcmp(root[i]->type, "SINGLE") == 0)
+			root[i]->status = 1;
 		if (ft_strncmp(root[i]->type, "OP_PIPE", 7) != 0
 			&& ft_strncmp(root[i]->type, "OP_FILE", 7) != 0)
-		{
 			j = join_node(root, &i, hold);
-		}
 		list[cort++] = root[i];
 		i = j;
 	}
@@ -102,7 +100,7 @@ void	ft_func(t_tree *root, int len, t_env *envir, char *pathHome)
 	makestack(root, rot, &a);
 	ft_inorder(rot, envir->envv);
 	list = edit_rot(rot, len);
-	transform_cmd(list, envir->envv, &envir->declare, pathHome);
+	transform_cmd(list, &envir->envv, &envir->declare, pathHome);
 	free(rot);
 	free(list);
 }

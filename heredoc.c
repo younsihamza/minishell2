@@ -6,7 +6,7 @@
 /*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 22:29:05 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/10 15:50:33 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/13 12:03:30 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	ft_search(char *word, char to_find)
 	return (len);
 }
 
-char	**heredoc(char *stop,int status, t_vars *env)
+char	**heredoc(char *stop,int status, t_vars **env)
 {
 	char	**value;
 	char	**tmp;
@@ -59,7 +59,7 @@ char	**heredoc(char *stop,int status, t_vars *env)
 				if(status == 1)
 					value = ft_join2d(value, p);
 				else
-					value = ft_join2d(value, herdoc_expand(p,env));
+					value = ft_join2d(value, herdoc_expand(p,*env));
 				free(tmp);
 			}	
 		}else
@@ -79,7 +79,7 @@ void	free2d(char **table)
 		free(table[i++]);
 }
 
-char	***checkherecode(char ***deriction, int len,int *status, t_vars *env)
+char	***checkherecode(char ***deriction, int len,int *status, t_vars **env)
 {
 	char	***heredoctable;
 	int		i;

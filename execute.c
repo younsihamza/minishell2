@@ -6,7 +6,7 @@
 /*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 15:49:39 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/11 20:27:52 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/13 16:41:30 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	dups(char **deriction, char **heredoctable, int test)
 	v.i = 0;
 	while (deriction[v.i])
 	{
-		find_file(&v, deriction);
+		find_file(&v, deriction,test);
 		v.i++;
 	}
 	if (test == 1)
@@ -34,7 +34,7 @@ void	dups(char **deriction, char **heredoctable, int test)
 	}
 }
 
-void	build_in_parent(t_data *var, int i, t_vars *env, t_vars **declare)
+void	build_in_parent(t_data *var, int i, t_vars **env, t_vars **declare)
 {
 	if (ft_strcmp(var->cmd[i][0], "cd") == 0)
 	{
@@ -79,7 +79,7 @@ void	pipe_tool(t_help_var *v, t_data *var)
 	v->i = 0;
 }
 
-void	child_parte(t_data *var, t_vars *env, t_vars **declare, t_help_var *v)
+void	child_parte(t_data *var, t_vars **env, t_vars **declare, t_help_var *v)
 {
 	g_s[0] = 1;
 	v->id = fork();
@@ -98,14 +98,14 @@ void	child_parte(t_data *var, t_vars *env, t_vars **declare, t_help_var *v)
 				dup2(v->fds[v->pipeincrement - 1][0], 0);
 		ft_close(v->fds, v->lenpipe);
 		cmd1(var->cmd[v->i], env, declare);
-		exit(1);
+		exit(127);
 	}
 	if (var->op[v->i] != NULL)
 		if (ft_strncmp(var->op[v->i]->type, "OP_PIPE", 7) == 0)
 			v->pipeincrement++;
 }
 
-void	execute(t_data *var, t_vars *env, t_vars **declare)
+void	execute(t_data *var, t_vars **env, t_vars **declare)
 {
 	t_help_var	v;
 
