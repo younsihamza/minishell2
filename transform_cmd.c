@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   transform_cmd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 15:59:57 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/11 20:20:34 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/13 12:00:49 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void	kill_leaks(t_help_var *v, t_data *d)
 	free(d->cmd);
 }
 
-void	transform_cmd(t_node **rot, t_vars *env,
+void	transform_cmd(t_node **rot, t_vars **env,
 		t_vars **declare, char *pathhome)
 {
 	t_help_var	v;
@@ -114,7 +114,7 @@ void	transform_cmd(t_node **rot, t_vars *env,
 	v.j = 0;
 	convert_cmd(&d, &v, rot);
 	convert_deriction(&v, rot, &d);
-	d.heredoc = checkherecode(d.deriction, v.len + 2, d.status, env);
+	d.heredoc = checkherecode(d.deriction, v.len + 2, d.status, *env);
 	d.pathhome = pathhome;
 	v.i = 0;
 	while (v.i <= v.len)

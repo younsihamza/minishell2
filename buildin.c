@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   buildin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 22:27:54 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/11 20:38:42 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/13 16:28:08 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_export(char **str, t_vars *env, t_vars **declare)
+void	ft_export(char **str, t_vars **env, t_vars **declare)
 {
 	int	i;
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 14:29:28 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/11 20:45:12 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/13 13:21:55 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,31 +16,27 @@ void	ft_remove(char **args, int *i, t_vars **vars)
 {
 	t_vars	*cur;
 	t_vars	*prev;
-	t_vars	*list;
-	//int j = 0;
 
 	cur = (*vars);
-	list = cur;
 	prev = cur;
+
 	while (cur != NULL)
 	{
 		if (ft_strncmp(cur->data, args[*i],
 				ft_strlencher(cur->data, '=')) == 0)
 		{
-			list = cur;
-			prev->next = cur->next;
-			free(list->data);
-			list->data = NULL;
-			free(list);
-			list = NULL;
+				prev = prev->next;
+				puts(cur->data);
+				// free(cur->data);
+				//free(cur);
+				cur = prev;
 		}
 		else
-			prev = cur;
-		cur = cur->next;
+				cur = cur->next;
 	}
 }
 
-void	ft_unset(char **args, t_vars *vars)
+void	ft_unset(char **args, t_vars **vars)
 {
 	int		i;
 
@@ -52,7 +48,7 @@ void	ft_unset(char **args, t_vars *vars)
 		if (is_alpha(args[i]) == -1)
 			g_s[1] = printf("unset: `%s': not a valid identifier\n", args[i]);
 		else
-			ft_remove(args, &i, &vars);
+			ft_remove(args, &i, vars);
 		i++;
 	}
 }
@@ -89,11 +85,11 @@ void	ft_modify(char *str, t_vars **declare)
 	ft_add_new(declare, str, buffer1);
 }
 
-void	ft_modify_env(char *str, t_vars *env)
+void	ft_modify_env(char *str, t_vars **env)
 {
 	t_vars	*cur;
 
-	cur = env;
+	cur = *env;
 	if ((ft_strlen(str) == 1 && str[0] == '=') || str[0] == '=')
 		return ;
 	while (cur != NULL)
@@ -106,5 +102,5 @@ void	ft_modify_env(char *str, t_vars *env)
 		}
 		cur = cur->next;
 	}
-	add_envback(&env, ft_envnew(ft_strdup (str)));
+	add_envback(env, ft_envnew(ft_strdup (str)));
 }

@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 14:19:08 by ichouare          #+#    #+#             */
-/*   Updated: 2023/04/10 17:57:18 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/13 15:19:40 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,6 @@ t_vars	*get_env(char **env)
 	{
 		add_envback(&vars, ft_envnew(ft_strdup(env[i])));
 		i++;
-	}
+	}	
 	return (vars);
 }
