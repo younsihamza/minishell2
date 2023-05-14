@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tree_1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 16:46:22 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/13 14:37:50 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/14 19:43:45 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,22 +39,55 @@ t_node	*simpletoken(char *text)
 	list = NULL;
 	lex.i = 0;
 	lex.j = 0;
-	while (text[lex.i])
+	while(text[lex.i])
 	{
-		token_sone(&lex, text, &list);
-		if (ft_strchr("$", text[lex.i]) == 0)
-		{
-			lex.j = lex.i;
-			while (ft_strchr("$", text[lex.j]) == 0 && text[lex.j])
-				lex.j++;
-			if (lex.j != lex.i)
+	if (text[lex.i] == '$')
+	{
+		lex.j = lex.i + 1;
+		if(text[lex.j] >= '0' && text[lex.j] <= '9')
 			{
 				add_back(&list, ft_lstnew(ft_substr(text,
-							lex.i, lex.j - lex.i), "OP_WR", lex.spaces));
-				lex.i = lex.j;
+					lex.i, 2), "OP_VR", lex.spaces));
+				lex.spaces = 0;
+				lex.i +=2;
 			}
+		else
+		{
+			lex.j = lex.i + 1;
+			if(text[lex.j] == '_' || (text[lex.j] >= 'a' && text[lex.j] <= 'z') || (text[lex.j] >= 'A' && text[lex.j] <= 'Z') )
+			{
+				lex.j++;
+				while (ft_alpha_s(text[lex.j]) != -1 && text[lex.j])
+					lex.j++;
+				if (lex.j != lex.i + 1)
+				{
+					add_back(&list, ft_lstnew(ft_substr(text,
+						lex.i, lex.j - lex.i), "OP_VR", lex.spaces));
+				}
+			}
+			else
+			{
+				while (ft_strchr(" |><$\"", text[lex.j]) == 0 
+					&& text[lex.j])
+						lex.j++;
+					add_back(&list, ft_lstnew(ft_substr(text,
+							lex.i, lex.j - lex.i), "OP_WR", lex.spaces));
+			}
+			lex.i = lex.j;
 			lex.spaces = 0;
-		}
+	}
+	}
+	else
+	{
+		puts("here");
+		lex.j = lex.i + 1;
+		while(text[lex.j] && text[lex.j] != '$')
+			lex.j++;
+		add_back(&list, ft_lstnew(ft_substr(text,
+						lex.i, lex.j - lex.i), "OP_WR", lex.spaces));
+		lex.i = lex.j;
+		lex.spaces = 0;
+	}
 	}
 	return (list);
 }
