@@ -6,7 +6,7 @@
 /*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 22:27:54 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/13 16:17:36 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/14 18:08:33 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,18 +75,65 @@ void	echo(char **cmd)
 		printf("\n");
 }
 
-void	cd(char *p, t_data *d)
+void	cd(char *p, t_data *d,t_vars **env,t_vars **declare)
 {
 	int	a;
-
+	char **tmp = NULL;
+	char *buf;
+	if(getcwd(d->pathhome,1024) == NULL)
+		return;
 	if (p == NULL)
 	{
-		chdir(d->pathhome);
+		if(get_env_arr("HOME",*env) != NULL)
+		{
+			if(chdir(get_env_arr("HOME",*env)) != -1)
+			{	
+				buf = ft_strjoin("export PWD=",get_env_arr("HOME",*env));
+				tmp = ft_split(buf, ' ');
+				free(buf);
+				ft_export(tmp, env, declare);
+				free2d(tmp);
+				free(tmp);
+				buf = ft_strjoin("export OLDPWD=",d->pathhome);
+				tmp = ft_split(buf, ' ');
+				ft_export(tmp, env, declare);
+				free(buf);
+				free2d(tmp);
+				free(tmp);
+			}
+		}
+		else
+			write(2,"bash: cd: HOME not set\n",23);
+
 		return ;
 	}
-	a = chdir(p);
+	if(ft_strcmp(p,"-") == 0)
+	{
+		a = chdir(get_env_arr("OLDPWD",*env));
+		printf("%s\n",get_env_arr("OLDPWD",*env));
+	}
+	else
+		a = chdir(p);
 	if (a == -1)
-		g_s[1] =  1;printf("(%s) No such file or directory\n", p);
+	{
+		g_s[1] =  1;
+		printf("(%s) No such file or directory\n", p);
+	}else{
+				buf = ft_strjoin("export OLDPWD=",d->pathhome);
+				tmp = ft_split(buf, ' ');
+				ft_export(tmp, env, declare);
+				free(buf);
+				free2d(tmp);
+				free(tmp);
+				if(getcwd(d->pathhome,1024) == NULL)
+					exit(0);
+				buf = ft_strjoin("export PWD=",d->pathhome);
+				tmp = ft_split(buf, ' ');
+				free(buf);
+				ft_export(tmp, env, declare);
+				free2d(tmp);
+				free(tmp);
+	}
 }
 
 void	cmd_env(t_vars *env)

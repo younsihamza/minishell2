@@ -6,7 +6,7 @@
 /*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 16:05:38 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/13 17:52:28 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/14 18:45:20 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,8 +140,10 @@ void	free2d(char **table);
 void	handle_sigint(int sig);
 void	ft_export(char **str, t_vars **env, t_vars **declare);
 void	echo(char **cmd);
-void	cd(char *p, t_data *d);
+void	cd(char *p, t_data *d,t_vars **env,t_vars **declare);
 void	cmd_env(t_vars *env);
+int ft_alpha_s(char str);
+int ft_test_var(char *str,int len);
 char	**ft_env(t_vars *vars);
 char	*delimet(char *l);
 void	ft_close(int **fd, int len);

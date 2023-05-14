@@ -6,7 +6,7 @@
 /*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 13:27:20 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/13 17:52:48 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/14 14:10:20 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,8 @@ int	main(int ac, char **argv, char **env)
 			char *buf = ft_strjoin("export SHLVL=",str);
 			tmp = ft_split(buf, ' ');
 			ft_export(tmp, &envir.envv, &envir.declare);
-			free2d(tmp);
 			free(str);
+			free2d(tmp);
 		}
 	}
 	pathhome = get_env_arr("ZDOTDIR", envir.envv);
