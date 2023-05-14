@@ -6,7 +6,7 @@
 /*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 13:27:20 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/13 17:57:14 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/13 17:52:48 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,26 @@ int	main(int ac, char **argv, char **env)
 	rl_catch_signals = 0;
 	signal (SIGINT, &handle_sigint);
 	signal (SIGQUIT, &handle_sigint);
-	envir.envv = get_env(env);
-	envir.declare = get_declare(env);
+	if(*env == NULL|| get_env_arr("SHLVL", envir.envv) != NULL)
+	{
+		add_envback(&envir.declare, ft_envnew(ft_strdup ("SHLVL=1")));
+		add_envback(&envir.envv, ft_envnew(ft_strdup ("SHLVL=1")));
+	}
+	else
+	{
+		envir.envv = get_env(env);
+		envir.declare = get_declare(env);
+		if(get_env_arr("SHLVL", envir.envv))
+		{
+			char **tmp =NULL;
+			char *str = ft_itoa(ft_atoi(get_env_arr("SHLVL", envir.envv)) + 1);
+			char *buf = ft_strjoin("export SHLVL=",str);
+			tmp = ft_split(buf, ' ');
+			ft_export(tmp, &envir.envv, &envir.declare);
+			free2d(tmp);
+			free(str);
+		}
+	}
 	pathhome = get_env_arr("ZDOTDIR", envir.envv);
 	argv = NULL;
 	if (ac != 1)

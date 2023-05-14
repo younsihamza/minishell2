@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 14:25:37 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/11 14:44:19 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/14 15:09:43 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,10 @@
 
 void	handle_sigint(int sig)
 {
+	
 	if (sig == SIGINT && g_s[0] == 0)
 	{
+		fprintf(stderr, "%d\n",sig);
 		printf("\n");
 		rl_on_new_line();
 		rl_replace_line("", 0);

@@ -6,11 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 14:29:28 by ichouare          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2023/05/13 16:50:23 by hyounsi          ###   ########.fr       */
-=======
-/*   Updated: 2023/05/13 13:21:55 by ichouare         ###   ########.fr       */
->>>>>>> d72b434c1be88131493498da183cf6412bf69442
+/*   Updated: 2023/05/14 14:21:32 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +29,6 @@
 void	ft_remove(char **args, int *i, t_vars **vars)
 {
 	t_vars	*cur;
-<<<<<<< HEAD
 	t_vars	*newlist;
 	t_vars *hold;
 	t_vars *tmp;
@@ -41,19 +36,11 @@ void	ft_remove(char **args, int *i, t_vars **vars)
 	cur = (*vars);
 	hold = NULL;
 	newlist = NULL;
-=======
-	t_vars	*prev;
-
-	cur = (*vars);
-	prev = cur;
-
->>>>>>> d72b434c1be88131493498da183cf6412bf69442
 	while (cur != NULL)
 	{
 		if (ft_strncmp(cur->data, args[*i],
 				ft_strlencher(cur->data, '=')) != 0)
 		{
-<<<<<<< HEAD
 			hold = cur;
 			cur = cur->next;
 			hold->next = NULL;
@@ -69,16 +56,6 @@ void	ft_remove(char **args, int *i, t_vars **vars)
 					free(tmp);
 				}
 		}	
-=======
-				prev = prev->next;
-				puts(cur->data);
-				// free(cur->data);
-				//free(cur);
-				cur = prev;
-		}
-		else
-				cur = cur->next;
->>>>>>> d72b434c1be88131493498da183cf6412bf69442
 	}
 	*vars = newlist;
 }
@@ -125,7 +102,8 @@ void	ft_modify(char *str, t_vars **declare)
 	buffer1 = NULL;
 	if ((ft_strlen(str) == 1 && str[0] == '=') || str[0] == '=' || ft_strlen(str) == 0)
 	{
-		g_s[1] = printf("bash: export: `%s': not a valid identifier\n", str);
+		g_s[1] = 1;
+		printf("bash: export: `%s': not a valid identifier\n", str);
 		return ;
 	}
 	if (ft_strchr(str, '=') != 0)

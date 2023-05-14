@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 15:49:28 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/13 17:05:17 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/14 15:52:23 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,15 +88,10 @@ void	help_me(t_help_var *v)
 {
 	while ((waitpid(0, &g_s[1], 0)) != -1)
 		ft_close(v->fds, v->lenpipe);
-	// if(g_s[1] != 0)
-	//g_s[1] = WIFEXITED(g_s[1]);
-	//if (WIFEXITED(g_s[1]))
-       if (WIFEXITED(g_s[1]))
-        g_s[1] =WEXITSTATUS(g_s[1]);
-      else if (WIFSIGNALED(g_s[1]))
-               g_s[1] = WTERMSIG(g_s[1]);
-      else if (WIFSTOPPED(g_s[1]))
-        g_s[1] = WSTOPSIG(g_s[1]);
+	if (WIFEXITED(g_s[1]))
+		g_s[1] = WEXITSTATUS(g_s[1]);
+	if(WIFSIGNALED(g_s[1]))
+		g_s[1] = WTERMSIG(g_s[1]) + 128;
 	g_s[0] = 0;
 	v->i = 0;
 	while (v->i < v->lenpipe)

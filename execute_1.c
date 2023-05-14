@@ -6,11 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 15:49:18 by hyounsi           #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2023/05/13 12:07:13 by hyounsi          ###   ########.fr       */
-=======
-/*   Updated: 2023/05/13 12:04:36 by ichouare         ###   ########.fr       */
->>>>>>> d72b434c1be88131493498da183cf6412bf69442
+/*   Updated: 2023/05/14 12:44:16 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +61,9 @@ void	build_in_child(char **cmd, t_vars **env, t_vars **declare)
 
 void	help_free(t_help_var *v, char **cmd)
 {
-	write(2, "IH : command not found\n", 24);
+	write(2, "IH : command not found ", 24);
+	write(2, cmd[0], ft_strlen(cmd[0]));
+	write(2, "\n", 1);
 	free2d(cmd);
 	free(v->envs);
 	free(v->split_path);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexeer.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 11:58:29 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/13 14:36:04 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/14 18:24:03 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,16 +91,62 @@ void	token_foor(t_lexer *lex, char *text, t_node **head)
 	if (text[lex->i] == '$')
 	{
 		lex->j = lex->i + 1;
-		while (ft_strchr(" =/|><$\"", text[lex->j]) == 0 && text[lex->j])
-				lex->j++;
-		if (lex->j != lex->i +1)
-			add_back(head, ft_lstnew(ft_substr(text,
-						lex->i, lex->j - lex->i), "OP_VR", lex->spaces));
+		if(text[lex->j] >= '0' && text[lex->j] <= '9')
+			{
+				add_back(head, ft_lstnew(ft_substr(text,
+					lex->i, 2), "OP_VR", lex->spaces));
+				lex->spaces = 0;
+				lex->i +=2;
+			}
 		else
-			add_back(head, ft_lstnew(ft_substr(text,
-						lex->i, 1), "OP_WR", lex->spaces));
-		lex->i = lex->j;
-		lex->spaces = 0;
+		{
+			lex->j = lex->i + 1;
+			if(text[lex->j] == '_' || (text[lex->j] >= 'a' && text[lex->j] <= 'z') || (text[lex->j] >= 'A' && text[lex->j] <= 'Z') )
+			{
+				puts("here_1");
+				lex->j++;
+				while (ft_alpha_s(text[lex->j]) != -1 && text[lex->j])
+					lex->j++;
+				if (lex->j != lex->i + 1)
+				{
+					add_back(head, ft_lstnew(ft_substr(text,
+						lex->i, lex->j - lex->i), "OP_VR", lex->spaces));
+				}
+			}
+			else
+			{
+				while (ft_strchr(" |><$\"", text[lex->j]) == 0 
+					&& text[lex->j])
+						lex->j++;
+					add_back(head, ft_lstnew(ft_substr(text,
+							lex->i, lex->j - lex->i), "OP_WR", lex->spaces));
+			}
+			lex->i = lex->j;
+			lex->spaces = 0;
+		// 	lex->j = lex->i + 1;
+		// while (ft_strchr(" =/|><$\"", text[lex->j]) == 0 
+
+		// 	  && text[lex->j])
+		// 		lex->j++;
+		// if (lex->j != lex->i +1)
+		// {
+		// 	if((text[lex->i + 1] == '_' || is_alpha(&text[lex->i + 1]) != -1) &&  ft_alpha_s(&text[lex->i + 2]) != -1)
+		// 	{
+		// 		add_back(head, ft_lstnew(ft_substr(text,
+		// 				lex->i, lex->j - lex->i), "OP_VR", lex->spaces));
+		// 	}
+		// 	else
+		// 	{
+		// 		add_back(head, ft_lstnew(ft_substr(text,
+		// 				lex->i, lex->j - lex->i), "OP_WR", lex->spaces));
+		// 	}
+		// }
+		// else
+		// 	add_back(head, ft_lstnew(ft_substr(text,
+		// 				lex->i, 1), "OP_WR", lex->spaces));	
+		// lex->i = lex->j;
+		// lex->spaces = 0;
+		}
 	}	
 }
 

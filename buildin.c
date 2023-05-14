@@ -6,11 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 22:27:54 by hyounsi           #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2023/05/13 16:17:36 by hyounsi          ###   ########.fr       */
-=======
-/*   Updated: 2023/05/13 16:28:08 by ichouare         ###   ########.fr       */
->>>>>>> d72b434c1be88131493498da183cf6412bf69442
+/*   Updated: 2023/05/14 12:23:28 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +86,10 @@ void	cd(char *p, t_data *d)
 	}
 	a = chdir(p);
 	if (a == -1)
-		g_s[1] =  1;printf("(%s) No such file or directory\n", p);
+	{
+		g_s[1] =  1;
+		printf("(%s) No such file or directory\n", p);	
+	}
 }
 
 void	cmd_env(t_vars *env)

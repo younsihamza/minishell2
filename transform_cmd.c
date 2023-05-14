@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   transform_cmd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 15:59:57 by hyounsi           #+#    #+#             */
-<<<<<<< HEAD
 /*   Updated: 2023/05/13 11:53:53 by hyounsi          ###   ########.fr       */
-=======
-/*   Updated: 2023/05/13 12:00:49 by ichouare         ###   ########.fr       */
->>>>>>> d72b434c1be88131493498da183cf6412bf69442
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +114,7 @@ void	transform_cmd(t_node **rot, t_vars **env,
 	v.j = 0;
 	convert_cmd(&d, &v, rot);
 	convert_deriction(&v, rot, &d);
-	d.heredoc = checkherecode(d.deriction, v.len + 2, d.status, *env);
+	d.heredoc = checkherecode(d.deriction, v.len + 2, d.status, env);
 	d.pathhome = pathhome;
 	v.i = 0;
 	while (v.i <= v.len)
