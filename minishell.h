@@ -6,7 +6,7 @@
 /*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 16:05:38 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/14 18:45:20 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/15 16:40:45 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ typedef struct data{
 	char		***deriction;
 	char		***heredoc;
 	int			*status;
+	char		***typefile;
 	char		*pathhome;
 }	t_data;
 

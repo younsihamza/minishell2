@@ -6,7 +6,7 @@
 /*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 11:58:29 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/14 18:46:16 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/15 16:09:02 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	token_foor(t_lexer *lex, char *text, t_node **head)
 	if (text[lex->i] == '$')
 	{
 		lex->j = lex->i + 1;
-		if(text[lex->j] >= '0' && text[lex->j] <= '9')
+		if((text[lex->j] >= '0' && text[lex->j] <= '9') || text[lex->j] >= '?' )
 			{
 				add_back(head, ft_lstnew(ft_substr(text,
 					lex->i, 2), "OP_VR", lex->spaces));
