@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 14:29:28 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/14 14:21:32 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/14 18:42:55 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ void	ft_modify(char *str, t_vars **declare)
 	char	*buffer1;
 
 	buffer1 = NULL;
-	if ((ft_strlen(str) == 1 && str[0] == '=') || str[0] == '=' || ft_strlen(str) == 0)
+	if (ft_test_var(str,ft_strlencher(str,'=')) == 1)
 	{
 		g_s[1] = 1;
 		printf("bash: export: `%s': not a valid identifier\n", str);
@@ -118,7 +118,7 @@ void	ft_modify_env(char *str, t_vars **env)
 	t_vars	*cur;
 
 	cur = *env;
-	if ((ft_strlen(str) == 1 && str[0] == '=') || str[0] == '=')
+	if (ft_test_var(str,ft_strlencher(str,'=')) == 1)
 		return ;
 	while (cur != NULL)
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 15:08:59 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/14 18:10:32 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/14 18:45:11 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,51 @@ int	is_alpha(char *str)
 	return (i);
 }
 
+
+int	ft_isalpha(int n)
+{
+	if ((n >= 65 && n <= 90) || (n >= 97 && n <= 122))
+		return (1);
+	return (0);
+}
+int	ft_isdigit(int n)
+{
+	if (n >= 48 && n <= 57)
+		return (1);
+	return (0);
+}
+
+int	ft_isalnum(int n)
+{
+	if (ft_isalpha(n) == 1)
+		return (1);
+	if(n == '_')
+		return (1);
+	if (ft_isdigit(n) == 1)
+		return (1);
+	return (0);
+}
+int test_first(int n)
+{
+	if (ft_isalpha(n) == 1)
+		return (1);
+	if(n == '_')
+		return (1);
+	return(0);
+}
+int ft_test_var(char *str,int len)
+{
+	int i= 0;
+	if(ft_strlen(str) == 0 || test_first(str[0]) == 0)
+		return(1);
+	while(i < len)
+	{
+		if(ft_isalnum(str[i]) == 0)
+			return(1);
+		i++;	
+	}
+	return(0);
+}
 
 int ft_alpha_s(char str)
 {

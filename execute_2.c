@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 15:49:28 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/14 15:52:23 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/15 18:48:01 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,10 @@ void	find_file(t_help_var *v, char **deriction,int test)
 	else if (ft_search(deriction[v->i], '>'))
 	{
 		if (ft_search(deriction[v->i], '>') == 2)
+		{
 			v->outappend = delimet(deriction[v->i]);
+			close(open(v->outappend, O_CREAT | O_TRUNC, 0644));
+		}
 		else
 		{
 			v->outfile = delimet(deriction[v->i]);
@@ -90,7 +93,7 @@ void	help_me(t_help_var *v)
 		ft_close(v->fds, v->lenpipe);
 	if (WIFEXITED(g_s[1]))
 		g_s[1] = WEXITSTATUS(g_s[1]);
-	if(WIFSIGNALED(g_s[1]))
+	if(WIFSIGNALED(g_s[1]) && g_s[2] == 1)
 		g_s[1] = WTERMSIG(g_s[1]) + 128;
 	g_s[0] = 0;
 	v->i = 0;

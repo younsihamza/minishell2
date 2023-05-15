@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 16:05:38 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/14 18:10:10 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/15 18:35:42 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,8 @@
 # include <fcntl.h>
 # include <signal.h>
 # include <sys/stat.h>
-#include <sys/wait.h>
 
-int	g_s[2];
+int	g_s[3];
 typedef struct lexer
 {
 	int	i;
@@ -61,6 +60,7 @@ typedef struct data{
 	char		***deriction;
 	char		***heredoc;
 	int			*status;
+	char		***typefile;
 	char		*pathhome;
 }	t_data;
 
@@ -141,8 +141,10 @@ void	free2d(char **table);
 void	handle_sigint(int sig);
 void	ft_export(char **str, t_vars **env, t_vars **declare);
 void	echo(char **cmd);
-void	cd(char *p, t_data *d);
+void	cd(char *p, t_data *d,t_vars **env,t_vars **declare);
 void	cmd_env(t_vars *env);
+int ft_alpha_s(char str);
+int ft_test_var(char *str,int len);
 char	**ft_env(t_vars *vars);
 char	*delimet(char *l);
 void	ft_close(int **fd, int len);
@@ -187,5 +189,4 @@ void	help_me(t_help_var *v);
 char	*herdoc_expand(char *data, t_vars *env);
 char	*ft_itoa(int n);
 int		ft_atoi(const char *str);
-int 	ft_alpha_s(char str);
 #endif // !

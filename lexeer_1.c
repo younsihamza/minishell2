@@ -6,7 +6,7 @@
 /*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 13:14:33 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/13 15:19:56 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/15 16:07:28 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	token_last(t_lexer *lex, char *text, t_node **head)
 {
 	char	*p;
 
-	p = " |><$\"";
+	p = " '|><$\"";
 	if (ft_strchr(p, text[lex->i]) == 0)
 	{
 		lex->j = lex->i;

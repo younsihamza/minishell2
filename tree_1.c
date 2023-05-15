@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tree_1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 16:46:22 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/14 19:43:45 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/15 15:22:00 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ t_node	*simpletoken(char *text)
 	if (text[lex.i] == '$')
 	{
 		lex.j = lex.i + 1;
-		if(text[lex.j] >= '0' && text[lex.j] <= '9')
+		if((text[lex.j] >= '0' && text[lex.j] <= '9') || text[lex.j] >= '?' )
 			{
 				add_back(&list, ft_lstnew(ft_substr(text,
 					lex.i, 2), "OP_VR", lex.spaces));

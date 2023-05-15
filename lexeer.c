@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexeer.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 11:58:29 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/14 18:24:03 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/15 16:09:02 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	token_foor(t_lexer *lex, char *text, t_node **head)
 	if (text[lex->i] == '$')
 	{
 		lex->j = lex->i + 1;
-		if(text[lex->j] >= '0' && text[lex->j] <= '9')
+		if((text[lex->j] >= '0' && text[lex->j] <= '9') || text[lex->j] >= '?' )
 			{
 				add_back(head, ft_lstnew(ft_substr(text,
 					lex->i, 2), "OP_VR", lex->spaces));
@@ -103,7 +103,6 @@ void	token_foor(t_lexer *lex, char *text, t_node **head)
 			lex->j = lex->i + 1;
 			if(text[lex->j] == '_' || (text[lex->j] >= 'a' && text[lex->j] <= 'z') || (text[lex->j] >= 'A' && text[lex->j] <= 'Z') )
 			{
-				puts("here_1");
 				lex->j++;
 				while (ft_alpha_s(text[lex->j]) != -1 && text[lex->j])
 					lex->j++;

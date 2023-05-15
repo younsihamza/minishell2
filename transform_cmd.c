@@ -6,7 +6,7 @@
 /*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 15:59:57 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/13 11:53:53 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/15 16:42:08 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void	convert_op(t_help_var *v, t_node **rot, t_data	*d)
 void	convert_deriction(t_help_var *v, t_node **rot, t_data	*d)
 {
 	d->deriction = ft_calloc(sizeof(char **), v->len + 2);
+	//d->t = ft_calloc(sizeof(char **), v->len + 2);
 	d->status = ft_calloc(sizeof(int),v->len + 1);
 	v->i = 0;
 	v->j = 0;

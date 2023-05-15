@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 15:49:39 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/13 16:41:30 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/15 18:41:08 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	build_in_parent(t_data *var, int i, t_vars **env, t_vars **declare)
 	if (ft_strcmp(var->cmd[i][0], "cd") == 0)
 	{
 		if (var->op[i] == NULL)
-			cd(var->cmd[i][1], var);
+			cd(var->cmd[i][1], var,env,declare);
 	}
 	else if (ft_strcmp(var->cmd[i][0], "exit") == 0)
 	{
@@ -111,9 +111,10 @@ void	execute(t_data *var, t_vars **env, t_vars **declare)
 
 	v.pipeincrement = 0;
 	v.lenpipe = 0;
+	g_s[1] = 0;
+	g_s[2] = 0;
 	v.i = 0;
 	pipe_tool(&v, var);
-
 	while (v.i <= v.lenpipe)
 	{
 		if (var->cmd[v.i] != NULL)

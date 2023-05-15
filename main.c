@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 13:27:20 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/13 17:52:48 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/15 16:49:02 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,7 @@ void	ft_shell(t_env *envir, char *pathHome)
 	{
 		text = readline ("minishell -> $> ");
 		if (!text)
-		{
-			write(1,"\n",1);
 			break;
-		}
 		if (*text)
 			add_history(text);
 		head = token(text);
@@ -79,7 +76,6 @@ int	main(int ac, char **argv, char **env)
 	t_env	envir;
 
 	g_s[0] = 0;
-	g_s[1] = 0;
 	rl_catch_signals = 0;
 	signal (SIGINT, &handle_sigint);
 	signal (SIGQUIT, &handle_sigint);
@@ -99,8 +95,8 @@ int	main(int ac, char **argv, char **env)
 			char *buf = ft_strjoin("export SHLVL=",str);
 			tmp = ft_split(buf, ' ');
 			ft_export(tmp, &envir.envv, &envir.declare);
-			free2d(tmp);
 			free(str);
+			free2d(tmp);
 		}
 	}
 	pathhome = get_env_arr("ZDOTDIR", envir.envv);
