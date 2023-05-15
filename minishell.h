@@ -6,7 +6,7 @@
 /*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 16:05:38 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/15 16:40:45 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/15 19:19:29 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # include <signal.h>
 # include <sys/stat.h>
 
-int	g_s[2];
+int	g_s[3];
 typedef struct lexer
 {
 	int	i;
@@ -154,7 +154,7 @@ void	add_envback(t_vars **lst, t_vars *new);
 t_vars	*get_env(char **env);
 void	build_in_child(char **cmd, t_vars **env, t_vars **declare);
 void	cmd1(char **cmd, t_vars **env, t_vars **declare);
-void	find_file(t_help_var *v, char **deriction,int test);
+int		find_file(t_help_var *v, char **deriction,int test,char **typefile);
 void	in_file(t_help_var *v, char **heredoctable);
 void	ft_unset(char **args, t_vars **vars);
 void	ft_unset_declare(char **args, t_vars **vars);
@@ -184,7 +184,7 @@ void	ft_add_new(t_vars **declare, char *str, char *buffer1);
 char	*ft_content(char *str);
 void	free_head(t_node *head);
 int		check_error(int i, char *text, t_node **head);
-void	dups(char **deriction, char **heredoctable, int test);
+void	dups(char **deriction, char **heredoctable, int test,char **typefile);
 void	help_me(t_help_var *v);
 char	*herdoc_expand(char *data, t_vars *env);
 char	*ft_itoa(int n);

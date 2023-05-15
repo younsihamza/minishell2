@@ -6,14 +6,25 @@
 /*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 15:49:28 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/14 18:38:08 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/15 20:35:12 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	find_file(t_help_var *v, char **deriction,int test)
+int	find_file(t_help_var *v, char **deriction,int test,char **typefile)
 {
+	if(ft_search(deriction[v->i], '<') != 2)
+		{
+			if(ft_strcmp(typefile[v->i],"OP_VR") == 0 && (ft_strchr(deriction[v->i], ' ') == 1 || ft_strlen(deriction[v->i]) == 0))
+				{
+					if(test == 0)
+						write(2,"bash: ambiguous redirect\n",26);
+					else
+						exit(0);
+					return(1);
+				}
+		}
 	if (ft_search(deriction[v->i], '<'))
 	{
 		if (ft_search(deriction[v->i], '<') == 2)
@@ -29,6 +40,7 @@ void	find_file(t_help_var *v, char **deriction,int test)
 					write(2, "No such file or directory\n", 27);
 				else
 					exit(126);
+				return(1);
 			}
 			close(v->fd);
 		}
@@ -38,7 +50,7 @@ void	find_file(t_help_var *v, char **deriction,int test)
 		if (ft_search(deriction[v->i], '>') == 2)
 		{
 			v->outappend = delimet(deriction[v->i]);
-			close(open(v->outappend, O_CREAT | O_TRUNC, 0644));
+			close(open(v->outappend, O_CREAT, 0644));
 		}
 		else
 		{
@@ -47,6 +59,7 @@ void	find_file(t_help_var *v, char **deriction,int test)
 			v->outappend = NULL;
 		}
 	}
+	return(0);
 }
 
 void	in_file(t_help_var *v, char **heredoctable)
@@ -89,11 +102,13 @@ int	out_file(t_help_var *v)
 
 void	help_me(t_help_var *v)
 {
-	while ((waitpid(0, &g_s[1], 0)) != -1)
+	if(waitpid(v->id, &g_s[1], 0) != -1)
+		ft_close(v->fds, v->lenpipe);
+	while ((waitpid(0, NULL, 0)) != -1)
 		ft_close(v->fds, v->lenpipe);
 	if (WIFEXITED(g_s[1]))
 		g_s[1] = WEXITSTATUS(g_s[1]);
-	if(WIFSIGNALED(g_s[1]))
+	if(WIFSIGNALED(g_s[1]) && g_s[2] == 1)
 		g_s[1] = WTERMSIG(g_s[1]) + 128;
 	g_s[0] = 0;
 	v->i = 0;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_signal.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 14:25:37 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/11 14:44:19 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/15 19:21:59 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	handle_sigint(int sig)
 {
+	g_s[2] = 1;
 	if (sig == SIGINT && g_s[0] == 0)
 	{
 		printf("\n");

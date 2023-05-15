@@ -36,6 +36,10 @@
   "C_Cpp_Runner.useAddressSanitizer": false,
   "C_Cpp_Runner.showCompilationTime": false,
   "files.associations": {
-    "ostream": "c"
+    "ostream": "c",
+    "array": "c",
+    "string": "c",
+    "string_view": "c",
+    "vector": "c"
   }
 }
