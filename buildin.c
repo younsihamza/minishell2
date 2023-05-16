@@ -6,7 +6,7 @@
 /*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 22:27:54 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/16 11:30:46 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/16 14:31:00 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,11 +78,21 @@ void	echo(char **cmd)
 void	cd(char *p, t_data *d,t_vars **env,t_vars **declare)
 {
 	int	a;
+	int b =0;
 	char **tmp = NULL;
 	char *buf;
 	d->pathhome =ft_calloc(1,1024);
 	if((getcwd(d->pathhome,1024)) == NULL)
+	{
+		free(d->pathhome);
+		a = chdir(p);
+		b =chdir(getcwd(d->pathhome,1024));
+		if(a == -1 && p != NULL)
+			printf("(%s) No such file or directory\n", p);
+		else if(ft_strcmp("..",p) == 0 &&  b == -1)
+			write(2,"cd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory\n",108);
 		return;
+	}
 	if (p == NULL)
 	{
 		if(get_env_arr("HOME",*env) != NULL)
@@ -105,7 +115,10 @@ void	cd(char *p, t_data *d,t_vars **env,t_vars **declare)
 			}
 		}
 		else
+		{
+			g_s[1] =  1;
 			write(2,"bash: cd: HOME not set\n",23);
+		}
 
 		return ;
 	}

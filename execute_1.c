@@ -6,7 +6,7 @@
 /*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 15:49:18 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/13 12:07:13 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/16 16:06:05 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,12 @@ void	build_in_child(char **cmd, t_vars **env, t_vars **declare)
 	else if (ft_strcmp("pwd", cmd[0]) == 0)
 	{
 		path = ft_calloc(sizeof(char), 1024);
-		if (!path)
-			exit(0);
 		if (getcwd(path, 1024) != NULL)
 			printf("%s\n", path);
+		else if(get_env_arr("PWD",*env) != NULL)
+			printf("%s\n", get_env_arr("PWD",*env));
 		else
-			printf("%s", "error");
+			printf("%s\n", "error");
 		free(path);
 	}
 	else if (ft_strcmp(cmd[0], "export") == 0)
@@ -76,7 +76,11 @@ void	cmd1(char **cmd, t_vars **env, t_vars **declare)
 		|| ft_strcmp(cmd[0], "export") == 0 || ft_strcmp(cmd[0], "env") == 0)
 		build_in_child(cmd, env, declare);
 	v.envs = ft_env(*env);
-	execve(cmd[0], cmd, v.envs);
+	if(ft_strchr(cmd[0],'/'))
+	{
+		execve(cmd[0], cmd, v.envs);
+		exit(127);
+	}
 	v.path = get_env_arr("PATH", *env);
 	v.split_path = ft_split(v.path, ':');
 	if (v.split_path != NULL)
@@ -93,4 +97,5 @@ void	cmd1(char **cmd, t_vars **env, t_vars **declare)
 		free2d(v.split_path);
 	}
 	help_free(&v, cmd);
+	exit(127);
 }

@@ -6,7 +6,7 @@
 /*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 15:49:39 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/16 11:32:53 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/16 16:57:27 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,11 +79,15 @@ void	pipe_tool(t_help_var *v, t_data *var)
 	}
 	v->i = 0;
 }
-
+void handel()
+{}
 void	child_parte(t_data *var, t_vars **env, t_vars **declare, t_help_var *v)
 {
+	v->pidprocess = ft_calloc(sizeof(int),v->lenpipe);
 	g_s[0] = 1;
 	v->id = fork();
+	if(v->id> 0)
+		v->pidprocess[v->i] = v->id;
 	if (v->id < 0)
 		return;
 	if (v->id == 0)

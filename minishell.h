@@ -6,7 +6,7 @@
 /*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 16:05:38 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/15 19:19:29 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/16 16:57:14 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ typedef struct data{
 	int			*status;
 	char		***typefile;
 	char		*pathhome;
+	
 }	t_data;
 
 typedef struct help_var
@@ -91,6 +92,7 @@ typedef struct help_var
 	char	**tmp2d;
 	int		r;
 	int		*file_descripter;
+	int			*pidprocess;
 }t_help_var;
 
 typedef struct declare

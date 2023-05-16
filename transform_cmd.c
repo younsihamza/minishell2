@@ -6,7 +6,7 @@
 /*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 15:59:57 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/16 11:34:30 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/16 12:29:55 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,6 @@ void	kill_leaks(t_help_var *v, t_data *d)
 	v->i = 0;
 	while (d->typefile[v->i])
 	{
-		free2d(d->typefile[v->i]);
 		free(d->typefile[v->i]);
 		v->i++;
 	}

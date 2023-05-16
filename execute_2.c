@@ -6,7 +6,7 @@
 /*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 15:49:28 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/16 10:51:54 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/16 17:04:07 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,14 @@ int	out_file(t_help_var *v)
 
 void	help_me(t_help_var *v)
 {
+	int j = 0;
 	while ((waitpid(0, NULL, 0)) != -1)
+	{
 		ft_close(v->fds, v->lenpipe);
+		waitpid(v->pidprocess[j],&g_s[1],0);
+		j++;
+	}
+	printf("%d\n",g_s[1]);
 	if(waitpid(v->id, &g_s[1], 0) != -1)
 		ft_close(v->fds, v->lenpipe);
 	if (WIFEXITED(g_s[1]))
