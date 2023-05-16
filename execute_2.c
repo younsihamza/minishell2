@@ -6,7 +6,7 @@
 /*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 15:49:28 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/15 20:35:12 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/16 10:42:23 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	find_file(t_help_var *v, char **deriction,int test,char **typefile)
 {
 	if(ft_search(deriction[v->i], '<') != 2)
 		{
-			if(ft_strcmp(typefile[v->i],"OP_VR") == 0 && (ft_strchr(deriction[v->i], ' ') == 1 || ft_strlen(deriction[v->i]) == 0))
+			if(ft_strcmp(typefile[v->i],"OP_VR") == 0 && (ft_strchr(deriction[v->i], ' ') == 1 || ft_strlen(delimet(deriction[v->i])) == 0))
 				{
 					if(test == 0)
 						write(2,"bash: ambiguous redirect\n",26);
