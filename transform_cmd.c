@@ -6,7 +6,7 @@
 /*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 15:59:57 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/15 18:27:01 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/16 11:34:30 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,14 @@ void	kill_leaks(t_help_var *v, t_data *d)
 		v->i++;
 	}
 	free(d->cmd);
+	v->i = 0;
+	while (d->typefile[v->i])
+	{
+		free2d(d->typefile[v->i]);
+		free(d->typefile[v->i]);
+		v->i++;
+	}
+	free(d->typefile);
 }
 
 void	transform_cmd(t_node **rot, t_vars **env,
