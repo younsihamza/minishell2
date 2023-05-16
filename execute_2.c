@@ -6,7 +6,7 @@
 /*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 15:49:28 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/16 10:42:23 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/16 10:51:54 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	find_file(t_help_var *v, char **deriction,int test,char **typefile)
 				if(test == 0)
 					write(2, "No such file or directory\n", 27);
 				else
-					exit(126);
+					exit(1);
 				return(1);
 			}
 			close(v->fd);
@@ -102,9 +102,9 @@ int	out_file(t_help_var *v)
 
 void	help_me(t_help_var *v)
 {
-	if(waitpid(v->id, &g_s[1], 0) != -1)
-		ft_close(v->fds, v->lenpipe);
 	while ((waitpid(0, NULL, 0)) != -1)
+		ft_close(v->fds, v->lenpipe);
+	if(waitpid(v->id, &g_s[1], 0) != -1)
 		ft_close(v->fds, v->lenpipe);
 	if (WIFEXITED(g_s[1]))
 		g_s[1] = WEXITSTATUS(g_s[1]);
