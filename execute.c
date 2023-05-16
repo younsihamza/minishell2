@@ -6,13 +6,13 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 15:49:39 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/15 18:41:08 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/16 18:52:41 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	dups(char **deriction, char **heredoctable, int test)
+void	dups(char **deriction, char **heredoctable, int test,char **typefile)
 {
 	t_help_var	v;
 
@@ -23,7 +23,8 @@ void	dups(char **deriction, char **heredoctable, int test)
 	v.i = 0;
 	while (deriction[v.i])
 	{
-		find_file(&v, deriction,test);
+		if(find_file(&v, deriction,test,typefile) == 1)
+			break;
 		v.i++;
 	}
 	if (test == 1)
@@ -81,8 +82,12 @@ void	pipe_tool(t_help_var *v, t_data *var)
 
 void	child_parte(t_data *var, t_vars **env, t_vars **declare, t_help_var *v)
 {
+	//v->pidprocess = ft_calloc(sizeof(int),v->lenpipe + 1);
 	g_s[0] = 1;
+	v->pidprocess = &g_s[1];
 	v->id = fork();
+	if(v->id> 0)
+		v->lastprose =v->id;
 	if (v->id < 0)
 		return;
 	if (v->id == 0)
@@ -92,13 +97,13 @@ void	child_parte(t_data *var, t_vars **env, t_vars **declare, t_help_var *v)
 			if (ft_strncmp(var->op[v->i]->type, "OP_PIPE", 7) == 0)
 				dup2(v->fds[v->pipeincrement][1], 1);
 		if (var->deriction[v->i] != NULL)
-			dups(var->deriction[v->i], var->heredoc[v->i], 1);
+			dups(var->deriction[v->i], var->heredoc[v->i], 1,var->typefile[v->i]);
 		if (v->i - 1 >= 0 && v->pipeincrement > 0)
 			if (ft_strncmp(var->op[v->i - 1]->type, "OP_PIPE", 7) == 0)
 				dup2(v->fds[v->pipeincrement - 1][0], 0);
 		ft_close(v->fds, v->lenpipe);
 		cmd1(var->cmd[v->i], env, declare);
-		exit(127);
+		exit(1);
 	}
 	if (var->op[v->i] != NULL)
 		if (ft_strncmp(var->op[v->i]->type, "OP_PIPE", 7) == 0)
@@ -111,10 +116,11 @@ void	execute(t_data *var, t_vars **env, t_vars **declare)
 
 	v.pipeincrement = 0;
 	v.lenpipe = 0;
-	g_s[1] = 0;
-	g_s[2] = 0;
 	v.i = 0;
+	g_s[2] = 0;
+	v.pidprocess = &g_s[1];
 	pipe_tool(&v, var);
+
 	while (v.i <= v.lenpipe)
 	{
 		if (var->cmd[v.i] != NULL)
@@ -126,6 +132,7 @@ void	execute(t_data *var, t_vars **env, t_vars **declare)
 				|| ft_strcmp(var->cmd[v.i][0], "unset") == 0)
 				{
 				build_in_parent(var, v.i, env, declare);
+				v.pidprocess = NULL;
 				}
 			else
 				child_parte(var, env, declare, &v);

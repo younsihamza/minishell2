@@ -6,7 +6,7 @@
 /*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 16:46:22 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/15 15:22:00 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/15 19:12:38 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ t_node	*simpletoken(char *text)
 	if (text[lex.i] == '$')
 	{
 		lex.j = lex.i + 1;
-		if((text[lex.j] >= '0' && text[lex.j] <= '9') || text[lex.j] >= '?' )
+		if((text[lex.j] >= '0' && text[lex.j] <= '9') || text[lex.j] == '?' )
 			{
 				add_back(&list, ft_lstnew(ft_substr(text,
 					lex.i, 2), "OP_VR", lex.spaces));
@@ -79,7 +79,6 @@ t_node	*simpletoken(char *text)
 	}
 	else
 	{
-		puts("here");
 		lex.j = lex.i + 1;
 		while(text[lex.j] && text[lex.j] != '$')
 			lex.j++;
@@ -112,6 +111,15 @@ t_node	*expand_two(char **data, t_node **str, t_vars *env)
 
 	tmp = NULL;
 	str1 = simpletoken(*data);
+
+		// 	while(str1 != NULL)
+		// {
+		// 	printf("%s\n",str1->data);
+		// 	str1 = str1->next; 
+		// }
+		// exit(0);
+		
+
 	*str = str1;
 	while (str1 != NULL)
 	{

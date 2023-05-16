@@ -6,7 +6,7 @@
 /*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 14:58:27 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/13 12:41:28 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/15 18:23:56 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ int	join_node(t_node **root, int *i, char *hold)
 				|| ft_strcmp(root[j]->type, "SINGLE") == 0
 				|| ft_strcmp(root[*i]->type, "SINGLE") == 0)
 				root[*i]->status = 1;
+			if(ft_strcmp(root[j]->type, "OP_VR") == 0 || ft_strcmp(root[*i]->type, "OP_VR") == 0)
+				root[*i]->type = "OP_VR";
 			free(hold);
 		}
 		else

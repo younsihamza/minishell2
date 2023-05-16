@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 13:27:20 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/15 16:49:02 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/15 19:15:20 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,12 @@ int	main(int ac, char **argv, char **env)
 	t_env	envir;
 
 	g_s[0] = 0;
+	g_s[1] = 0;
 	rl_catch_signals = 0;
 	signal (SIGINT, &handle_sigint);
 	signal (SIGQUIT, &handle_sigint);
+	envir.envv = NULL;
+	envir.declare = NULL;
 	if(*env == NULL|| get_env_arr("SHLVL", envir.envv) != NULL)
 	{
 		add_envback(&envir.declare, ft_envnew(ft_strdup ("SHLVL=1")));
@@ -99,7 +102,7 @@ int	main(int ac, char **argv, char **env)
 			free2d(tmp);
 		}
 	}
-	pathhome = get_env_arr("ZDOTDIR", envir.envv);
+	pathhome = NULL;
 	argv = NULL;
 	if (ac != 1)
 		return (1);

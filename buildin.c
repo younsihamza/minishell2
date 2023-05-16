@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   buildin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 22:27:54 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/14 18:08:33 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/16 18:48:01 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,8 @@ void	cd(char *p, t_data *d,t_vars **env,t_vars **declare)
 	int	a;
 	char **tmp = NULL;
 	char *buf;
-	if(getcwd(d->pathhome,1024) == NULL)
+	d->pathhome =ft_calloc(1,1024);
+	if((getcwd(d->pathhome,1024)) == NULL)
 		return;
 	if (p == NULL)
 	{
@@ -98,12 +99,17 @@ void	cd(char *p, t_data *d,t_vars **env,t_vars **declare)
 				tmp = ft_split(buf, ' ');
 				ft_export(tmp, env, declare);
 				free(buf);
+				free(d->pathhome);
 				free2d(tmp);
 				free(tmp);
 			}
 		}
 		else
+		{
+			g_s[1] = 1;
 			write(2,"bash: cd: HOME not set\n",23);
+			exit(1);
+		}
 
 		return ;
 	}
@@ -116,20 +122,24 @@ void	cd(char *p, t_data *d,t_vars **env,t_vars **declare)
 		a = chdir(p);
 	if (a == -1)
 	{
-		g_s[1] =  1;
 		printf("(%s) No such file or directory\n", p);
+		g_s[1] =  1;
 	}else{
+				
 				buf = ft_strjoin("export OLDPWD=",d->pathhome);
 				tmp = ft_split(buf, ' ');
 				ft_export(tmp, env, declare);
 				free(buf);
+				free(d->pathhome);
 				free2d(tmp);
 				free(tmp);
-				if(getcwd(d->pathhome,1024) == NULL)
+				d->pathhome =ft_calloc(1,1024);
+				if(getcwd(d->pathhome,1024)== NULL)
 					exit(0);
 				buf = ft_strjoin("export PWD=",d->pathhome);
 				tmp = ft_split(buf, ' ');
 				free(buf);
+				free(d->pathhome);
 				ft_export(tmp, env, declare);
 				free2d(tmp);
 				free(tmp);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_1.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 15:49:18 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/13 12:07:13 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/16 15:34:30 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,11 @@ void	build_in_child(char **cmd, t_vars **env, t_vars **declare)
 
 void	help_free(t_help_var *v, char **cmd)
 {
-	write(2, "IH : command not found\n", 24);
+	write(2, "IH : command not founfd\n", 24);
 	free2d(cmd);
 	free(v->envs);
 	free(v->split_path);
+	exit(127);
 }
 
 void	cmd1(char **cmd, t_vars **env, t_vars **declare)
@@ -76,7 +77,11 @@ void	cmd1(char **cmd, t_vars **env, t_vars **declare)
 		|| ft_strcmp(cmd[0], "export") == 0 || ft_strcmp(cmd[0], "env") == 0)
 		build_in_child(cmd, env, declare);
 	v.envs = ft_env(*env);
-	execve(cmd[0], cmd, v.envs);
+	if(ft_strchr(cmd[0],'/'))
+	{
+		execve(cmd[0], cmd, v.envs);
+		exit(126);
+	}
 	v.path = get_env_arr("PATH", *env);
 	v.split_path = ft_split(v.path, ':');
 	if (v.split_path != NULL)
