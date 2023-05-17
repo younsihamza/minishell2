@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 15:49:28 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/16 19:34:06 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/17 10:54:08 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,11 +104,26 @@ int	out_file(t_help_var *v)
 
 void	help_me(t_help_var *v)
 {
+	// int j = 0;
+	// int status = 0;
 	ft_close(v->fds, v->lenpipe);
 	while ((waitpid(v->lastprose,v->pidprocess,0) != -1 || waitpid(-1, NULL, 0) != -1))
 	{
-		ft_close(v->fds, v->lenpipe);		
-	}
+		// status = 0;
+		ft_close(v->fds, v->lenpipe);
+		// waitpid(v->pidprocess[j],&status,0);
+		
+		// if(j == (v->lenpipe))
+		// {
+		// 	g_s[1] = status;
+		// 	// printf("|%d|\n", g_s[1]);
+			// break;
+		// j++;
+			
+}
+
+	// printf("%d", j);
+	// printf("%d", g_s[1]);
 	if (WIFEXITED(g_s[1]))
 	{
 		g_s[1] = WEXITSTATUS(g_s[1]);

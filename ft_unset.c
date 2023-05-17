@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 14:29:28 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/14 18:42:55 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/17 11:52:14 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	ft_unset(char **args, t_vars **vars)
 	i = 1;
 	while (args[i])
 	{
-		if (is_alpha(args[i]) == -1)
+		if (is_alpha(args[i]) == -1 || ft_strlen(args[i]) == 0)
 		{
 			g_s[1] = 1; 
 			printf("unset: `%s': not a valid identifier\n", args[i]);
