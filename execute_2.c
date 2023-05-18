@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 15:49:28 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/17 10:54:08 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/17 18:52:34 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,9 +102,13 @@ int	out_file(t_help_var *v)
 	return (v->fd2);
 }
 
-void	help_me(t_help_var *v)
+void	help_me(t_help_var *v, t_vars *env)
 {
 	// int j = 0;
+	g_s[3] = ft_atoi(get_env_arr("SHLVL", env));
+	//fprintf(stderr, "%d", g_s[3]);
+	// fprintf(stderr, "%d", g_s[3]);
+	// puts("here");
 	// int status = 0;
 	ft_close(v->fds, v->lenpipe);
 	while ((waitpid(v->lastprose,v->pidprocess,0) != -1 || waitpid(-1, NULL, 0) != -1))

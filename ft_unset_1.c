@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 15:24:20 by ichouare          #+#    #+#             */
-/*   Updated: 2023/04/12 15:26:37 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/18 15:49:17 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,30 @@ char	*ft_content(char *str)
 	return (buffer1);
 }
 
+void	ft_add_new_up(t_vars **declare, char *str, char *buffer1, char *data)
+{
+	t_vars	*cur;
+	char *tmp;
+
+	cur = *declare;
+	while (cur != NULL)
+	{
+		if (ft_strncmp(cur->data, str, ft_strlencher(cur->data, '=')) == 0)
+		{
+			if (ft_strchr(str, '=') == 0)
+			{
+				free(buffer1);
+				return ;
+			}
+			tmp = cur->data;
+			cur->data = ft_strjoin(ft_substr(cur->data, 0, ft_strlen(cur->data)), data);
+			free(tmp);
+			return ;
+		}
+	cur = cur->next;
+	}
+	add_envback(declare, ft_envnew(buffer1));
+}
 void	ft_add_new(t_vars **declare, char *str, char *buffer1)
 {
 	t_vars	*cur;

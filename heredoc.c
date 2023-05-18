@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 22:29:05 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/13 12:03:30 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/17 17:33:36 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ char	**heredoc(char *stop,int status, t_vars **env)
 				else
 					value = ft_join2d(value, herdoc_expand(p,*env));
 				free(tmp);
-			}	
+			}
 		}else
 			break;
 	}

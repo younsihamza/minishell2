@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 15:08:59 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/14 18:45:11 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/18 15:29:33 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,14 @@ int ft_test_var(char *str,int len)
 	int i= 0;
 	if(ft_strlen(str) == 0 || test_first(str[0]) == 0)
 		return(1);
-	while(i < len)
+	while(i < len - 1)
 	{
 		if(ft_isalnum(str[i]) == 0)
 			return(1);
 		i++;	
 	}
+	if(str[len] != '=')
+		return(1);
 	return(0);
 }
 

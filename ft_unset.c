@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 14:29:28 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/17 11:52:14 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/18 15:48:32 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,15 @@ void	ft_modify(char *str, t_vars **declare)
 		g_s[1] = 1;
 		printf("bash: export: `%s': not a valid identifier\n", str);
 		return ;
+	}
+	if(str[ft_strlencher(str,'=') - 1] == '+' && ft_strchr(str, '=') != 0)
+	{
+		char *data = ft_substr(str, 0, ft_strlencher(str,'=') - 1);
+		data = ft_strjoin(data, "=");
+		data = ft_strjoin(data, ft_substr(str, ft_strlencher(str,'=') + 1, ft_strlen(str)));
+		puts(data);
+		ft_add_new_up(declare, str, data, ft_substr(str, ft_strlencher(str,'=') + 1, ft_strlen(str)));
+		return;
 	}
 	if (ft_strchr(str, '=') != 0)
 		buffer1 = ft_content(str);

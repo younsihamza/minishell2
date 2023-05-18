@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexeer.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 11:58:29 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/15 19:07:30 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/17 18:24:29 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ void	token_foor(t_lexer *lex, char *text, t_node **head)
 			}
 			else
 			{
-				while (ft_strchr(" |><$\"", text[lex->j]) == 0 
+				while (ft_strchr(" '|><$\"", text[lex->j]) == 0 
 					&& text[lex->j])
 						lex->j++;
 					add_back(head, ft_lstnew(ft_substr(text,

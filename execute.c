@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 15:49:39 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/16 18:52:41 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/17 18:29:02 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ void	pipe_tool(t_help_var *v, t_data *var)
 
 void	child_parte(t_data *var, t_vars **env, t_vars **declare, t_help_var *v)
 {
-	//v->pidprocess = ft_calloc(sizeof(int),v->lenpipe + 1);
 	g_s[0] = 1;
 	v->pidprocess = &g_s[1];
 	v->id = fork();
@@ -139,5 +138,5 @@ void	execute(t_data *var, t_vars **env, t_vars **declare)
 		}
 		v.i++;
 	}
-	help_me(&v);
+	help_me(&v, *env);
 }

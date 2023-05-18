@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 13:27:20 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/15 19:15:20 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/17 18:45:30 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,18 +70,22 @@ void	ft_shell(t_env *envir, char *pathHome)
 	}
 }
 
+
+
 int	main(int ac, char **argv, char **env)
 {
 	char	*pathhome;
 	t_env	envir;
-
+	
 	g_s[0] = 0;
 	g_s[1] = 0;
+	g_s[3] = 1;
 	rl_catch_signals = 0;
 	signal (SIGINT, &handle_sigint);
 	signal (SIGQUIT, &handle_sigint);
 	envir.envv = NULL;
 	envir.declare = NULL;
+
 	if(*env == NULL|| get_env_arr("SHLVL", envir.envv) != NULL)
 	{
 		add_envback(&envir.declare, ft_envnew(ft_strdup ("SHLVL=1")));

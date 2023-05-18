@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 16:05:38 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/16 18:12:31 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/18 15:41:52 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # include <signal.h>
 # include <sys/stat.h>
 
-int	g_s[3];
+int	g_s[4];
 typedef struct lexer
 {
 	int	i;
@@ -187,8 +187,9 @@ char	*ft_content(char *str);
 void	free_head(t_node *head);
 int		check_error(int i, char *text, t_node **head);
 void	dups(char **deriction, char **heredoctable, int test,char **typefile);
-void	help_me(t_help_var *v);
+void	help_me(t_help_var *v, t_vars *env);
 char	*herdoc_expand(char *data, t_vars *env);
 char	*ft_itoa(int n);
 int		ft_atoi(const char *str);
+void	ft_add_new_up(t_vars **declare, char *str, char *buffer1, char *data);
 #endif // !
