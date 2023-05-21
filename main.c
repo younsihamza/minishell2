@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 13:27:20 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/21 16:03:50 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/21 16:45:40 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,21 +79,16 @@ void	ft_shell(t_env *envir, char *pathHome)
 
 	int original_stdin = dup(STDIN_FILENO);
 	if (original_stdin == -1)
-	{
-        	perror("open");
 			return ;
-	}
 	while (1)
 	{
+		g_s[3] = 1;
 	signal (SIGINT, &handle_sigint);
 	signal (SIGQUIT, &handle_sigint);
 	if(ttyname(0) == NULL)
 	{
 		if (dup2(original_stdin, STDIN_FILENO) == -1) 
-		{
-        	perror("dup2");
         	close(original_stdin);
-		}
 	}
 		text = readline ("minishell -> $> ");
 		if (!text)
@@ -112,7 +107,6 @@ int	main(int ac, char **argv, char **env)
 {
 	char	*pathhome;
 	t_env	envir;
-	test = 1;
 	g_s[0] = 0;
 	g_s[1] = 0;
 	rl_catch_signals = 0;

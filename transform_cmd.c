@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   transform_cmd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 15:59:57 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/16 14:46:45 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/21 18:29:36 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	convert_deriction(t_help_var *v, t_node **rot, t_data	*d)
 		}
 		if ((ft_strcmp("OP_PIPE", rot[v->i]->type) == 0
 				|| rot[v->i +1] == NULL )
-			&& v->file != NULL)
+			)
 		{
 			d->deriction[v->j] = v->file;
 			d->typefile[v->j] = type;
@@ -135,6 +135,11 @@ void	transform_cmd(t_node **rot, t_vars **env,
 	convert_cmd(&d, &v, rot);
 	convert_deriction(&v, rot, &d);
 	d.heredoc = checkherecode(d.deriction, v.len + 2, d.status, env);
+	if(g_s[3] == 0)
+	{
+		kill_leaks(&v, &d);
+		return;
+	}
 	d.pathhome = pathhome;
 	v.i = 0;
 	while (v.i <= v.len)
@@ -144,7 +149,7 @@ void	transform_cmd(t_node **rot, t_vars **env,
 		v.i++;
 	}
 	v.i = 0;
-	ft_tolower(d.cmd);
+		ft_tolower(d.cmd);
 	execute(&d, env, declare);
 	
 	kill_leaks(&v, &d);

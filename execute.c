@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 15:49:39 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/21 15:37:34 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/21 18:40:44 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,30 @@ void	dups(char **deriction, char **heredoctable, int test,char **typefile)
 	}
 }
 
+void ft_exit(char **var, t_vars **env, t_vars **declare)
+{
+	int	i = 0;
+	while(var[i])
+		i++;
+	if(i > 2)
+	{
+		write(1, "exit\n", 5);
+		write(1, "minishell: exit: too many arguments\n", 36);
+		return ;
+	}
+	else if( i == 2)
+		write(1, "minishell: exit: too many arguments\n", 36);
+	char **tmp = NULL;
+	char *str = ft_itoa(ft_atoi(get_env_arr("SHLVL", *env) - 1));
+	char *buf = ft_strjoin("export SHLVL=",str);
+	tmp = ft_split(buf, ' ');
+	ft_export(tmp, env, declare);
+	free(str);
+	free2d(tmp);
+	write(1, "exit\n", 5);
+	exit(0);
+}
+
 void	build_in_parent(t_data *var, int i, t_vars **env, t_vars **declare)
 {
 	if (ft_strcmp(var->cmd[i][0], "cd") == 0)
@@ -45,7 +69,7 @@ void	build_in_parent(t_data *var, int i, t_vars **env, t_vars **declare)
 	else if (ft_strcmp(var->cmd[i][0], "exit") == 0)
 	{
 		if (var->op[0] == NULL)
-			exit(write(2, "exit\n", 5));
+			ft_exit(var->cmd[i],env, declare);
 	}
 	else if (ft_strcmp(var->cmd[i][0], "unset") == 0)
 	{
@@ -113,7 +137,10 @@ void	child_parte(t_data *var, t_vars **env, t_vars **declare, t_help_var *v)
 	signal (SIGQUIT, SIG_DFL);
 		if (var->op[v->i] != NULL)
 			if (ft_strncmp(var->op[v->i]->type, "OP_PIPE", 7) == 0)
+			{
 				dup2(v->fds[v->pipeincrement][1], 1);
+				close(v->fds[v->pipeincrement][1]);
+			}
 		if (var->deriction[v->i] != NULL)
 			dups(var->deriction[v->i], var->heredoc[v->i], 1,var->typefile[v->i]);
 		if (v->i - 1 >= 0 && v->pipeincrement > 0)

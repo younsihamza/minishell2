@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 16:05:38 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/21 16:02:34 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/21 16:38:09 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,7 @@
 # include <fcntl.h>
 # include <signal.h>
 # include <sys/stat.h>
-int test;
-int	g_s[3];
+int	g_s[4];
 typedef struct lexer
 {
 	int	i;
@@ -197,7 +196,6 @@ char	*ft_content_env(char *str);
 void	*ft_calloc(size_t nitems, size_t size);
 void	ft_bzero(void *s, size_t n);
 size_t	ft_strlens(char *p, char a);
-char	*get_next_line(int fd);
 char	*ft_strchrs(char *str, int c);
 void 	handle_new(int sig);
 #endif // !

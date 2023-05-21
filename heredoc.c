@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 22:29:05 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/21 16:05:45 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/21 18:28:41 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ int	ft_search(char *word, char to_find)
 }
 
 void handle_signal(int signum) {
-    if (signum == SIGINT || signum == SIGQUIT) {
+    if (signum == SIGINT ) {
+		g_s[3] = 0;
         close(0);
     }
 }
@@ -55,7 +56,7 @@ char	**heredoc(char *stop,int status, t_vars **env)
 	value = NULL;
 	signal(SIGINT, handle_signal);
     signal(SIGQUIT, handle_signal);
-	while (1 && test)
+	while (1)
 	{
 		p = readline("heredoc>");
 		if(p)
@@ -76,7 +77,7 @@ char	**heredoc(char *stop,int status, t_vars **env)
 	}
 	if (p)
 		free(p);
-	test = 1;
+
 	return (value);
 }
 
@@ -99,18 +100,22 @@ char	***checkherecode(char ***deriction, int len,int *status, t_vars **env)
 	heredoctable = ft_calloc(sizeof(char **), len);
 	if (!heredoctable)
 		exit(0);
-	while (deriction[i] != NULL)
+	while (i < len)
 	{
 		j = 0;
-		while (deriction[i][j])
+		if(deriction[i])
 		{
-			if (ft_search(deriction[i][j], '<') == 2)
+			while (deriction[i][j])
 			{
-				if (heredoctable[i] != NULL)
-					free2d(heredoctable[i]);
-				heredoctable[i] = heredoc(limet(deriction[i][j]),status[i],env);
+				if (ft_search(deriction[i][j], '<') == 2)
+				{
+					if (heredoctable[i] != NULL)
+						free2d(heredoctable[i]);
+					heredoctable[i] = heredoc(limet(deriction[i][j]),status[i],env);
+				}
+				j++;
 			}
-			j++;
+			
 		}
 		i++;
 	}
