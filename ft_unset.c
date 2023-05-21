@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 14:29:28 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/18 15:48:32 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/21 16:06:07 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,43 +95,110 @@ void	ft_unset_declare(char **args, t_vars **vars)
 	}
 }
 
+char	*ft_content_plus(char *str)
+{
+	char	*tmp;
+	char	*buffer1;
+	char	*buffer2;
+
+	tmp = NULL;
+	buffer1 = NULL;
+	buffer2 = NULL;
+	buffer1 = ft_substr(str, 0, ft_strlencher(str, '=') - 1);
+	tmp = buffer1;
+	buffer1 = ft_strjoin(buffer1,"=");
+	free(tmp);
+	buffer2 = ft_substr(str, ft_strlencher(str, '=') + 1, ft_strlen(str));
+	tmp = buffer2;
+	buffer2 = ft_strjoin("\"", buffer2);
+	free(tmp);
+	tmp = buffer2;
+	buffer2 = ft_strjoin(buffer2, "\"");
+	free(tmp);
+	tmp = buffer1;
+	buffer1 = ft_strjoin(buffer1, buffer2);
+	free(buffer2);
+	free(tmp);
+	return (buffer1);
+}
+char	*ft_content_env(char *str)
+{
+	char	*tmp;
+	char	*buffer1;
+	char	*buffer2;
+
+	tmp = NULL;
+	buffer1 = NULL;
+	buffer2 = NULL;
+	buffer1 = ft_substr(str, 0, ft_strlencher(str, '=') - 1);
+	tmp = buffer1;
+	buffer1 = ft_strjoin(buffer1,"=");
+	free(tmp);
+	buffer2 = ft_substr(str, ft_strlencher(str, '=') + 1, ft_strlen(str));
+	tmp = buffer1;
+	buffer1 = ft_strjoin(buffer1, buffer2);
+	free(buffer2);
+	free(tmp);
+	return (buffer1);
+}
 void	ft_modify(char *str, t_vars **declare)
 {
 	char	*buffer1;
+	int test_plus;
 
 	buffer1 = NULL;
+	test_plus = 0;
 	if (ft_test_var(str,ft_strlencher(str,'=')) == 1)
 	{
 		g_s[1] = 1;
-		printf("bash: export: `%s': not a valid identifier\n", str);
+		printf("minishell: export: `%s': not a valid identifier\n", str);
 		return ;
 	}
 	if(str[ft_strlencher(str,'=') - 1] == '+' && ft_strchr(str, '=') != 0)
 	{
-		char *data = ft_substr(str, 0, ft_strlencher(str,'=') - 1);
-		data = ft_strjoin(data, "=");
-		data = ft_strjoin(data, ft_substr(str, ft_strlencher(str,'=') + 1, ft_strlen(str)));
-		puts(data);
-		ft_add_new_up(declare, str, data, ft_substr(str, ft_strlencher(str,'=') + 1, ft_strlen(str)));
-		return;
+		buffer1 = ft_content_plus(str);
+		
+		test_plus = 1;
 	}
-	if (ft_strchr(str, '=') != 0)
+	else if (ft_strchr(str, '=') != 0)
 		buffer1 = ft_content(str);
 	else
 		buffer1 = ft_strdup(str);
-	ft_add_new(declare, str, buffer1);
+	ft_add_new(declare, str, buffer1,test_plus);
 }
 
 void	ft_modify_env(char *str, t_vars **env)
 {
 	t_vars	*cur;
+	char 	*tmp1;
+	char 	*tmp2;
+	char	*tmp;
+	int test_plus = 0;
 
 	cur = *env;
 	if (ft_test_var(str,ft_strlencher(str,'=')) == 1)
 		return ;
+	if(str[ft_strlencher(str,'=') - 1] == '+')
+		{
+			str = ft_content_env(str);
+			test_plus = 1;
+		}
 	while (cur != NULL)
 	{
-		if (ft_strncmp(cur->data, str, ft_strlencher(str, '=')) == 0)
+		if(ft_strncmp(cur->data, str, ft_strlencher(cur->data, '=')) == 0 && test_plus == 1)
+		{
+			tmp1 = ft_strjoin(cur->data + ft_strlencher(cur->data, '=') +1,str + ft_strlencher(str, '=') + 1);
+			tmp2 = ft_substr(str, 0, ft_strlencher(str, '=') + 1);
+			tmp = str;
+			str =  ft_strjoin(tmp2,tmp1);
+			free(tmp);
+			free(tmp2);
+			free(tmp1);
+			free(cur->data);
+			cur->data = str;
+			return ;
+		}
+		else if (ft_strncmp(cur->data, str, ft_strlencher(cur->data, '=')) == 0)
 		{
 			free(cur->data);
 			cur->data = ft_strdup(str);
@@ -140,4 +207,6 @@ void	ft_modify_env(char *str, t_vars **env)
 		cur = cur->next;
 	}
 	add_envback(env, ft_envnew(ft_strdup (str)));
+	if(test_plus == 1)
+		free(str);
 }

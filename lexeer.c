@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexeer.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 11:58:29 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/17 18:24:29 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/20 11:07:52 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,13 @@ void	token_foor(t_lexer *lex, char *text, t_node **head)
 				lex->spaces = 0;
 				lex->i +=2;
 			}
+		else if(text[lex->j] == '\'' ||text[lex->j] == '\"')
+		{
+			add_back(head, ft_lstnew(ft_substr(text,
+					lex->i, 1), "OP_VR", lex->spaces));
+				lex->spaces = 0;
+				lex->i +=1;
+		} 
 		else
 		{
 			lex->j = lex->i + 1;
@@ -122,29 +129,6 @@ void	token_foor(t_lexer *lex, char *text, t_node **head)
 			}
 			lex->i = lex->j;
 			lex->spaces = 0;
-		// 	lex->j = lex->i + 1;
-		// while (ft_strchr(" =/|><$\"", text[lex->j]) == 0 
-
-		// 	  && text[lex->j])
-		// 		lex->j++;
-		// if (lex->j != lex->i +1)
-		// {
-		// 	if((text[lex->i + 1] == '_' || is_alpha(&text[lex->i + 1]) != -1) &&  ft_alpha_s(&text[lex->i + 2]) != -1)
-		// 	{
-		// 		add_back(head, ft_lstnew(ft_substr(text,
-		// 				lex->i, lex->j - lex->i), "OP_VR", lex->spaces));
-		// 	}
-		// 	else
-		// 	{
-		// 		add_back(head, ft_lstnew(ft_substr(text,
-		// 				lex->i, lex->j - lex->i), "OP_WR", lex->spaces));
-		// 	}
-		// }
-		// else
-		// 	add_back(head, ft_lstnew(ft_substr(text,
-		// 				lex->i, 1), "OP_WR", lex->spaces));	
-		// lex->i = lex->j;
-		// lex->spaces = 0;
 		}
 	}	
 }

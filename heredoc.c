@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 22:29:05 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/17 17:33:36 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/21 16:05:45 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ char	*limet(char *l)
 	int	i;
 
 	i = 0;
-	while (ft_strchr(" <", l[i]) != 0)
+	while (ft_strchr("<", l[i]) != 0)
 		i++;
 	return (l + i);
 }
@@ -38,20 +38,29 @@ int	ft_search(char *word, char to_find)
 	return (len);
 }
 
+void handle_signal(int signum) {
+    if (signum == SIGINT || signum == SIGQUIT) {
+        close(0);
+    }
+}
+
+
+
 char	**heredoc(char *stop,int status, t_vars **env)
 {
 	char	**value;
 	char	**tmp;
 	char	*p;
-
 	tmp = NULL;
 	value = NULL;
-	while (1)
+	signal(SIGINT, handle_signal);
+    signal(SIGQUIT, handle_signal);
+	while (1 && test)
 	{
-		p = readline("herecod>");
+		p = readline("heredoc>");
 		if(p)
 		{
-			if (ft_strcmp(stop, p) == 0 )
+			if (ft_strcmp(stop, p) == 0 || g_s[0] == 7)
 				break ;
 			else
 			{
@@ -61,12 +70,13 @@ char	**heredoc(char *stop,int status, t_vars **env)
 				else
 					value = ft_join2d(value, herdoc_expand(p,*env));
 				free(tmp);
-			}
+			}	
 		}else
 			break;
 	}
 	if (p)
 		free(p);
+	test = 1;
 	return (value);
 }
 

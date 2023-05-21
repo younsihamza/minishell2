@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 15:08:59 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/18 15:29:33 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/18 17:27:51 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int ft_test_var(char *str,int len)
 			return(1);
 		i++;	
 	}
-	if(str[len] != '=')
+	if(str[len - 1] == '+' && str[len] != '=')
 		return(1);
 	return(0);
 }
@@ -88,4 +88,25 @@ int ft_alpha_s(char str)
 	else
 		return (-1);
 	return (i);
+}
+
+char	*ft_strtrim(char  *s1, char  *set)
+{
+	int		len;
+	char	*p;
+	int		i;
+
+	if (!s1 || !set)
+		return (NULL);
+	len = ft_strlen(s1) - 1;
+	i = 0;
+	while (ft_strchr(set, *(s1 + i)) != 0)
+		i++;
+	while (ft_strchr(set, *(s1 + len)) != 0)
+		len-- ;
+	if (len > i)
+		p = ft_substr(s1, i, len - i + 1);
+	else
+		p = ft_substr(s1, i, - (len - i) + 1);
+	return (p);
 }

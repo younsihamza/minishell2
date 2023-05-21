@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 16:05:38 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/18 15:41:52 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/21 16:02:34 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@
 # include <fcntl.h>
 # include <signal.h>
 # include <sys/stat.h>
-
-int	g_s[4];
+int test;
+int	g_s[3];
 typedef struct lexer
 {
 	int	i;
@@ -182,14 +182,22 @@ void	join_data(char **data, char *tmp, char **tokn);
 void	ft_inorder(t_node **rot, t_vars *env);
 void	ft_func(t_tree *root, int len, t_env *envir, char *pathHome);
 void	ft_expand(t_node *rot, t_vars *env);
-void	ft_add_new(t_vars **declare, char *str, char *buffer1);
+void	ft_add_new(t_vars **declare, char *str, char *buffer1 ,int test_plus);
 char	*ft_content(char *str);
 void	free_head(t_node *head);
 int		check_error(int i, char *text, t_node **head);
 void	dups(char **deriction, char **heredoctable, int test,char **typefile);
-void	help_me(t_help_var *v, t_vars *env);
+void	help_me(t_help_var *v);
 char	*herdoc_expand(char *data, t_vars *env);
 char	*ft_itoa(int n);
 int		ft_atoi(const char *str);
 void	ft_add_new_up(t_vars **declare, char *str, char *buffer1, char *data);
+char	*ft_strtrim(char  *s1, char  *set);
+char	*ft_content_env(char *str);
+void	*ft_calloc(size_t nitems, size_t size);
+void	ft_bzero(void *s, size_t n);
+size_t	ft_strlens(char *p, char a);
+char	*get_next_line(int fd);
+char	*ft_strchrs(char *str, int c);
+void 	handle_new(int sig);
 #endif // !

@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 15:49:28 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/17 18:52:34 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/21 16:06:04 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ int	find_file(t_help_var *v, char **deriction,int test,char **typefile)
 				{
 					if(test == 0)
 					{
-						write(2,"bash: ambiguous redirect\n",26);
+						g_s[1] = 1;
+						write(2,"minishell: ambiguous redirect\n",26);
 					}
 					else
 						exit(1);
@@ -39,7 +40,10 @@ int	find_file(t_help_var *v, char **deriction,int test,char **typefile)
 			if (v->fd == -1)
 			{
 				if(test == 0)
+				{
+					g_s[1] = 1;
 					write(2, "No such file or directory\n", 27);
+				}
 				else
 					exit(1);
 				return(1);
@@ -52,14 +56,25 @@ int	find_file(t_help_var *v, char **deriction,int test,char **typefile)
 		if (ft_search(deriction[v->i], '>') == 2)
 		{
 			v->outappend = delimet(deriction[v->i]);
-			close(open(v->outappend, O_CREAT, 0644));
+			v->fd = open(v->outappend, O_CREAT, 0644);
 		}
 		else
 		{
 			v->outfile = delimet(deriction[v->i]);
-			close(open(v->outfile, O_CREAT | O_TRUNC, 0644));
+			v->fd =open(v->outfile, O_CREAT | O_TRUNC, 0644);
 			v->outappend = NULL;
 		}
+		if (v->fd == -1)
+			{
+				if(test == 0)
+				{
+					g_s[1] = 1;
+					write(2, "No such file or directory\n", 27);
+				}
+				else
+					exit(1);
+				return(1);
+			}
 	}
 	return(0);
 }
@@ -74,6 +89,7 @@ void	in_file(t_help_var *v, char **heredoctable)
 		close(v->fd1);
 		v->fd1 = open("/tmp/heredoc", O_RDONLY);
 		dup2(v->fd1, 0);
+		close(v->fd1);
 	}
 	else if (v->infile != NULL)
 	{
@@ -81,6 +97,7 @@ void	in_file(t_help_var *v, char **heredoctable)
 		if (v->fd1 == -1)
 			exit(write(2, "No such file or directory", 27));
 		dup2(v->fd1, 0);
+		close(v->fd1);
 	}
 }
 
@@ -90,6 +107,7 @@ int	out_file(t_help_var *v)
 	{
 		v->fd2 = open(v->outappend, O_WRONLY | O_CREAT | O_APPEND, 0644);
 		dup2(v->fd2, 1);
+		close(v->fd2);
 	}
 	else if (v->outfile != NULL)
 	{
@@ -102,40 +120,25 @@ int	out_file(t_help_var *v)
 	return (v->fd2);
 }
 
-void	help_me(t_help_var *v, t_vars *env)
+void	help_me(t_help_var *v)
 {
-	// int j = 0;
-	g_s[3] = ft_atoi(get_env_arr("SHLVL", env));
-	//fprintf(stderr, "%d", g_s[3]);
-	// fprintf(stderr, "%d", g_s[3]);
-	// puts("here");
-	// int status = 0;
 	ft_close(v->fds, v->lenpipe);
 	while ((waitpid(v->lastprose,v->pidprocess,0) != -1 || waitpid(-1, NULL, 0) != -1))
-	{
-		// status = 0;
 		ft_close(v->fds, v->lenpipe);
-		// waitpid(v->pidprocess[j],&status,0);
-		
-		// if(j == (v->lenpipe))
-		// {
-		// 	g_s[1] = status;
-		// 	// printf("|%d|\n", g_s[1]);
-			// break;
-		// j++;
-			
-}
-
-	// printf("%d", j);
-	// printf("%d", g_s[1]);
 	if (WIFEXITED(g_s[1]))
 	{
 		g_s[1] = WEXITSTATUS(g_s[1]);
 	}
 	if(g_s[2] == 1)
+	{
 		g_s[1] = WTERMSIG(g_s[1]) + 128;
-	g_s[0] = 0;
+		if(g_s[1] == 130)
+			write(1, "\n", 1);
+		else if(g_s[1] == 131)
+			write(1, "Quit\n", 6);
+	}
 	v->i = 0;
+	g_s[0] = 0;
 	while (v->i < v->lenpipe)
 		free(v->fds[v->i++]);
 	free(v->fds);
