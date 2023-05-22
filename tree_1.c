@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tree_1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 16:46:22 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/17 18:37:49 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/22 19:06:10 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,28 @@
 void	token_sone(t_lexer *lex, char *text, t_node **list)
 {
 	
-	if (text[lex->i] == '$')
-	{
-		lex->j = lex->i + 1;
-		while (ft_strchr(" =/$", text[lex->j]) == 0 && text[lex->j])
+			lex->j = lex->i + 1;
+			if(text[lex->j] == '_' || (text[lex->j] >= 'a' && text[lex->j] <= 'z') || (text[lex->j] >= 'A' && text[lex->j] <= 'Z') )
+			{
 				lex->j++;
-		if (lex->j != lex->i + 1)
-			add_back(list, ft_lstnew(ft_substr(text,
+				while (ft_alpha_s(text[lex->j]) != -1 && text[lex->j])
+					lex->j++;
+				if (lex->j != lex->i + 1)
+				{
+					add_back(list, ft_lstnew(ft_substr(text,
 						lex->i, lex->j - lex->i), "OP_VR", lex->spaces));
-		else
-			add_back(list, ft_lstnew(ft_substr(text,
-						lex->i, 1), "OP_WR", lex->spaces));
-		lex->i = lex->j;
-		lex->spaces = 0;
-	}
+				}
+			}
+			else
+			{
+				while (ft_strchr(" '|><$\"", text[lex->j]) == 0 
+					&& text[lex->j])
+						lex->j++;
+					add_back(list, ft_lstnew(ft_substr(text,
+							lex->i, lex->j - lex->i), "OP_WR", lex->spaces));
+			}
+			lex->i = lex->j;
+			lex->spaces = 0;
 }
 
 t_node	*simpletoken(char *text)
@@ -53,29 +61,30 @@ t_node	*simpletoken(char *text)
 			}
 		else
 		{
-			lex.j = lex.i + 1;
-			if(text[lex.j] == '_' || (text[lex.j] >= 'a' && text[lex.j] <= 'z') || (text[lex.j] >= 'A' && text[lex.j] <= 'Z') )
-			{
-				lex.j++;
-				while (ft_alpha_s(text[lex.j]) != -1 && text[lex.j])
-					lex.j++;
-				if (lex.j != lex.i + 1)
-				{
-					add_back(&list, ft_lstnew(ft_substr(text,
-						lex.i, lex.j - lex.i), "OP_VR", lex.spaces));
-				}
-			}
-			else
-			{
-				while (ft_strchr(" '|><$\"", text[lex.j]) == 0 
-					&& text[lex.j])
-						lex.j++;
-					add_back(&list, ft_lstnew(ft_substr(text,
-							lex.i, lex.j - lex.i), "OP_WR", lex.spaces));
-			}
-			lex.i = lex.j;
-			lex.spaces = 0;
-	}
+			token_sone(&lex, text, &list);
+			// lex.j = lex.i + 1;
+			// if(text[lex.j] == '_' || (text[lex.j] >= 'a' && text[lex.j] <= 'z') || (text[lex.j] >= 'A' && text[lex.j] <= 'Z') )
+			// {
+			// 	lex.j++;
+			// 	while (ft_alpha_s(text[lex.j]) != -1 && text[lex.j])
+			// 		lex.j++;
+			// 	if (lex.j != lex.i + 1)
+			// 	{
+			// 		add_back(&list, ft_lstnew(ft_substr(text,
+			// 			lex.i, lex.j - lex.i), "OP_VR", lex.spaces));
+			// 	}
+			// }
+			// else
+			// {
+			// 	while (ft_strchr(" '|><$\"", text[lex.j]) == 0 
+			// 		&& text[lex.j])
+			// 			lex.j++;
+			// 		add_back(&list, ft_lstnew(ft_substr(text,
+			// 				lex.i, lex.j - lex.i), "OP_WR", lex.spaces));
+			// }
+			// lex.i = lex.j;
+			// lex.spaces = 0;
+		}
 	}
 	else
 	{
@@ -111,15 +120,6 @@ t_node	*expand_two(char **data, t_node **str, t_vars *env)
 
 	tmp = NULL;
 	str1 = simpletoken(*data);
-
-		// while(str1 != NULL)
-		// {
-		// 	printf("|%s|\n",str1->data);
-		// 	str1 = str1->next; 
-		// }
-		// exit(0);
-		
-
 	*str = str1;
 	while (str1 != NULL)
 	{

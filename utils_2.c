@@ -3,82 +3,46 @@
 /*                                                        :::      ::::::::   */
 /*   utils_2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 15:08:59 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/18 17:27:51 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/22 16:29:23 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	is_alpha(char *str)
+int	test_first(int n)
+{
+	if (ft_isalpha(n) == 1)
+		return (1);
+	if (n == '_')
+		return (1);
+	return (0);
+}
+
+int	ft_test_var(char *str, int len)
 {
 	int	i;
 
 	i = 0;
-	while (str[i])
+	if (ft_strlen(str) == 0 || test_first(str[0]) == 0)
+		return (1);
+	while (i < len - 1)
 	{
-		if ((str[i] >= 'a' && str[i] <= 'z')
-			|| (str[i] >= 'A' && str[i] <= 'Z'))
-			i++;
-		else
-			return (-1);
+		if (ft_isalnum(str[i]) == 0)
+			return (1);
+		i++;
 	}
-	return (i);
-}
-
-
-int	ft_isalpha(int n)
-{
-	if ((n >= 65 && n <= 90) || (n >= 97 && n <= 122))
-		return (1);
-	return (0);
-}
-int	ft_isdigit(int n)
-{
-	if (n >= 48 && n <= 57)
+	if (str[len - 1] == '+' && str[len] != '=')
 		return (1);
 	return (0);
 }
 
-int	ft_isalnum(int n)
+int	ft_alpha_s(char str)
 {
-	if (ft_isalpha(n) == 1)
-		return (1);
-	if(n == '_')
-		return (1);
-	if (ft_isdigit(n) == 1)
-		return (1);
-	return (0);
-}
-int test_first(int n)
-{
-	if (ft_isalpha(n) == 1)
-		return (1);
-	if(n == '_')
-		return (1);
-	return(0);
-}
-int ft_test_var(char *str,int len)
-{
-	int i= 0;
-	if(ft_strlen(str) == 0 || test_first(str[0]) == 0)
-		return(1);
-	while(i < len - 1)
-	{
-		if(ft_isalnum(str[i]) == 0)
-			return(1);
-		i++;	
-	}
-	if(str[len - 1] == '+' && str[len] != '=')
-		return(1);
-	return(0);
-}
+	int	i;
 
-int ft_alpha_s(char str)
-{
-	int i;
 	i = 0;
 	if ((str >= 'a' && str <= 'z')
 		|| (str >= 'A' && str <= 'Z')
@@ -90,7 +54,7 @@ int ft_alpha_s(char str)
 	return (i);
 }
 
-char	*ft_strtrim(char  *s1, char  *set)
+char	*ft_strtrim(char *s1, char *set)
 {
 	int		len;
 	char	*p;

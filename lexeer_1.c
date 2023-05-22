@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexeer_1.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 13:14:33 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/17 17:01:17 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/22 16:52:03 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,33 @@ void	token_last(t_lexer *lex, char *text, t_node **head)
 		}
 		lex->spaces = 0;
 	}
+}
+
+void	token_five(t_lexer *lex, char *text, t_node **head)
+{
+	lex->j = lex->i + 1;
+	if (text[lex->j] == '_' || (text[lex->j] >= 'a' && text[lex->j] <= 'z')
+		|| (text[lex->j] >= 'A' && text[lex->j] <= 'Z'))
+	{
+		lex->j++;
+		while (ft_alpha_s(text[lex->j]) != -1 && text[lex->j])
+			lex->j++;
+		if (lex->j != lex->i + 1)
+		{
+			add_back(head, ft_lstnew(ft_substr(text,
+						lex->i, lex->j - lex->i), "OP_VR", lex->spaces));
+		}
+	}
+	else
+	{
+		while (ft_strchr(" '|><$\"", text[lex->j]) == 0
+			&& text[lex->j])
+				lex->j++;
+		add_back(head, ft_lstnew(ft_substr(text,
+					lex->i, lex->j - lex->i), "OP_WR", lex->spaces));
+	}
+	lex->i = lex->j;
+	lex->spaces = 0;
 }
 
 void	add_id(t_node *head)

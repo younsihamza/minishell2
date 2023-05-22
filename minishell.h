@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 16:05:38 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/22 15:26:40 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/22 16:52:13 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,4 +197,12 @@ char	*ft_content_env(char *str);
 void	*ft_calloc(size_t nitems, size_t size);
 void 	handle_new(int sig);
 void ft_exit(char **var, t_vars **env, t_vars **declare);
+void	add_attribute(t_vars **env, t_vars **declare);
+void	shell_exit(t_env *envir);
+void	add_shlevel(t_env *envir);
+void	free_env_declare(t_env *envir);
+int		ft_isalpha(int n);
+int		ft_isdigit(int n);
+int		ft_isalnum(int n);
+void	token_five(t_lexer *lex, char *text, t_node **head);
 #endif // !

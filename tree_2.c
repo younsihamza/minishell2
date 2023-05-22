@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 16:48:16 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/16 14:55:29 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/22 18:58:59 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	check_error_parser(t_tree **q, int len)
 		{
 			if (q[i]->left == NULL)
 				return (write(2, "ERROR parser\n", 13), g_s[1] = 2);
-			else if(ft_strncmp(q[i]->left->tokn->type, "OP_FILE", 8) == 0)
+			else if (ft_strncmp(q[i]->left->tokn->type, "OP_FILE", 8) == 0)
 				return (write(2, "ERROR parser\n", 13), g_s[1] = 2);
 		}
 		i++;

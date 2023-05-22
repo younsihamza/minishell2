@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 17:39:19 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/14 16:34:34 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/22 16:37:38 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,13 +92,13 @@ t_tree	*insert(t_tree *root, t_node *ptr)
 char	*get_env_arr(char *find, t_vars *env)
 {
 	t_vars	*ptr;
-	int len;
+	int		len;
 
 	ptr = env;
 	while (ptr != NULL)
 	{
 		len = ft_strlencher(ptr->data, '=');
-		if(len < (int)ft_strlen(find))
+		if (len < (int)ft_strlen(find))
 			len = (int)ft_strlen(find);
 		if (ft_strncmp(ptr->data, find, len) == 0)
 			return (ptr->data + ft_strlen(find) + 1);
