@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 15:49:28 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/21 18:10:48 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/22 13:28:13 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	find_file(t_help_var *v, char **deriction,int test,char **typefile)
 					if(test == 0)
 					{
 						g_s[1] = 1;
-						write(2,"minishell: ambiguous redirect\n",26);
+						write(2,"minishell: ambiguous redirect\n",30);
 					}
 					else
 						exit(1);
@@ -84,8 +84,9 @@ void	in_file(t_help_var *v, char **heredoctable)
 	if (v->heredoc != NULL)
 	{
 		v->fd1 = open("/tmp/heredoc", O_WRONLY | O_CREAT | O_TRUNC, 0700);
-		while (heredoctable[v->i])
-			ft_putstr(heredoctable[v->i++], v->fd1);
+		if(heredoctable != NULL)
+			while (heredoctable[v->i])
+				ft_putstr(heredoctable[v->i++], v->fd1);
 		close(v->fd1);
 		v->fd1 = open("/tmp/heredoc", O_RDONLY);
 		dup2(v->fd1, 0);

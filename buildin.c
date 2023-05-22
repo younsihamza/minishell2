@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 22:27:54 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/21 16:05:58 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/22 12:12:32 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,6 @@ void	ft_export(char **str, t_vars **env, t_vars **declare)
 {
 	int	i;
 
-	// i = 0;
-	// while(str[i])
-	// {
-	// 	printf("%s\n",str[i++]);
-	// }
 	i =1;
 	if (!str[i])
 	{
@@ -132,7 +127,7 @@ void	cd(char *p, t_data *d,t_vars **env,t_vars **declare)
 		else
 		{
 			g_s[1] =  1;
-			write(2,"minishell: cd: HOME not set\n",23);
+			write(2,"minishell: cd: HOME not set\n",28);
 		}
 
 		return ;

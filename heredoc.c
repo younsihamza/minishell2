@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 22:29:05 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/21 18:28:41 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/22 15:07:57 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ int	ft_search(char *word, char to_find)
 void handle_signal(int signum) {
     if (signum == SIGINT ) {
 		g_s[3] = 0;
-        close(0);
+	g_s[1] = 1;
+    close(0);
     }
 }
 
@@ -58,6 +59,7 @@ char	**heredoc(char *stop,int status, t_vars **env)
     signal(SIGQUIT, handle_signal);
 	while (1)
 	{
+		g_s[1] = 0;
 		p = readline("heredoc>");
 		if(p)
 		{

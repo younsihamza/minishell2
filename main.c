@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 13:27:20 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/21 16:45:40 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/22 15:18:01 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ t_vars	*get_declare(char **env)
 	vars = NULL;
 	while (env[i])
 	{
+		
 		declare.std1 = ft_substr(env[i], 0, ft_strlencher(env[i], '=') + 1);
 		declare.std2 = ft_substr(env[i], ft_strlencher(env[i], '=') + 1,
 				ft_strlen(env[i]));
@@ -93,8 +94,9 @@ void	ft_shell(t_env *envir, char *pathHome)
 		text = readline ("minishell -> $> ");
 		if (!text)
 		{
+			write(1, "exit\n", 5);
 			free_env_declare(envir);
-			break;
+			exit(0);
 		}
 		if (*text)
 			add_history(text);
@@ -114,6 +116,7 @@ int	main(int ac, char **argv, char **env)
 	envir.declare = NULL;
 	if(*env == NULL|| get_env_arr("SHLVL", envir.envv) != NULL)
 	{
+		add_envback(&envir.envv, ft_envnew(ft_strdup ("TERM=xterm-256color")));
 		add_envback(&envir.declare, ft_envnew(ft_strdup ("SHLVL=1")));
 		add_envback(&envir.envv, ft_envnew(ft_strdup ("SHLVL=1")));
 	}

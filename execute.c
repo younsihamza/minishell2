@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 15:49:39 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/21 18:40:44 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/22 12:16:28 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,26 +103,12 @@ void	pipe_tool(t_help_var *v, t_data *var)
 	}
 	v->i = 0;
 }
-void signal_hend(int sig)
-{
-	//sig  = 0;
-	if(sig == SIGQUIT )
-	{
-		write(2,"^\\Quit: 3\n",11);
-		//exit(0);
-	}
-}
+
 void	child_parte(t_data *var, t_vars **env, t_vars **declare, t_help_var *v)
 {
 
 	g_s[0] = 1;
 	v->pidprocess = &g_s[1];
-	//signal(SIGQUIT,&signal_hend);
-	// signal(SIGINT,SIG_DFL);
-	// struct sigaction a;
-	// a.sa_handler = &signal_hend;
-	// a.sa_flags = 0;
-	// sigaction(SIGQUIT,&a,NULL);
 	signal(SIGINT, &handle_new);
 	signal(SIGQUIT, &handle_new);
 	v->id = fork();
@@ -132,7 +118,6 @@ void	child_parte(t_data *var, t_vars **env, t_vars **declare, t_help_var *v)
 		return;
 	if (v->id == 0)
 	{
-	//g_s[0] = 3;
 	signal(SIGINT , SIG_DFL);
 	signal (SIGQUIT, SIG_DFL);
 		if (var->op[v->i] != NULL)
