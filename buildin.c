@@ -6,7 +6,7 @@
 /*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 22:27:54 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/23 15:16:19 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/23 18:18:41 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,40 @@
 
 void	ft_exit(char **var, t_vars **env, t_vars **declare)
 {
-	int	i = 0;
+	int		i;
+	char	**tmp;
+	char	*str;
+	char	*buf;
+	int 	status; 
+
+	status = 0;
+	i = 0;
 	while (var[i])
 		i++;
-	if(i > 2)
+	if (i > 2)
 	{
-		write(1, "exit\n", 5);
-		write(1, "minishell: exit: too many arguments\n", 36);
-		return ;
+		status = ft_msg(var[1]);
+		if (status  == 1)
+			return ;
 	}
-	else if( i == 2)
-		write(1, "minishell: exit: too many arguments\n", 36);
-	char **tmp = NULL;
-	char *str = ft_itoa(ft_atoi(get_env_arr("SHLVL", *env) - 1));
-	char *buf = ft_strjoin("export SHLVL=",str);
+	else
+	{
+		write (1, "exit\n", 5);
+		if (var[1] && is_alpha(var[1]) == 1)
+			write(1, "minishell: exit: numeric argument required\n", 43);	
+	}
+	tmp = NULL;
+	str = ft_itoa(ft_atoi(get_env_arr("SHLVL", *env) - 1));
+	buf = ft_strjoin("export SHLVL=", str);
 	tmp = ft_split(buf, ' ');
 	ft_export(tmp, env, declare);
 	free(str);
 	free2d(tmp);
-	write(1, "exit\n", 5);
+	free(tmp);
+	if(status == 2)
+		exit(255);
+	else  if(var[1] != NULL)
+		exit(ft_atoi(var[1]));
 	exit(0);
 }
 
@@ -40,7 +55,7 @@ void	ft_export(char **str, t_vars **env, t_vars **declare)
 {
 	int	i;
 
-	i =1;
+	i = 1;
 	if (!str[i])
 	{
 		while (*declare != NULL)
@@ -56,15 +71,6 @@ void	ft_export(char **str, t_vars **env, t_vars **declare)
 		if (ft_strchr(str[i], '=') != 0)
 			ft_modify_env(str[i], env);
 		i++;
-	}
-}
-
-void	cmd_env(t_vars *env)
-{
-	while (env->data != NULL)
-	{
-		printf("%s\n", env->data);
-		env = env->next;
 	}
 }
 

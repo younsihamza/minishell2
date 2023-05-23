@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tree_1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 16:46:22 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/23 15:02:14 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/23 17:08:52 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,17 @@ t_node	*simpletoken(char *text)
 
 void	expand_one(char **data, char *tmp, t_vars *env)
 {
+	char	*number;
+	char	*tmp2;
+
+	tmp2 = NULL;
 	if (data[0][1] == '?')
-		tmp = ft_strjoin(ft_itoa(g_s[1]), data[0] + 2);
+	{
+		number = ft_itoa(g_s[1]);
+		tmp = ft_strjoin(number, data[0] + 2);
+		tmp2 = tmp;
+		free(number);
+	}
 	else
 		tmp = get_env_arr(*data + 1, env);
 	free (*data);
@@ -92,6 +101,8 @@ void	expand_one(char **data, char *tmp, t_vars *env)
 		*data = ft_strdup(tmp);
 	else
 		*data = ft_calloc(sizeof(char), 2);
+	if(tmp2 != NULL)
+		free(tmp2);
 }
 
 t_node	*expand_two(char **data, t_node **str, t_vars *env)
