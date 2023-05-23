@@ -3,73 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 15:49:39 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/22 12:16:28 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/23 15:27:03 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	dups(char **deriction, char **heredoctable, int test,char **typefile)
-{
-	t_help_var	v;
-
-	v.heredoc = NULL;
-	v.infile = NULL;
-	v.outappend = NULL;
-	v.outfile = NULL;
-	v.i = 0;
-	while (deriction[v.i])
-	{
-		if(find_file(&v, deriction,test,typefile) == 1)
-			break;
-		v.i++;
-	}
-	if (test == 1)
-	{
-		v.i = 0;
-		out_file(&v);
-		in_file(&v, heredoctable);
-	}
-}
-
-void ft_exit(char **var, t_vars **env, t_vars **declare)
-{
-	int	i = 0;
-	while(var[i])
-		i++;
-	if(i > 2)
-	{
-		write(1, "exit\n", 5);
-		write(1, "minishell: exit: too many arguments\n", 36);
-		return ;
-	}
-	else if( i == 2)
-		write(1, "minishell: exit: too many arguments\n", 36);
-	char **tmp = NULL;
-	char *str = ft_itoa(ft_atoi(get_env_arr("SHLVL", *env) - 1));
-	char *buf = ft_strjoin("export SHLVL=",str);
-	tmp = ft_split(buf, ' ');
-	ft_export(tmp, env, declare);
-	free(str);
-	free2d(tmp);
-	write(1, "exit\n", 5);
-	exit(0);
-}
 
 void	build_in_parent(t_data *var, int i, t_vars **env, t_vars **declare)
 {
 	if (ft_strcmp(var->cmd[i][0], "cd") == 0)
 	{
 		if (var->op[i] == NULL)
-			cd(var->cmd[i][1], var,env,declare);
+			cd(var->cmd[i][1], var, env, declare);
 	}
 	else if (ft_strcmp(var->cmd[i][0], "exit") == 0)
 	{
 		if (var->op[0] == NULL)
-			ft_exit(var->cmd[i],env, declare);
+			ft_exit(var->cmd[i], env, declare);
 	}
 	else if (ft_strcmp(var->cmd[i][0], "unset") == 0)
 	{
@@ -83,6 +36,10 @@ void	build_in_parent(t_data *var, int i, t_vars **env, t_vars **declare)
 
 void	pipe_tool(t_help_var *v, t_data *var)
 {
+	v->pipeincrement = 0;
+	v->lenpipe = 0;
+	v->i = 0;
+	g_s[2] = 0;
 	while (var->op[v->i])
 	{
 		if (ft_strncmp(var->op[v->i]->type, "OP_PIPE", 7) == 0)
@@ -104,33 +61,34 @@ void	pipe_tool(t_help_var *v, t_data *var)
 	v->i = 0;
 }
 
+void	files(t_data *var, t_help_var *v)
+{
+	if (var->op[v->i] != NULL)
+		if (ft_strncmp(var->op[v->i]->type, "OP_PIPE", 7) == 0)
+			dup2(v->fds[v->pipeincrement][1], 1);
+	if (var->deriction[v->i] != NULL)
+		dups(var->deriction[v->i], var->heredoc[v->i],
+			1, var->typefile[v->i]);
+	if (v->i - 1 >= 0 && v->pipeincrement > 0)
+		if (ft_strncmp(var->op[v->i - 1]->type, "OP_PIPE", 7) == 0)
+			dup2(v->fds[v->pipeincrement - 1][0], 0);
+}
+
 void	child_parte(t_data *var, t_vars **env, t_vars **declare, t_help_var *v)
 {
-
 	g_s[0] = 1;
 	v->pidprocess = &g_s[1];
 	signal(SIGINT, &handle_new);
 	signal(SIGQUIT, &handle_new);
 	v->id = fork();
-	if(v->id> 0)
-		v->lastprose =v->id;
 	if (v->id < 0)
-		return;
+		return ;
+	v->lastprose = v->id;
 	if (v->id == 0)
 	{
-	signal(SIGINT , SIG_DFL);
-	signal (SIGQUIT, SIG_DFL);
-		if (var->op[v->i] != NULL)
-			if (ft_strncmp(var->op[v->i]->type, "OP_PIPE", 7) == 0)
-			{
-				dup2(v->fds[v->pipeincrement][1], 1);
-				close(v->fds[v->pipeincrement][1]);
-			}
-		if (var->deriction[v->i] != NULL)
-			dups(var->deriction[v->i], var->heredoc[v->i], 1,var->typefile[v->i]);
-		if (v->i - 1 >= 0 && v->pipeincrement > 0)
-			if (ft_strncmp(var->op[v->i - 1]->type, "OP_PIPE", 7) == 0)
-				dup2(v->fds[v->pipeincrement - 1][0], 0);
+		signal (SIGINT, SIG_DFL);
+		signal (SIGQUIT, SIG_DFL);
+		files(var, v);
 		ft_close(v->fds, v->lenpipe);
 		cmd1(var->cmd[v->i], env, declare);
 		exit(1);
@@ -144,14 +102,8 @@ void	execute(t_data *var, t_vars **env, t_vars **declare)
 {
 	t_help_var	v;
 
-	v.pipeincrement = 0;
-	
-	v.lenpipe = 0;
-	v.i = 0;
-	g_s[2] = 0;
 	v.pidprocess = &g_s[1];
 	pipe_tool(&v, var);
-
 	while (v.i <= v.lenpipe)
 	{
 		if (var->cmd[v.i] != NULL)
@@ -161,16 +113,14 @@ void	execute(t_data *var, t_vars **env, t_vars **declare)
 				|| (ft_strcmp(var->cmd[v.i][0], "export") == 0
 				&& var->cmd[v.i][1] != NULL)
 				|| ft_strcmp(var->cmd[v.i][0], "unset") == 0)
-				{
+			{
 				build_in_parent(var, v.i, env, declare);
 				v.pidprocess = NULL;
-				}
+			}
 			else
 				child_parte(var, env, declare, &v);
 		}
 		v.i++;
 	}
 	help_me(&v);
-	g_s[0] = 0;
-	
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_3.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 16:13:58 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/23 15:02:07 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/23 15:24:32 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,14 @@ void	join_data(char **data, char *tmp, char **tokn)
 	*tokn = ft_strjoin(*tokn, *data);
 	free(tmp);
 	free(*data);
+}
+
+char	*limet(char *l)
+{
+	int	i;
+
+	i = 0;
+	while (ft_strchr("<", l[i]) != 0)
+		i++;
+	return (l + i);
 }

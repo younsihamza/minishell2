@@ -3,80 +3,59 @@
 /*                                                        :::      ::::::::   */
 /*   execute_2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 15:49:28 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/22 13:28:13 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/23 15:30:10 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	find_file(t_help_var *v, char **deriction,int test,char **typefile)
+int	make_outfile(t_help_var *v, char **deriction, int test)
 {
-	if(ft_search(deriction[v->i], '<') != 2)
+	if (ft_search(deriction[v->i], '>') == 2)
+	{
+		v->outappend = delimet(deriction[v->i]);
+		v->fd = open(v->outappend, O_CREAT, 0644);
+	}
+	else
+	{
+		v->outfile = delimet(deriction[v->i]);
+		v->fd = open(v->outfile, O_CREAT | O_TRUNC, 0644);
+		close(v->fd);
+		v->outappend = NULL;
+	}
+	if (v->fd == -1)
+	{
+		if (test == 0)
 		{
-			if(ft_strcmp(typefile[v->i],"OP_VR") == 0 && (ft_strchr(deriction[v->i], ' ') == 1 || ft_strlen(delimet(deriction[v->i])) == 0))
-				{
-					if(test == 0)
-					{
-						g_s[1] = 1;
-						write(2,"minishell: ambiguous redirect\n",30);
-					}
-					else
-						exit(1);
-					return(1);
-				}
+			g_s[1] = 1;
+			write(2, "No such file or directory\n", 27);
 		}
+		else
+			exit(1);
+		return (1);
+	}
+	return (0);
+}
+
+int	find_file(t_help_var *v, char **deriction, int test, char **typefile)
+{
+	if (ft_search(deriction[v->i], '<') != 2)
+		if (is_empty(v, deriction, test, typefile) == 1)
+			return (1);
 	if (ft_search(deriction[v->i], '<'))
 	{
-		if (ft_search(deriction[v->i], '<') == 2)
-			v->heredoc = delimet(deriction[v->i]);
-		else
-		{
-			v->infile = delimet(deriction[v->i]);
-			v->heredoc = NULL;
-			v->fd = open(v->infile, O_RDONLY);
-			if (v->fd == -1)
-			{
-				if(test == 0)
-				{
-					g_s[1] = 1;
-					write(2, "No such file or directory\n", 27);
-				}
-				else
-					exit(1);
-				return(1);
-			}
-			close(v->fd);
-		}
+		if (make_infile(v, deriction, test) == 1)
+			return (1);
 	}
 	else if (ft_search(deriction[v->i], '>'))
 	{
-		if (ft_search(deriction[v->i], '>') == 2)
-		{
-			v->outappend = delimet(deriction[v->i]);
-			v->fd = open(v->outappend, O_CREAT, 0644);
-		}
-		else
-		{
-			v->outfile = delimet(deriction[v->i]);
-			v->fd =open(v->outfile, O_CREAT | O_TRUNC, 0644);
-			v->outappend = NULL;
-		}
-		if (v->fd == -1)
-			{
-				if(test == 0)
-				{
-					g_s[1] = 1;
-					write(2, "No such file or directory\n", 27);
-				}
-				else
-					exit(1);
-				return(1);
-			}
+		if (make_outfile(v, deriction, test) == 1)
+			return (1);
 	}
-	return(0);
+	return (0);
 }
 
 void	in_file(t_help_var *v, char **heredoctable)
@@ -84,7 +63,7 @@ void	in_file(t_help_var *v, char **heredoctable)
 	if (v->heredoc != NULL)
 	{
 		v->fd1 = open("/tmp/heredoc", O_WRONLY | O_CREAT | O_TRUNC, 0700);
-		if(heredoctable != NULL)
+		if (heredoctable != NULL)
 			while (heredoctable[v->i])
 				ft_putstr(heredoctable[v->i++], v->fd1);
 		close(v->fd1);
@@ -124,18 +103,16 @@ int	out_file(t_help_var *v)
 void	help_me(t_help_var *v)
 {
 	ft_close(v->fds, v->lenpipe);
-	while ((waitpid(v->lastprose,v->pidprocess,0) != -1 || waitpid(-1, NULL, 0) != -1))
-		ft_close(v->fds, v->lenpipe);
+	while ((waitpid(v->lastprose, v->pidprocess, 0) != -1
+			|| waitpid(0, NULL, 0) != -1));
 	if (WIFEXITED(g_s[1]))
-	{
 		g_s[1] = WEXITSTATUS(g_s[1]);
-	}
-	if(g_s[2] == 1)
+	if (g_s[2] == 1)
 	{
 		g_s[1] = WTERMSIG(g_s[1]) + 128;
-		if(g_s[1] == 130)
+		if (g_s[1] == 130)
 			write(1, "\n", 1);
-		else if(g_s[1] == 131)
+		else if (g_s[1] == 131)
 			write(1, "Quit\n", 6);
 	}
 	v->i = 0;

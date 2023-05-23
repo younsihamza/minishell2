@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 16:05:38 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/23 11:56:44 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/23 15:30:56 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,8 @@ typedef struct help_var
 	int		r;
 	int		*file_descripter;
 	int			*pidprocess;
+	int		newline;
+	char	***heredoctable;
 }t_help_var;
 
 typedef struct declare
@@ -210,4 +212,8 @@ void	ft_remove(char **args, int *i, t_vars **vars);
 char	*ft_content_plus(char *str);
 char	*ft_content_env(char *str);
 int	handle_content(char **data, char *str);
+void	table_deriction(t_help_var *v, t_node **rot, t_data	*d, char **type);
+char	*limet(char *l);
+int	is_empty(t_help_var *v, char **deriction, int test, char **typefile);
+int	make_infile(t_help_var *v, char **deriction, int test);
 #endif // !
