@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 16:13:58 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/22 16:15:45 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/23 15:02:07 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,12 @@ void	shell_exit(t_env *envir)
 	write(1, "exit\n", 5);
 	free_env_declare(envir);
 	exit(0);
+}
+
+void	join_data(char **data, char *tmp, char **tokn)
+{
+	tmp = *tokn;
+	*tokn = ft_strjoin(*tokn, *data);
+	free(tmp);
+	free(*data);
 }

@@ -6,16 +6,14 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 14:58:27 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/22 18:57:45 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/23 14:56:35 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	join_node(t_node **root, int *i, char *hold)
+int	join_node(t_node **root, int *i, char *hold, int j)
 {
-	int		j;
-
 	j = *i + 1;
 	while (root[j] != NULL)
 	{
@@ -30,7 +28,8 @@ int	join_node(t_node **root, int *i, char *hold)
 				|| ft_strcmp(root[j]->type, "SINGLE") == 0
 				|| ft_strcmp(root[*i]->type, "SINGLE") == 0)
 				root[*i]->status = 1;
-			if (ft_strcmp(root[j]->type, "OP_VR") == 0 || ft_strcmp(root[*i]->type, "OP_VR") == 0)
+			if (ft_strcmp(root[j]->type, "OP_VR") == 0
+				||ft_strcmp(root[*i]->type, "OP_VR") == 0)
 				root[*i]->type = "OP_VR";
 			free(hold);
 		}
@@ -62,7 +61,7 @@ t_node	**edit_rot(t_node **root, int len)
 			root[i]->status = 1;
 		if (ft_strncmp(root[i]->type, "OP_PIPE", 7) != 0
 			&& ft_strncmp(root[i]->type, "OP_FILE", 7) != 0)
-			j = join_node(root, &i, hold);
+			j = join_node(root, &i, hold, 0);
 		list[cort++] = root[i];
 		i = j;
 	}

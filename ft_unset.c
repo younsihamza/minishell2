@@ -6,60 +6,11 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 14:29:28 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/22 18:39:01 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/23 15:06:36 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	addback_r(t_vars **list, t_vars *new)
-{
-	t_vars	*hold;
-
-	hold = *list;
-	if (*list == NULL)
-	{
-		*list = new;
-		return ;
-	}
-	while (hold->next != NULL)
-		hold = hold->next;
-	hold->next = new;
-}
-
-void	ft_remove(char **args, int *i, t_vars **vars)
-{
-	t_vars	*cur;
-	t_vars	*newlist;
-	t_vars	*hold;
-	t_vars	*tmp;
-
-	cur = (*vars);
-	hold = NULL;
-	newlist = NULL;
-	while (cur != NULL)
-	{
-		if (ft_strncmp(cur->data, args[*i],
-				ft_strlencher(cur->data, '=')) != 0)
-		{
-			hold = cur;
-			cur = cur->next;
-			hold->next = NULL;
-			addback_r(&newlist, hold);
-		}
-		else
-		{
-			tmp = cur;
-			cur = cur->next;
-			if (tmp != NULL)
-			{
-				free(tmp->data);
-				free(tmp);
-			}
-		}	
-	}
-	*vars = newlist;
-}
 
 void	ft_unset(char **args, t_vars **vars)
 {
@@ -96,54 +47,6 @@ void	ft_unset_declare(char **args, t_vars **vars)
 	}
 }
 
-char	*ft_content_plus(char *str)
-{
-	char	*tmp;
-	char	*buffer1;
-	char	*buffer2;
-
-	tmp = NULL;
-	buffer1 = NULL;
-	buffer2 = NULL;
-	buffer1 = ft_substr(str, 0, ft_strlencher(str, '=') - 1);
-	tmp = buffer1;
-	buffer1 = ft_strjoin(buffer1, "=");
-	free(tmp);
-	buffer2 = ft_substr(str, ft_strlencher(str, '=') + 1, ft_strlen(str));
-	tmp = buffer2;
-	buffer2 = ft_strjoin("\"", buffer2);
-	free(tmp);
-	tmp = buffer2;
-	buffer2 = ft_strjoin(buffer2, "\"");
-	free(tmp);
-	tmp = buffer1;
-	buffer1 = ft_strjoin(buffer1, buffer2);
-	free(buffer2);
-	free(tmp);
-	return (buffer1);
-}
-
-char	*ft_content_env(char *str)
-{
-	char	*tmp;
-	char	*buffer1;
-	char	*buffer2;
-
-	tmp = NULL;
-	buffer1 = NULL;
-	buffer2 = NULL;
-	buffer1 = ft_substr(str, 0, ft_strlencher(str, '=') - 1);
-	tmp = buffer1;
-	buffer1 = ft_strjoin(buffer1, "=");
-	free(tmp);
-	buffer2 = ft_substr(str, ft_strlencher(str, '=') + 1, ft_strlen(str));
-	tmp = buffer1;
-	buffer1 = ft_strjoin(buffer1, buffer2);
-	free(buffer2);
-	free(tmp);
-	return (buffer1);
-}
-
 void	ft_modify(char *str, t_vars **declare)
 {
 	char	*buffer1;
@@ -171,9 +74,6 @@ void	ft_modify(char *str, t_vars **declare)
 
 int	change_data(t_vars **env, char *str, int test_plus)
 {
-	char	*tmp1;
-	char	*tmp2;
-	char	*tmp;
 	t_vars	*cur;
 
 	cur = *env;
@@ -181,19 +81,7 @@ int	change_data(t_vars **env, char *str, int test_plus)
 	{
 		if (ft_strncmp(cur->data, str,
 				ft_strlencher(cur->data, '=')) == 0 && test_plus == 1)
-		{
-			tmp1 = ft_strjoin(cur->data + ft_strlencher(cur->data, '=') + 1,
-					str + ft_strlencher(str, '=') + 1);
-			tmp2 = ft_substr(str, 0, ft_strlencher(str, '=') + 1);
-			tmp = str;
-			str = ft_strjoin(tmp2, tmp1);
-			free(tmp);
-			free(tmp2);
-			free(tmp1);
-			free(cur->data);
-			cur->data = str;
-			return (1);
-		}
+			return (handle_content(&cur->data, str));
 		else if (ft_strncmp(cur->data, str, ft_strlencher(cur->data, '=')) == 0)
 		{
 			free(cur->data);
