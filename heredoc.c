@@ -3,83 +3,59 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 22:29:05 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/22 15:07:57 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/23 15:23:41 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*limet(char *l)
+void	handle_signal(int signum)
 {
-	int	i;
-
-	i = 0;
-	while (ft_strchr("<", l[i]) != 0)
-		i++;
-	return (l + i);
-}
-
-int	ft_search(char *word, char to_find)
-{
-	int	i;
-	int	len;
-
-	i = 0;
-	len = 0;
-	while (word[i])
+	if (signum == SIGINT)
 	{
-		if (word[i] == to_find)
-			len++;
-		i++;
-	}
-	return (len);
-}
-
-void handle_signal(int signum) {
-    if (signum == SIGINT ) {
 		g_s[3] = 0;
-	g_s[1] = 1;
-    close(0);
-    }
+		g_s[1] = 1;
+		close(0);
+	}
 }
 
+void	heredoc_help(char ***value, char ***tmp)
+{
+	*tmp = NULL;
+	*value = NULL;
+	signal(SIGINT, handle_signal);
+	signal(SIGQUIT, handle_signal);
+}
 
-
-char	**heredoc(char *stop,int status, t_vars **env)
+char	**heredoc(char *stop, int status, t_vars **env)
 {
 	char	**value;
 	char	**tmp;
 	char	*p;
-	tmp = NULL;
-	value = NULL;
-	signal(SIGINT, handle_signal);
-    signal(SIGQUIT, handle_signal);
+
+	heredoc_help(&value, &tmp);
 	while (1)
 	{
 		g_s[1] = 0;
 		p = readline("heredoc>");
-		if(p)
+		if (!p || ft_strcmp(stop, p) == 0)
+			break ;
+		else
 		{
-			if (ft_strcmp(stop, p) == 0 || g_s[0] == 7)
-				break ;
+			tmp = value;
+			if (status == 1)
+				value = ft_join2d(value, p);
 			else
-			{
-				tmp = value;
-				if(status == 1)
-					value = ft_join2d(value, p);
-				else
-					value = ft_join2d(value, herdoc_expand(p,*env));
+				value = ft_join2d(value, herdoc_expand(p,*env));
+			if (tmp != NULL)
 				free(tmp);
-			}	
-		}else
-			break;
+		}
 	}
 	if (p)
 		free(p);
-
 	return (value);
 }
 
@@ -92,35 +68,31 @@ void	free2d(char **table)
 		free(table[i++]);
 }
 
-char	***checkherecode(char ***deriction, int len,int *status, t_vars **env)
+char	***checkherecode(char ***deriction, int len, int *status, t_vars **env)
 {
-	char	***heredoctable;
-	int		i;
-	int		j;
+	t_help_var	var;
 
-	i = 0;
-	heredoctable = ft_calloc(sizeof(char **), len);
-	if (!heredoctable)
-		exit(0);
-	while (i < len)
+	var.i = 0;
+	var.heredoctable = ft_calloc(sizeof(char **), len);
+	while (var.i < len)
 	{
-		j = 0;
-		if(deriction[i])
+		var.j = 0;
+		if (deriction[var.i])
 		{
-			while (deriction[i][j])
+			while (deriction[var.i][var.j])
 			{
-				if (ft_search(deriction[i][j], '<') == 2)
+				if (ft_search(deriction[var.i][var.j], '<') == 2)
 				{
-					if (heredoctable[i] != NULL)
-						free2d(heredoctable[i]);
-					heredoctable[i] = heredoc(limet(deriction[i][j]),status[i],env);
+					if (var.heredoctable[var.i] != NULL)
+						free2d(var.heredoctable[var.i]);
+					var.heredoctable[var.i] = heredoc(
+							limet(deriction[var.i][var.j]), status[var.i], env);
 				}
-				j++;
+				var.j++;
 			}
-			
 		}
-		i++;
+		var.i++;
 	}
 	free(status);
-	return (heredoctable);
+	return (var.heredoctable);
 }

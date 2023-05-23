@@ -6,7 +6,7 @@
 /*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 15:59:57 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/21 18:29:36 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/23 15:22:07 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,49 +34,21 @@ void	convert_op(t_help_var *v, t_node **rot, t_data	*d)
 		}
 		v->i++;
 	}
+	v->i = 0;
+	v->j = 0;
 }
 
-void	convert_deriction(t_help_var *v, t_node **rot, t_data	*d)
+void	convert_deriction(t_help_var *v, t_node **rot, t_data *d)
 {
-	d->typefile  = NULL;
-	char **type = NULL;
-	char **tmptype;
+	d->typefile = NULL;
 	d->deriction = ft_calloc(sizeof(char **), v->len + 2);
 	d->typefile = ft_calloc(sizeof(char **), v->len + 2);
-	d->status = ft_calloc(sizeof(int),v->len + 1);
+	d->status = ft_calloc(sizeof(int), v->len + 1);
 	v->i = 0;
 	v->j = 0;
 	v->file = NULL;
 	v->tmp2d = NULL;
-	while (rot[v->i])
-	{
-		if (ft_strcmp(rot[v->i]->type, "OP_FILE") == 0)
-		{
-			v->tmp2d = v->file;
-			v->file = ft_join2d(v->file, ft_strjoin(rot[v->i]->data,
-						rot[v->i + 1]->data));
-			tmptype = type;
-			type = ft_join2d(type,rot[v->i + 1]->type);
-			if(ft_search(rot[v->i]->data, '<') == 2)
-				d->status[v->j] = rot[v->i + 1]->status;
-			if(v->tmp2d != NULL)
-				free(v->tmp2d);
-			if(tmptype != NULL)
-				free(tmptype);
-			v->i++;
-		}
-		if ((ft_strcmp("OP_PIPE", rot[v->i]->type) == 0
-				|| rot[v->i +1] == NULL )
-			)
-		{
-			d->deriction[v->j] = v->file;
-			d->typefile[v->j] = type;
-			v->file = NULL;
-			type = NULL;
-			v->j++;
-		}
-		v->i++;
-	}
+	table_deriction(v, rot, d, NULL);
 }
 
 void	free_table(char ***table, t_help_var *v)
@@ -123,34 +95,27 @@ void	transform_cmd(t_node **rot, t_vars **env,
 {
 	t_help_var	v;
 	t_data		d;
-	
 
-	v.r = 0;
-	v.command = NULL;
-	v.splitvar = NULL;
 	convert_op(&v, rot, &d);
-	v.i = 0;
 	d.cmd = ft_calloc(sizeof(char **), v.len + 2);
-	v.j = 0;
 	convert_cmd(&d, &v, rot);
 	convert_deriction(&v, rot, &d);
 	d.heredoc = checkherecode(d.deriction, v.len + 2, d.status, env);
-	if(g_s[3] == 0)
+	if (g_s[3] == 0)
 	{
 		kill_leaks(&v, &d);
-		return;
+		return ;
 	}
 	d.pathhome = pathhome;
 	v.i = 0;
 	while (v.i <= v.len)
 	{
 		if (d.deriction[v.i] != NULL)
-			dups(d.deriction[v.i], d.heredoc[v.i], 0,d.typefile[v.i]);
+			dups(d.deriction[v.i], d.heredoc[v.i], 0, d.typefile[v.i]);
 		v.i++;
 	}
 	v.i = 0;
-		ft_tolower(d.cmd);
+	ft_tolower(d.cmd);
 	execute(&d, env, declare);
-	
 	kill_leaks(&v, &d);
 }

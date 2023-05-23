@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 16:28:29 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/22 16:29:16 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/23 16:01:00 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,20 @@ int	ft_isalnum(int n)
 	if (ft_isdigit(n) == 1)
 		return (1);
 	return (0);
+}
+
+int	ft_search(char *word, char to_find)
+{
+	int	i;
+	int	len;
+
+	i = 0;
+	len = 0;
+	while (word[i])
+	{
+		if (word[i] == to_find)
+			len++;
+		i++;
+	}
+	return (len);
 }

@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 16:05:38 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/23 11:56:44 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/23 15:58:17 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,10 @@ typedef struct help_var
 	char	**tmp2d;
 	int		r;
 	int		*file_descripter;
-	int			*pidprocess;
-}t_help_var;
+	int		*pidprocess;
+	int		newline;
+	char	***heredoctable;
+}	t_help_var;
 
 typedef struct declare
 {
@@ -102,6 +104,7 @@ typedef struct declare
 	char		*std2;
 	char		*content;
 }	t_declare;
+
 typedef struct env
 {
 	t_vars	*envv;
@@ -143,10 +146,10 @@ void	free2d(char **table);
 void	handle_sigint(int sig);
 void	ft_export(char **str, t_vars **env, t_vars **declare);
 void	echo(char **cmd);
-void	cd(char *p, t_data *d,t_vars **env,t_vars **declare);
+void	cd(char *p, t_data *d, t_vars **env, t_vars **declare);
 void	cmd_env(t_vars *env);
-int ft_alpha_s(char str);
-int ft_test_var(char *str,int len);
+int		ft_alpha_s(char str);
+int		ft_test_var(char *str, int len);
 char	**ft_env(t_vars *vars);
 char	*delimet(char *l);
 void	ft_close(int **fd, int len);
@@ -156,7 +159,7 @@ void	add_envback(t_vars **lst, t_vars *new);
 t_vars	*get_env(char **env);
 void	build_in_child(char **cmd, t_vars **env, t_vars **declare);
 void	cmd1(char **cmd, t_vars **env, t_vars **declare);
-int		find_file(t_help_var *v, char **deriction,int test,char **typefile);
+int		find_file(t_help_var *v, char **deriction, int test, char **typefile);
 void	in_file(t_help_var *v, char **heredoctable);
 void	ft_unset(char **args, t_vars **vars);
 void	ft_unset_declare(char **args, t_vars **vars);
@@ -182,21 +185,21 @@ void	join_data(char **data, char *tmp, char **tokn);
 void	ft_inorder(t_node **rot, t_vars *env);
 void	ft_func(t_tree *root, int len, t_env *envir, char *pathHome);
 void	ft_expand(t_node *rot, t_vars *env);
-void	ft_add_new(t_vars **declare, char *str, char *buffer1 ,int test_plus);
+void	ft_add_new(t_vars **declare, char *str, char *buffer1, int test_plus);
 char	*ft_content(char *str);
 void	free_head(t_node *head);
 int		check_error(int i, char *text, t_node **head);
-void	dups(char **deriction, char **heredoctable, int test,char **typefile);
+void	dups(char **deriction, char **heredoctable, int test, char **typefile);
 void	help_me(t_help_var *v);
 char	*herdoc_expand(char *data, t_vars *env);
 char	*ft_itoa(int n);
 int		ft_atoi(const char *str);
 void	ft_add_new_up(t_vars **declare, char *str, char *buffer1, char *data);
-char	*ft_strtrim(char  *s1, char  *set);
+char	*ft_strtrim(char *s1, char *set);
 char	*ft_content_env(char *str);
 void	*ft_calloc(size_t nitems, size_t size);
-void 	handle_new(int sig);
-void ft_exit(char **var, t_vars **env, t_vars **declare);
+void	handle_new(int sig);
+void	ft_exit(char **var, t_vars **env, t_vars **declare);
 void	add_attribute(t_vars **env, t_vars **declare);
 void	shell_exit(t_env *envir);
 void	add_shlevel(t_env *envir);
@@ -209,5 +212,10 @@ void	addback_r(t_vars **list, t_vars *new);
 void	ft_remove(char **args, int *i, t_vars **vars);
 char	*ft_content_plus(char *str);
 char	*ft_content_env(char *str);
-int	handle_content(char **data, char *str);
+int		handle_content(char **data, char *str);
+void	table_deriction(t_help_var *v, t_node **rot, t_data	*d, char **type);
+char	*limet(char *l);
+int		is_empty(t_help_var *v, char **deriction, int test, char **typefile);
+int		make_infile(t_help_var *v, char **deriction, int test);
+int		ft_msg(char *var);
 #endif // !

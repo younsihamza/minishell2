@@ -3,24 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   execute_1.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 15:49:18 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/22 12:22:40 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/23 15:28:15 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char	*delimet(char *l)
-{
-	int	i;
-
-	i = 0;
-	while (ft_strchr(" <>", l[i]) != 0)
-		i++;
-	return (l + i);
-}
 
 void	ft_close(int **fd, int len)
 {
@@ -46,7 +36,7 @@ void	build_in_child(char **cmd, t_vars **env, t_vars **declare)
 		path = ft_calloc(sizeof(char), 1024);
 		if (!path)
 			exit(0);
-		if(get_env_arr("PWD", *env))
+		if (get_env_arr("PWD", *env))
 			printf("%s\n", get_env_arr("PWD", *env));
 		else if (getcwd(path, 1024) != NULL)
 			printf("%s\n", path);
@@ -68,20 +58,35 @@ void	help_free(t_help_var *v, char **cmd)
 	exit(127);
 }
 
+void	cmd_2(char **cmd, t_vars **env, t_vars **declare, t_help_var *v)
+{
+	int	a;
+
+	if (ft_strcmp(cmd[0], "echo") == 0 || ft_strcmp(cmd[0], "pwd") == 0
+		|| ft_strcmp(cmd[0], "export") == 0 || ft_strcmp(cmd[0], "env") == 0)
+		build_in_child(cmd, env, declare);
+	v->envs = ft_env(*env);
+	if (ft_strchr(cmd[0], '/'))
+	{
+		execve(cmd[0], cmd, v->envs);
+		a = open(cmd[0], O_RDWR);
+		if (a < 0)
+		{
+			write(2, "No such file or directory\n", 26);
+			exit(127);
+		}
+		close(a);
+		write(2, " Permission denied\n", 19);
+		exit(126);
+	}
+}
+
 void	cmd1(char **cmd, t_vars **env, t_vars **declare)
 {
 	t_help_var	v;
 
 	v.i = 0;
-	if (ft_strcmp(cmd[0], "echo") == 0 || ft_strcmp(cmd[0], "pwd") == 0
-		|| ft_strcmp(cmd[0], "export") == 0 || ft_strcmp(cmd[0], "env") == 0)
-		build_in_child(cmd, env, declare);
-	v.envs = ft_env(*env);
-	if(ft_strchr(cmd[0],'/'))
-	{
-		execve(cmd[0], cmd, v.envs);
-		exit(126);
-	}
+	cmd_2(cmd, env, declare, &v);
 	v.path = get_env_arr("PATH", *env);
 	v.split_path = ft_split(v.path, ':');
 	if (v.split_path != NULL)
