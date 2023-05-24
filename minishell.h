@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 16:05:38 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/24 14:07:20 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/24 15:50:51 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,7 +208,6 @@ int		ft_isalpha(int n);
 int		ft_isdigit(int n);
 int		ft_isalnum(int n);
 void	token_five(t_lexer *lex, char *text, t_node **head);
-void	addback_r(t_vars **list, t_vars *new);
 void	ft_remove(char **args, int *i, t_vars **vars);
 char	*ft_content_plus(char *str);
 char	*ft_content_env(char *str);

@@ -6,26 +6,11 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 11:21:48 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/23 12:50:39 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/24 15:50:58 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	addback_r(t_vars **list, t_vars *new)
-{
-	t_vars	*hold;
-
-	hold = *list;
-	if (*list == NULL)
-	{
-		*list = new;
-		return ;
-	}
-	while (hold->next != NULL)
-		hold = hold->next;
-	hold->next = new;
-}
 
 void	ft_remove(char **args, int *i, t_vars **vars)
 {
