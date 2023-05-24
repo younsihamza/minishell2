@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 15:59:04 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/23 16:01:10 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/24 14:07:39 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	ft_msg(char *var)
 	}
 	write(1, "minishell: exit: numeric argument required\n", 43);
 	g_s[1] = 255;
-	return (0);
+	return (2);
 }
 
 void	cmd_env(t_vars *env)
@@ -33,4 +33,20 @@ void	cmd_env(t_vars *env)
 		printf("%s\n", env->data);
 		env = env->next;
 	}
+}
+
+void	ft_decremet_sh(t_vars **env, t_vars **declare)
+{
+	char	**tmp;
+	char	*str;
+	char	*buf;
+
+	tmp = NULL;
+	str = ft_itoa(ft_atoi(get_env_arr("SHLVL", *env) - 1));
+	buf = ft_strjoin("export SHLVL=", str);
+	tmp = ft_split(buf, ' ');
+	ft_export(tmp, env, declare);
+	free (str);
+	free2d(tmp);
+	free(tmp);
 }

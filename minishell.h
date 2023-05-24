@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 16:05:38 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/23 15:58:17 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/24 14:07:20 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,4 +218,5 @@ char	*limet(char *l);
 int		is_empty(t_help_var *v, char **deriction, int test, char **typefile);
 int		make_infile(t_help_var *v, char **deriction, int test);
 int		ft_msg(char *var);
+void	ft_decremet_sh(t_vars **env, t_vars **declare);
 #endif // !
