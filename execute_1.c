@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 15:49:18 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/24 16:10:30 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/24 17:28:31 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,9 @@ void	build_in_child(char **cmd, t_vars **env, t_vars **declare)
 
 void	help_free(t_help_var *v, char **cmd)
 {
-	write(2, "IH : command not found\n", 24);
+	write(2, "minishell: ", 11);
+	write(2, cmd[0], ft_strlen(cmd[0]));
+	write(2, " :command not found\n", 20);
 	free2d(cmd);
 	free(v->envs);
 	free(v->split_path);
@@ -68,13 +70,15 @@ void	cmd_2(char **cmd, t_vars **env, t_vars **declare, t_help_var *v)
 	{
 		execve(cmd[0], cmd, v->envs);
 		a = open(cmd[0], O_RDWR);
+		write(2, "minishell: ", 11);
+		write(2, cmd[0], ft_strlen(cmd[0]));
 		if (a < 0)
 		{
-			write(2, "No such file or directory\n", 26);
+			write(2, " :No such file or directory\n", 28);
 			exit(127);
 		}
 		close(a);
-		write(2, " Permission denied\n", 19);
+		write(2, " :Permission denied\n", 20);
 		exit(126);
 	}
 }

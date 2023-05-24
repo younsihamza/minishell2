@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 15:49:28 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/23 15:30:10 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/24 17:39:06 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ int	make_outfile(t_help_var *v, char **deriction, int test)
 		if (test == 0)
 		{
 			g_s[1] = 1;
-			write(2, "No such file or directory\n", 27);
 		}
 		else
 			exit(1);
@@ -75,7 +74,7 @@ void	in_file(t_help_var *v, char **heredoctable)
 	{
 		v->fd1 = open(v->infile, O_RDONLY, 0644);
 		if (v->fd1 == -1)
-			exit(write(2, "No such file or directory", 27));
+			exit(0);
 		dup2(v->fd1, 0);
 		close(v->fd1);
 	}
@@ -91,7 +90,7 @@ int	out_file(t_help_var *v)
 	}
 	else if (v->outfile != NULL)
 	{
-		v->fd2 = open(v->outfile, O_CREAT | O_WRONLY | O_TRUNC, 777);
+		v->fd2 = open(v->outfile, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 		if (v->fd2 == -1)
 			write(2, "filed\n", 6);
 		dup2(v->fd2, 1);

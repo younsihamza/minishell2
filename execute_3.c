@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_3.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 15:25:49 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/23 15:30:15 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/24 17:38:26 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,9 @@ int	make_infile(t_help_var *v, char **deriction, int test)
 			if (test == 0)
 			{
 				g_s[1] = 1;
-				write(2, "No such file or directory\n", 27);
+				write(2, "minishell: ", 11);
+				write(2, v->infile, ft_strlen(v->infile));
+				write(2, " : No such file or directory\n", 29);
 			}
 			else
 				exit(1);
