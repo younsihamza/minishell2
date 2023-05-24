@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_1.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 15:49:18 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/23 15:28:15 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/24 16:10:30 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,10 @@ void	build_in_child(char **cmd, t_vars **env, t_vars **declare)
 	else if (ft_strcmp("pwd", cmd[0]) == 0)
 	{
 		path = ft_calloc(sizeof(char), 1024);
-		if (!path)
-			exit(0);
-		if (get_env_arr("PWD", *env))
-			printf("%s\n", get_env_arr("PWD", *env));
-		else if (getcwd(path, 1024) != NULL)
+		if (getcwd(path, 1024) != NULL)
 			printf("%s\n", path);
+		else if (get_env_arr("PWD", *env))
+			printf("%s\n", get_env_arr("PWD", *env));
 		free(path);
 	}
 	else if (ft_strcmp(cmd[0], "export") == 0)
