@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 22:27:54 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/24 14:06:53 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/24 15:25:04 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,6 @@ void	ft_exit(char **var, t_vars **env, t_vars **declare)
 	else
 	{
 		write (1, "exit\n", 5);
-		if (var[1] && is_alpha(var[1]) == 1)
-			write (1, "minishell: exit: numeric argument required\n", 43);
 	}
 	ft_decremet_sh(env, declare);
 	if (status == 2)

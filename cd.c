@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 15:12:51 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/24 14:09:18 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/24 15:42:53 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	rn_der(char *p, t_data *d)
 	int	b;
 
 	d->pathhome = ft_calloc(1, 1024);
-	if ((getcwd(d->pathhome, 1024)) == NULL)
+	if ((getcwd(d->pathhome, 1024)) == NULL && p)
 	{
 		free(d->pathhome);
 		a = chdir(p);
