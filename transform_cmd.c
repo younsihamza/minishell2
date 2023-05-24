@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   transform_cmd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 15:59:57 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/23 15:22:07 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/24 16:30:58 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,6 @@ void	transform_cmd(t_node **rot, t_vars **env,
 		v.i++;
 	}
 	v.i = 0;
-	ft_tolower(d.cmd);
 	execute(&d, env, declare);
 	kill_leaks(&v, &d);
 }

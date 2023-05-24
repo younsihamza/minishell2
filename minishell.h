@@ -6,7 +6,7 @@
 /*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 16:05:38 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/24 15:50:51 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/24 16:30:46 by ichouare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,7 +167,6 @@ t_vars	*remove_elemet(char *str, t_vars **vars);
 void	ft_modify(char *str, t_vars **declare);
 void	ft_modify_env(char *str, t_vars **env);
 int		out_file(t_help_var *v);
-void	ft_tolower(char ***cmd);
 void	cmd_help(t_help_var *v, t_node **rot);
 void	convert_cmd(t_data *d, t_help_var *v, t_node **rot);
 int		is_alpha(char *str);
