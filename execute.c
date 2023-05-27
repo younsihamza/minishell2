@@ -6,7 +6,7 @@
 /*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 15:49:39 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/23 15:27:03 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/27 14:44:02 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,9 @@ void	pipe_tool(t_help_var *v, t_data *var)
 	v->i = 0;
 	while (v->i < v->lenpipe)
 	{
-		v->fds[v->i] = malloc(sizeof(int) * 2);
-		if (!v->fds[v->i])
+		v->fds[v->i] = ft_calloc(sizeof(int), 2);
+		if (pipe(v->fds[v->i]) == -1)
 			exit(0);
-		pipe(v->fds[v->i]);
 		v->i++;
 	}
 	v->i = 0;
@@ -65,13 +64,15 @@ void	files(t_data *var, t_help_var *v)
 {
 	if (var->op[v->i] != NULL)
 		if (ft_strncmp(var->op[v->i]->type, "OP_PIPE", 7) == 0)
-			dup2(v->fds[v->pipeincrement][1], 1);
+			if (dup2(v->fds[v->pipeincrement][1], 1) == -1)
+				exit(0);
 	if (var->deriction[v->i] != NULL)
 		dups(var->deriction[v->i], var->heredoc[v->i],
 			1, var->typefile[v->i]);
 	if (v->i - 1 >= 0 && v->pipeincrement > 0)
 		if (ft_strncmp(var->op[v->i - 1]->type, "OP_PIPE", 7) == 0)
-			dup2(v->fds[v->pipeincrement - 1][0], 0);
+			if (dup2(v->fds[v->pipeincrement - 1][0], 0) == -1)
+				exit(0);
 }
 
 void	child_parte(t_data *var, t_vars **env, t_vars **declare, t_help_var *v)

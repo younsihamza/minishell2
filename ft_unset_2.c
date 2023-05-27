@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset_2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 11:21:48 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/24 15:50:58 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/27 14:42:41 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ void	ft_remove(char **args, int *i, t_vars **vars)
 	t_vars	*tmp;
 
 	dummy = malloc (sizeof(t_vars) * 1);
+	if (!dummy)
+		exit(0);
 	dummy->next = *vars;
 	cur = dummy;
 	while (cur->next != NULL)

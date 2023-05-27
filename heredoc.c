@@ -6,7 +6,7 @@
 /*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 22:29:05 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/23 15:23:41 by hyounsi          ###   ########.fr       */
+/*   Updated: 2023/05/27 12:37:19 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,13 +59,14 @@ char	**heredoc(char *stop, int status, t_vars **env)
 	return (value);
 }
 
-void	free2d(char **table)
+void	free2dherdoc(char **table)
 {
 	int	i;
 
 	i = 0;
 	while (table[i])
 		free(table[i++]);
+	free(table);
 }
 
 char	***checkherecode(char ***deriction, int len, int *status, t_vars **env)
@@ -84,7 +85,7 @@ char	***checkherecode(char ***deriction, int len, int *status, t_vars **env)
 				if (ft_search(deriction[var.i][var.j], '<') == 2)
 				{
 					if (var.heredoctable[var.i] != NULL)
-						free2d(var.heredoctable[var.i]);
+						free2dherdoc(var.heredoctable[var.i]);
 					var.heredoctable[var.i] = heredoc(
 							limet(deriction[var.i][var.j]), status[var.i], env);
 				}

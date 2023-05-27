@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_5.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 15:59:04 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/24 15:21:32 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/27 12:37:28 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,13 @@ void	ft_decremet_sh(t_vars **env, t_vars **declare)
 	free (str);
 	free2d(tmp);
 	free(tmp);
+}
+
+void	free2d(char **table)
+{
+	int	i;
+
+	i = 0;
+	while (table[i])
+		free(table[i++]);
 }

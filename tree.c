@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tree.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 14:58:27 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/23 14:56:35 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/27 12:38:14 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ int	join_node(t_node **root, int *i, char *hold, int j)
 				|| ft_strcmp(root[*i]->type, "DOUBLE") == 0
 				|| ft_strcmp(root[j]->type, "SINGLE") == 0
 				|| ft_strcmp(root[*i]->type, "SINGLE") == 0)
+			{
 				root[*i]->status = 1;
-			if (ft_strcmp(root[j]->type, "OP_VR") == 0
-				||ft_strcmp(root[*i]->type, "OP_VR") == 0)
-				root[*i]->type = "OP_VR";
+				root[*i]->type = "DOUBLE";
+			}
 			free(hold);
 		}
 		else

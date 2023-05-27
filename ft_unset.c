@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 14:29:28 by ichouare          #+#    #+#             */
-/*   Updated: 2023/05/23 15:06:36 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/27 12:38:29 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,9 @@ void	ft_modify(char *str, t_vars **declare)
 	if (ft_test_var(str, ft_strlencher(str, '=')) == 1)
 	{
 		g_s[1] = 1;
-		printf("minishell: export: `%s': not a valid identifier\n", str);
+		write(2, "minishell: export: ", 19);
+		write(2, str, ft_strlen(str));
+		write(2, ": not a valid identifier\n", 25);
 		return ;
 	}
 	if (str[ft_strlencher(str, '=') - 1] == '+' && ft_strchr(str, '=') != 0)

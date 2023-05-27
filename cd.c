@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 15:12:51 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/24 15:42:53 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/27 13:08:53 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	rn_der(char *p, t_data *d)
 		}
 		else if (ft_strcmp("..", p) == 0 && b == -1)
 		{
-			g_s[1] = 1;
+			g_s[1] = 0;
 			write(2, "cd: error retrieving current directory:", 39);
 			write(2, "getcwd: cannot access parent directories", 40);
 			write(2, ": No such file or directory\n", 28);

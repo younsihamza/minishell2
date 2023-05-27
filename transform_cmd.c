@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   transform_cmd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 15:59:57 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/24 16:30:58 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/27 14:40:30 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	free_table(char ***table, t_help_var *v)
 	int	i;
 
 	i = 0;
-	while (i <= v->len)
+	while (i < v->len + 2)
 	{
 		if (table[i])
 		{
@@ -74,17 +74,21 @@ void	kill_leaks(t_help_var *v, t_data *d)
 	free_table(d->heredoc, v);
 	free_table(d->deriction, v);
 	free(d->op);
-	while (d->cmd[v->i])
+	while (v->i < v->len + 2)
 	{
-		free2d(d->cmd[v->i]);
-		free(d->cmd[v->i]);
-		v->i++;
+		if (d->cmd[v->i])
+		{
+			free2d(d->cmd[v->i]);
+			free(d->cmd[v->i]);
+		}
+			v->i++;
 	}
 	free(d->cmd);
 	v->i = 0;
-	while (d->typefile[v->i])
+	while (v->i < v->len + 2)
 	{
-		free(d->typefile[v->i]);
+		if (d->typefile[v->i])
+			free(d->typefile[v->i]);
 		v->i++;
 	}
 	free(d->typefile);

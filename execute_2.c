@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichouare <ichouare@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyounsi <hyounsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 15:49:28 by hyounsi           #+#    #+#             */
-/*   Updated: 2023/05/24 17:39:06 by ichouare         ###   ########.fr       */
+/*   Updated: 2023/05/27 14:43:42 by hyounsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,8 @@ void	in_file(t_help_var *v, char **heredoctable)
 				ft_putstr(heredoctable[v->i++], v->fd1);
 		close(v->fd1);
 		v->fd1 = open("/tmp/heredoc", O_RDONLY);
-		dup2(v->fd1, 0);
+		if (dup2(v->fd1, 0) == -1)
+			exit(0);
 		close(v->fd1);
 	}
 	else if (v->infile != NULL)
@@ -75,7 +76,8 @@ void	in_file(t_help_var *v, char **heredoctable)
 		v->fd1 = open(v->infile, O_RDONLY, 0644);
 		if (v->fd1 == -1)
 			exit(0);
-		dup2(v->fd1, 0);
+		if (dup2(v->fd1, 0) == -1)
+			exit(0);
 		close(v->fd1);
 	}
 }
@@ -85,15 +87,19 @@ int	out_file(t_help_var *v)
 	if (v->outappend != NULL)
 	{
 		v->fd2 = open(v->outappend, O_WRONLY | O_CREAT | O_APPEND, 0644);
-		dup2(v->fd2, 1);
+		if (v->fd2 == -1)
+			exit(0);
+		if (dup2(v->fd2, 1) == -1)
+			exit(0);
 		close(v->fd2);
 	}
 	else if (v->outfile != NULL)
 	{
 		v->fd2 = open(v->outfile, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 		if (v->fd2 == -1)
-			write(2, "filed\n", 6);
-		dup2(v->fd2, 1);
+			exit(0);
+		if (dup2(v->fd2, 1) == -1)
+			exit(0);
 		close(v->fd2);
 	}
 	return (v->fd2);
